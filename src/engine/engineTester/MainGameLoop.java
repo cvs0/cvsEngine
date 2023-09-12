@@ -9,6 +9,7 @@ import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
+import engine.renderEngine.OBJLoader;
 import engine.renderEngine.Renderer;
 import engine.shaders.StaticShader;
 import engine.textures.ModelTexture;
@@ -101,16 +102,15 @@ public class MainGameLoop {
 
 		};
 		
-		RawModel model = loader.loadToVAO(vertices,textureCoords,indices);
+		RawModel model = OBJLoader.loadObjModel("Gun", loader);
 		
-		TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("exampleTexture")));
+		TexturedModel staticModel = new TexturedModel(model,new ModelTexture(loader.loadTexture("Gun")));
 		
-		Entity entity = new Entity(staticModel, new Vector3f(0,0,-5),0,0,0,1);
+		Entity entity = new Entity(staticModel, new Vector3f(0,0,-15),0,0,0,1);
 		
 		Camera camera = new Camera();
 		
 		while(!Display.isCloseRequested()){
-			entity.increaseRotation(1, 1, 0);
 			camera.move();
 			renderer.prepare();
 			shader.start();
