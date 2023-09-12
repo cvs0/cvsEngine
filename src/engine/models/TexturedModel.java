@@ -10,4 +10,12 @@ public class TexturedModel {
 		this.rawModel = model;
 		this.texture = texture;
 	}
+
+	public RawModel getRawModel() {
+		return rawModel;
+	}
+
+	public ModelTexture getTexture() {
+		return texture;
+	}
 }
