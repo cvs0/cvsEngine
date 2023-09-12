@@ -14,9 +14,9 @@ public class DisplayManager {
 	
 	public static void createDisplay() {
 		
-		ContextAttribs attribs = new ContextAttribs(3,2);
-		attribs.withForwardCompatible(true);
-		attribs.withProfileCore(true);
+		ContextAttribs attribs = new ContextAttribs(3,2)
+		.withForwardCompatible(true)
+		.withProfileCore(true);
 		
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
