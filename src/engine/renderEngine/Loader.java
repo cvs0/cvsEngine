@@ -36,7 +36,7 @@ public class Loader {
 	private int createVAO() {
 		int vaoID = GL30.glGenVertexArrays();
 		
-		vaos.add(vaoID)
+		vaos.add(vaoID);
 		
 		GL30.glBindVertexArray(vaoID);
 		

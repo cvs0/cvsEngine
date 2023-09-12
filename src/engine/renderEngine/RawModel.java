@@ -13,7 +13,7 @@ public class RawModel {
 		return vertexCount;
 	}
 
-	public void getVaoID() {
+	public int getVaoID() {
 		return vaoID;
 	}
 }
