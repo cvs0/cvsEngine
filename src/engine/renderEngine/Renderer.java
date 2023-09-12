@@ -4,6 +4,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import engine.models.RawModel;
+
 public class Renderer {
 	public void prepare() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
