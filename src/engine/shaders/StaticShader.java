@@ -19,6 +19,7 @@ public class StaticShader extends ShaderProgram{
 	private int location_shineDamper;
 	private int location_reflectivity;
 	private int location_useFakeLighting;
+	private int location_skyColour;
 
 	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
