@@ -12,6 +12,7 @@ import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
 import engine.renderEngine.MasterRenderer;
 import engine.renderEngine.OBJLoader;
+import engine.terrains.Terrain;
 import engine.textures.ModelTexture;
 
 public class MainGameLoop {
@@ -111,6 +112,8 @@ public class MainGameLoop {
 		Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
 		
+		Terrain terrain = new Terrain(0,0, loader, new ModelTexture(loader.loadTexture("exampleTexture")));
+		
 		Camera camera = new Camera();
 		
 		MasterRenderer renderer = new MasterRenderer();
@@ -119,6 +122,7 @@ public class MainGameLoop {
 			entity.increaseRotation(0, 1, 0);
 			camera.move();
 			
+			renderer.processTerrain(terrain);
 			renderer.processEntity(entity);
 			
 			renderer.render(light, camera);
