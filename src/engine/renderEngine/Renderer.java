@@ -25,7 +25,11 @@ public class Renderer {
 	private Matrix4f projectionMatrix;
 	
 	public Renderer(StaticShader shader){
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
+		
 		createProjectionMatrix();
+		
 		shader.start();
 		shader.loadProjectionMatrix(projectionMatrix);
 		shader.stop();
