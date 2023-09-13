@@ -2,6 +2,7 @@
 
 in vec3 position;
 in vec2 textureCoordinates;
+in vec3 normal;
 
 out vec3 colour;
 out vec2 pass_textureCoordinates;
