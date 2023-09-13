@@ -10,9 +10,8 @@ import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
+import engine.renderEngine.MasterRenderer;
 import engine.renderEngine.OBJLoader;
-import engine.renderEngine.Renderer;
-import engine.shaders.StaticShader;
 import engine.textures.ModelTexture;
 
 public class MainGameLoop {
@@ -21,8 +20,6 @@ public class MainGameLoop {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		StaticShader shader = new StaticShader();
-		Renderer renderer = new Renderer(shader);
 		
 		float[] vertices = {			
 				-0.5f,0.5f,0,	
@@ -116,19 +113,19 @@ public class MainGameLoop {
 		
 		Camera camera = new Camera();
 		
+		MasterRenderer renderer = new MasterRenderer();
+		
 		while(!Display.isCloseRequested()){
 			entity.increaseRotation(0, 1, 0);
 			camera.move();
-			renderer.prepare();
-			shader.start();
-			shader.loadLight(light);
-			shader.loadViewMatrix(camera);
-			renderer.render(entity,shader);
-			shader.stop();
+			
+			renderer.processEntity(entity);
+			
+			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
 		}
-
-		shader.cleanUp();
+			
+		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 
