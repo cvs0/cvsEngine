@@ -22,25 +22,33 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private List<Integer> textures = new ArrayList<Integer>();
 	
-	public RawModel loadToVAO(float[] positions,float[] textureCoords,int[] indices){
+	public RawModel loadToVAO(float[] positions,float[] textureCoords, float[] normals, int[] indices){
 		int vaoID = createVAO();
+		
 		bindIndicesBuffer(indices);
+		
 		storeDataInAttributeList(0,3,positions);
 		storeDataInAttributeList(1,2,textureCoords);
+		storeDataInAttributeList(2,3,normals);
+
 		unbindVAO();
+		
 		return new RawModel(vaoID,indices.length);
 	}
 	
 	public int loadTexture(String fileName) {
 		Texture texture = null;
+		
 		try {
 			texture = TextureLoader.getTexture("PNG",
 					new FileInputStream("res/" + fileName + ".png"));
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 			System.err.println("Tried to load texture " + fileName + ".png , didn't work");
 			System.exit(-1);
 		}
+		
 		textures.add(texture.getTextureID());
 		return texture.getTextureID();
 	}
