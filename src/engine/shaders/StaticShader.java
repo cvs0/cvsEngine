@@ -3,6 +3,7 @@ package engine.shaders;
 import org.lwjgl.util.vector.Matrix4f;
 
 import engine.entities.Camera;
+import engine.entities.Light;
 import engine.toolbox.MathUtils;
 
 public class StaticShader extends ShaderProgram{
@@ -31,11 +32,17 @@ public class StaticShader extends ShaderProgram{
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
 		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
 		location_viewMatrix = super.getUniformLocation("viewMatrix");
-		
+		location_lightPosition = super.getUniformLocation("lightPosition");
+		location_lightColour = super.getUniformLocation("lightColour");
 	}
 	
 	public void loadTransformationMatrix(Matrix4f matrix){
 		super.loadMatrix(location_transformationMatrix, matrix);
+	}
+	
+	public void loadLight(Light light) {
+		super.loadVector(location_lightPosition, light.getPosition());
+		super.loadVector(location_lightColour, light.getColour());
 	}
 	
 	public void loadViewMatrix(Camera camera){
