@@ -11,6 +11,7 @@ import engine.entities.Entity;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.shaders.StaticShader;
+import engine.textures.ModelTexture;
 import engine.toolbox.MathUtils;
 
 
@@ -50,6 +51,10 @@ public class Renderer {
 				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		
 		shader.loadTransformationMatrix(transformationMatrix);
+		
+		ModelTexture texture = model.getTexture();
+		
+		shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
 		
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		
