@@ -14,7 +14,7 @@ Dependencies:
 
 ## Contact
 
-* Email: `cvs0_main@proton.me`
+* Email: `cvs0@anonaddy.me`
 * Discord: `cvs0.`
 
 ## License
