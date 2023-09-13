@@ -25,7 +25,7 @@ public class MasterRenderer {
 	
 	private static final float RED = 0.5f;
 	private static final float GREEN = 0.5f;
-	private static final float BLUE = 0.5f;
+	private static final float BLUE = 0.7f;
 	
 	private StaticShader shader = new StaticShader();
 	

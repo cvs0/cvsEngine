@@ -14,6 +14,8 @@ import engine.renderEngine.MasterRenderer;
 import engine.renderEngine.OBJLoader;
 import engine.terrains.Terrain;
 import engine.textures.ModelTexture;
+import engine.textures.TerrainTexture;
+import engine.textures.TerrainTexturePack;
 
 public class MainGameLoop {
 
@@ -21,6 +23,17 @@ public class MainGameLoop {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		
+		// TERRAIN TEXTURE //
+		
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+		
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture,
+				gTexture, bTexture);
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
 		
@@ -33,7 +46,7 @@ public class MainGameLoop {
 		Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
 		
-		Terrain terrain = new Terrain(0,0, loader, new ModelTexture(loader.loadTexture("exampleTexture")));
+		Terrain terrain = new Terrain(0,-1, loader, texturePack, blendMap);
 		
 		Camera camera = new Camera();
 		
