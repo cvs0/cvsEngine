@@ -48,7 +48,6 @@ public class MainGameLoop {
 		Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
 		
 		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap, "heightmap");
-		Terrain terrain2 = new Terrain(-1, -1, loader, texturePack, blendMap, "heightmap");
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
@@ -62,11 +61,10 @@ public class MainGameLoop {
 		while(!Display.isCloseRequested()){
 			entity.increaseRotation(0, 1, 0);
 			camera.move();
-			player.move();
+			player.move(terrain);
 			
 			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
-			renderer.processTerrain(terrain2);
 			
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
