@@ -47,12 +47,12 @@ public class MainGameLoop {
 		Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
 		
-		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap);
-		Terrain terrain2 = new Terrain(-1, -1, loader, texturePack, blendMap);
+		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap, "heightmap");
+		Terrain terrain2 = new Terrain(-1, -1, loader, texturePack, blendMap, "heightmap");
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
-		RawModel gunModel = OBJLoader.loadObjModel("Gun", loader);
+		RawModel gunModel = OBJLoader.loadObjModel("dragon", loader);
 		
 		TexturedModel gun = new TexturedModel(gunModel, new ModelTexture(loader.loadTexture("white")));
 		
