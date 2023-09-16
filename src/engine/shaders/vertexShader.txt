@@ -5,9 +5,11 @@ in vec2 textureCoordinates;
 in vec3 normal;
 
 out vec2 pass_textureCoordinates;
+
 out vec3 surfaceNormal;
 out vec3 toLightVector;
 out vec3 toCameraVector;
+
 out float visibility;
 
 uniform mat4 transformationMatrix;

@@ -33,6 +33,7 @@ public class EntityRenderer {
 	public void render(Map<TexturedModel, List<Entity>> entities) {
 		for(TexturedModel model : entities.keySet()) {
 			prepareTexturedModel(model);
+			
 			List<Entity> batch = entities.get(model);
 			
 			for(Entity entity : batch) {
@@ -71,6 +72,7 @@ public class EntityRenderer {
 	
 	private void unbindTexturedModel() {
 		MasterRenderer.enableCulling();
+		
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
 		GL20.glDisableVertexAttribArray(2);

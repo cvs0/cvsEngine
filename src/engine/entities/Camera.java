@@ -24,10 +24,14 @@ public class Camera {
 		calculateZoom();
 		calculatePitch();
 		calculateAngleAroundPlayer();
+		
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
+				
 		calculateCameraPosition(horizontalDistance, verticalDistance);
+		
 		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+		
 		yaw%=360;
 	}
 	
@@ -55,6 +59,7 @@ public class Camera {
 		float theta = player.getRotY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
+		
 		position.x = player.getPosition().x - offsetX;
 		position.z = player.getPosition().z - offsetZ;
 		position.y = player.getPosition().y + verticDistance + 4;
@@ -70,7 +75,9 @@ public class Camera {
 	
 	private void calculateZoom(){
 		float zoomLevel = Mouse.getDWheel() * 0.03f;
+		
 		distanceFromPlayer -= zoomLevel;
+		
 		if(distanceFromPlayer<5){
 			distanceFromPlayer = 5;
 		}
@@ -79,7 +86,9 @@ public class Camera {
 	private void calculatePitch(){
 		if(Mouse.isButtonDown(1)){
 			float pitchChange = Mouse.getDY() * 0.2f;
+			
 			pitch -= pitchChange;
+			
 			if(pitch < 0){
 				pitch = 0;
 			}else if(pitch > 90){
@@ -91,6 +100,7 @@ public class Camera {
 	private void calculateAngleAroundPlayer(){
 		if(Mouse.isButtonDown(0)){
 			float angleChange = Mouse.getDX() * 0.3f;
+			
 			angleAroundPlayer -= angleChange;
 		}
 	}

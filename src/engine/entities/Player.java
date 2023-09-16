@@ -45,6 +45,7 @@ public class Player extends Entity {
 		if(super.getPosition().y < terrainHeight) {
 			upwardsSpeed = 0;
 			isInAir = false;
+			
 			super.getPosition().y = terrainHeight;
 		}
 	}
@@ -52,6 +53,7 @@ public class Player extends Entity {
 	private void jump() {
 		if(!isInAir) {
 			this.upwardsSpeed = JUMP_POWER;
+			
 			isInAir = true;
 		}
 		
