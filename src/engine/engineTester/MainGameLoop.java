@@ -50,8 +50,6 @@ public class MainGameLoop {
 		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap);
 		Terrain terrain2 = new Terrain(-1, -1, loader, texturePack, blendMap);
 		
-		Camera camera = new Camera();
-		
 		MasterRenderer renderer = new MasterRenderer();
 		
 		RawModel gunModel = OBJLoader.loadObjModel("Gun", loader);
@@ -59,6 +57,7 @@ public class MainGameLoop {
 		TexturedModel gun = new TexturedModel(gunModel, new ModelTexture(loader.loadTexture("white")));
 		
 		Player player = new Player(gun, new Vector3f(0,0,-25), 0, 0, 0, 1);
+		Camera camera = new Camera(player);
 		
 		while(!Display.isCloseRequested()){
 			entity.increaseRotation(0, 1, 0);
