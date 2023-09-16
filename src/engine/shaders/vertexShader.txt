@@ -13,9 +13,13 @@ out float visibility;
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+
 uniform vec3 lightPosition;
 
+uniform vec2 offset;
+
 uniform float useFakeLighting;
+uniform float numberOfRows;
 
 const float density = 0.007;
 const float gradient = 1.5;
@@ -26,7 +30,7 @@ void main(void){
 	vec4 positionRelativeToCam = viewMatrix * worldPosition;
 	
 	gl_Position = projectionMatrix * positionRelativeToCam;
-	pass_textureCoordinates = textureCoordinates;
+	pass_textureCoordinates = (textureCoordinates / numberOfRows) + offset;
 	
 	vec3 actualNormal = normal;
 	
