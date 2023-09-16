@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import engine.entities.Camera;
 import engine.entities.Entity;
 import engine.entities.Light;
+import engine.entities.Player;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.renderEngine.DisplayManager;
@@ -46,18 +47,27 @@ public class MainGameLoop {
 		Entity entity = new Entity(staticModel, new Vector3f(0,0,-25),0,0,0,1);
 		Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
 		
-		Terrain terrain = new Terrain(0,-1, loader, texturePack, blendMap);
+		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap);
+		Terrain terrain2 = new Terrain(-1, -1, loader, texturePack, blendMap);
 		
 		Camera camera = new Camera();
 		
 		MasterRenderer renderer = new MasterRenderer();
 		
+		RawModel gunModel = OBJLoader.loadObjModel("Gun", loader);
+		
+		TexturedModel gun = new TexturedModel(gunModel, new ModelTexture(loader.loadTexture("white")));
+		
+		Player player = new Player(gun, new Vector3f(0,0,-25), 0, 0, 0, 1);
+		
 		while(!Display.isCloseRequested()){
 			entity.increaseRotation(0, 1, 0);
 			camera.move();
+			player.move();
 			
+			renderer.processEntity(player);
 			renderer.processTerrain(terrain);
-			renderer.processEntity(entity);
+			renderer.processTerrain(terrain2);
 			
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
