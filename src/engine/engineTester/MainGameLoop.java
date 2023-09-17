@@ -22,6 +22,7 @@ import engine.terrains.Terrain;
 import engine.textures.ModelTexture;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
+import engine.toolbox.FPSCounter;
 
 public class MainGameLoop {
 
@@ -31,6 +32,7 @@ public class MainGameLoop {
 		Loader loader = new Loader();
 		MasterRenderer renderer = new MasterRenderer();
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
+		FPSCounter fpsCounter = new FPSCounter();
 		
 		// TERRAIN TEXTURE //
 		
@@ -75,6 +77,9 @@ public class MainGameLoop {
 			guiRenderer.render(guis);
 			
 			DisplayManager.updateDisplay();
+			fpsCounter.update();
+			
+			int currentFPS = fpsCounter.getFPS();
 		}
 		
 		guiRenderer.cleanUp();
