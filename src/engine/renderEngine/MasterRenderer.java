@@ -80,12 +80,12 @@ public class MasterRenderer {
 	 * @param sun    The light source in the scene.
 	 * @param camera The camera view used for rendering.
 	 */
-	public void render(Light sun, Camera camera) {
+	public void render(List<Light> lights, Camera camera) {
 		prepare();
 		
 		shader.start();
 		shader.loadSkyColour(RED, GREEN, BLUE);
-		shader.loadLight(sun);
+		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
 		
 		renderer.render(entities);
