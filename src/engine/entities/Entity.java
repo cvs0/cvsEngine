@@ -53,10 +53,32 @@ public class Entity {
 	}
 
 	public void increaseRotation(float dx, float dy, float dz) {
-		this.rotX += dx;
-		this.rotY += dy;
-		this.rotZ += dz;
+	    this.rotX += dx;
+	    this.rotY += dy;
+	    this.rotZ += dz;
+
+	    while (this.rotX < -360) {
+	        this.rotX += 360;
+	    }
+	    while (this.rotX >= 360) {
+	        this.rotX -= 360;
+	    }
+
+	    while (this.rotY < -360) {
+	        this.rotY += 360;
+	    }
+	    while (this.rotY >= 360) {
+	        this.rotY -= 360;
+	    }
+
+	    while (this.rotZ < -360) {
+	        this.rotZ += 360;
+	    }
+	    while (this.rotZ >= 360) {
+	        this.rotZ -= 360;
+	    }
 	}
+
 
 	public TexturedModel getModel() {
 		return model;
