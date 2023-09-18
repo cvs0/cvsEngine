@@ -26,9 +26,7 @@ We welcome your input and are here to assist you in your game development journe
 
 ## License
 
-CvsEngine is licensed under the MIT License.
-
-The MIT license enforces:
+CvsEngine is licensed under the MIT License, which means:
 
 * The software is provided "as is" without warranty of any kind.
 
