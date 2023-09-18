@@ -16,6 +16,7 @@ import engine.entities.Light;
 import engine.models.TexturedModel;
 import engine.shaders.StaticShader;
 import engine.shaders.TerrainShader;
+import engine.skybox.SkyboxRenderer;
 import engine.terrains.Terrain;
 
 public class MasterRenderer {
@@ -40,12 +41,15 @@ public class MasterRenderer {
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
-	public MasterRenderer() {
+	private SkyboxRenderer skyboxRenderer;
+	
+	public MasterRenderer(Loader loader) {
 		enableCulling();
 		
 		createProjectionMatrix();
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+		skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 	}
 	
 	/**
@@ -100,6 +104,8 @@ public class MasterRenderer {
 		terrainRenderer.render(terrains);
 		
 		terrainShader.stop();
+		
+		skyboxRenderer.render(camera, RED, GREEN, BLUE);
 		
 		terrains.clear();
 		
