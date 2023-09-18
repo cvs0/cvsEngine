@@ -131,7 +131,7 @@ public class MainGameLoop {
 			DisplayManager.updateDisplay();
 			fpsCounter.update();
 			
-			int currentFPS = fpsCounter.getFPS();
+			int currentFPS = fpsCounter.getFPS(); // do what you want with this, not neccesary. Might be used once text renderer is done
 		}
 		
 		guiRenderer.cleanUp();
