@@ -54,8 +54,8 @@ public class MainGameLoop {
 		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap, "heightmap");
 		
 		//  PLAYER //
-		RawModel gunModel = OBJLoader.loadObjModel("dragon", loader);
-		TexturedModel gun = new TexturedModel(gunModel, new ModelTexture(loader.loadTexture("white")));
+		RawModel gunModel = OBJLoader.loadObjModel("person", loader);
+		TexturedModel gun = new TexturedModel(gunModel, new ModelTexture(loader.loadTexture("playerTexture")));
 		Player player = new Player(gun, new Vector3f(0,0,-25), 0, 0, 0, 1);
 		Camera camera = new Camera(player);
 		//*********//
