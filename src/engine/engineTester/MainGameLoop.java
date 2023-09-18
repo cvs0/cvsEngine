@@ -48,6 +48,8 @@ public class MainGameLoop {
 		// ****************//
 		
 		Light light = new Light(new Vector3f(200,200,100), new Vector3f(1,1,1));
+		List<Light> lights = new ArrayList<Light>();
+		lights.add(light);
 		
 		Terrain terrain = new Terrain(0, -1, loader, texturePack, blendMap, "heightmap");
 		
@@ -72,7 +74,7 @@ public class MainGameLoop {
 			
 			renderer.processTerrain(terrain);
 			
-			renderer.render(light, camera);
+			renderer.render(lights, camera);
 			
 			guiRenderer.render(guis);
 			
