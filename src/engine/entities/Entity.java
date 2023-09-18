@@ -35,16 +35,33 @@ public class Entity {
 	}
 	
 	public float getTextureXOffset() {
-		int column = textureIndex % model.getTexture().getNumberOfRows();
-		
-		return (float) column / (float) model.getTexture().getNumberOfRows();
+	    if (model != null && model.getTexture() != null) {
+	        int numberOfRows = model.getTexture().getNumberOfRows();
+	        if (numberOfRows > 0) {
+	            int column = textureIndex % numberOfRows;
+	            return (float) column / (float) numberOfRows;
+	        } else {
+	            return 0.0f;
+	        }
+	    } else {
+	        return 0.0f;
+	    }
 	}
-	
+
 	public float getTextureYOffset() {
-		int row = textureIndex / model.getTexture().getNumberOfRows();
-		
-		return (float) row / (float) model.getTexture().getNumberOfRows();
+	    if (model != null && model.getTexture() != null) {
+	        int numberOfRows = model.getTexture().getNumberOfRows();
+	        if (numberOfRows > 0) {
+	            int row = textureIndex / numberOfRows;
+	            return (float) row / (float) numberOfRows;
+	        } else {
+	            return 0.0f;
+	        }
+	    } else {
+	        return 0.0f;
+	    }
 	}
+
 
 	public void increasePosition(float dx, float dy, float dz) {
 		this.position.x += dx;
