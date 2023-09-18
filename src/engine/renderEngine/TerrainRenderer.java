@@ -16,10 +16,19 @@ import engine.textures.ModelTexture;
 import engine.textures.TerrainTexturePack;
 import engine.toolbox.MathUtils;
 
+/**
+ * The TerrainRenderer class is responsible for rendering terrains using a terrain shader.
+ */
 public class TerrainRenderer {
 	
 	private TerrainShader shader;
 	
+	/**
+     * Creates a new TerrainRenderer with the specified shader and projection matrix.
+     *
+     * @param shader           The terrain shader to use for rendering.
+     * @param projectionMatrix The projection matrix for the rendering.
+     */
 	public TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix) {
 		this.shader = shader;
 		
@@ -29,6 +38,11 @@ public class TerrainRenderer {
 		shader.stop();
 	}
 	
+	/**
+     * Renders a list of terrains.
+     *
+     * @param terrains The list of terrains to render.
+     */
 	public void render(List<Terrain> terrains) {
 		for(Terrain terrain : terrains) {
 			prepareTerrain(terrain);
@@ -41,6 +55,11 @@ public class TerrainRenderer {
 		}
 	}
 	
+	/**
+     * Prepares a terrain for rendering by binding its model and enabling vertex attributes.
+     *
+     * @param terrain The terrain to prepare.
+     */
 	private void prepareTerrain(Terrain terrain) {
 		RawModel rawModel = terrain.getModel();
 		
@@ -55,6 +74,11 @@ public class TerrainRenderer {
 		shader.loadShineVariables(1, 0);
 	}
 	
+	/**
+     * Binds the textures associated with the terrain to texture units.
+     *
+     * @param terrain The terrain containing the textures to bind.
+     */
 	private void bindTextures(Terrain terrain) {
 		TerrainTexturePack texturePack = terrain.getTexturePack();
 		
@@ -74,6 +98,9 @@ public class TerrainRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
 	}
 	
+	/**
+     * Unbinds the textured model by disabling vertex attributes and unbinding the VAO.
+     */
 	private void unbindTexturedModel() {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -82,6 +109,11 @@ public class TerrainRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
+	/**
+     * Loads the model matrix for the terrain into the shader.
+     *
+     * @param terrain The terrain for which to load the model matrix.
+     */
 	private void loadModelMatrix(Terrain terrain) {
 		Matrix4f transformationMatrix = MathUtils.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()),
 				0, 0, 0, 1);

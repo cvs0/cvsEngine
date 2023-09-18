@@ -4,104 +4,163 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * Represents a camera used for viewing a 3D scene.
+ */
 public class Camera {
-	
-	private float distanceFromPlayer = 35;
-	private float angleAroundPlayer = 0;
-	
-	private Vector3f position = new Vector3f(0, 0, 0);
-	private float pitch = 20;
-	private float yaw = 0;
-	private float roll;
-	
-	private Player player;
-	
-	public Camera(Player player){
-		this.player = player;
-	}
-	
-	public void move(){
-		calculateZoom();
-		calculatePitch();
-		calculateAngleAroundPlayer();
-		
-		float horizontalDistance = calculateHorizontalDistance();
-		float verticalDistance = calculateVerticalDistance();
-				
-		calculateCameraPosition(horizontalDistance, verticalDistance);
-		
-		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
-		
-		yaw%=360;
-	}
-	
-	public void invertPitch(){
-		this.pitch = -pitch;
-	}
 
-	public Vector3f getPosition() {
-		return position;
-	}
+    private float distanceFromPlayer = 35;
+    private float angleAroundPlayer = 0;
 
-	public float getPitch() {
-		return pitch;
-	}
+    private Vector3f position = new Vector3f(0, 0, 0);
+    private float pitch = 20;
+    private float yaw = 0;
+    private float roll;
 
-	public float getYaw() {
-		return yaw;
-	}
+    private Player player;
 
-	public float getRoll() {
-		return roll;
-	}
-	
-	private void calculateCameraPosition(float horizDistance, float verticDistance){
-		float theta = player.getRotY() + angleAroundPlayer;
-		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
-		float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
-		
-		position.x = player.getPosition().x - offsetX;
-		position.z = player.getPosition().z - offsetZ;
-		position.y = player.getPosition().y + verticDistance + 4;
-	}
-	
-	private float calculateHorizontalDistance(){
-		return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch+4)));
-	}
-	
-	private float calculateVerticalDistance(){
-		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+4)));
-	}
-	
-	private void calculateZoom(){
-		float zoomLevel = Mouse.getDWheel() * 0.03f;
-		
-		distanceFromPlayer -= zoomLevel;
-		
-		if(distanceFromPlayer<5){
-			distanceFromPlayer = 5;
-		}
-	}
-	
-	private void calculatePitch(){
-		if(Mouse.isButtonDown(1)){
-			float pitchChange = Mouse.getDY() * 0.2f;
-			
-			pitch -= pitchChange;
-			
-			if(pitch < 0){
-				pitch = 0;
-			}else if(pitch > 90){
-				pitch = 90;
-			}
-		}
-	}
-	
-	private void calculateAngleAroundPlayer(){
-		if(Mouse.isButtonDown(0)){
-			float angleChange = Mouse.getDX() * 0.3f;
-			
-			angleAroundPlayer -= angleChange;
-		}
-	}
+    /**
+     * Constructs a camera associated with a player.
+     *
+     * @param player The player entity to which this camera is attached.
+     */
+    public Camera(Player player) {
+        this.player = player;
+    }
+
+    /**
+     * Moves the camera based on user input and player movement.
+     */
+    public void move() {
+        calculateZoom();
+        calculatePitch();
+        calculateAngleAroundPlayer();
+
+        float horizontalDistance = calculateHorizontalDistance();
+        float verticalDistance = calculateVerticalDistance();
+
+        calculateCameraPosition(horizontalDistance, verticalDistance);
+
+        this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+
+        yaw %= 360;
+    }
+
+    /**
+     * Inverts the camera's pitch, effectively flipping its view.
+     */
+    public void invertPitch() {
+        this.pitch = -pitch;
+    }
+
+    /**
+     * Retrieves the position of the camera.
+     *
+     * @return A {@link Vector3f} representing the camera's position.
+     */
+    public Vector3f getPosition() {
+        return position;
+    }
+
+    /**
+     * Retrieves the pitch angle of the camera.
+     *
+     * @return The pitch angle of the camera.
+     */
+    public float getPitch() {
+        return pitch;
+    }
+
+    /**
+     * Retrieves the yaw angle of the camera.
+     *
+     * @return The yaw angle of the camera.
+     */
+    public float getYaw() {
+        return yaw;
+    }
+
+    /**
+     * Retrieves the roll angle of the camera.
+     *
+     * @return The roll angle of the camera.
+     */
+    public float getRoll() {
+        return roll;
+    }
+
+    /**
+     * Calculates the camera's position based on the player's orientation and zoom level.
+     *
+     * @param horizDistance The horizontal distance from the player.
+     * @param verticDistance The vertical distance from the player.
+     */
+    private void calculateCameraPosition(float horizDistance, float verticDistance) {
+        float theta = player.getRotY() + angleAroundPlayer;
+        float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
+        float offsetZ = (float) (horizDistance * Math.cos(Math.toRadians(theta)));
+
+        position.x = player.getPosition().x - offsetX;
+        position.z = player.getPosition().z - offsetZ;
+        position.y = player.getPosition().y + verticDistance + 4;
+    }
+
+    /**
+     * Calculates the horizontal distance between the camera and the player.
+     *
+     * @return The horizontal distance.
+     */
+    private float calculateHorizontalDistance() {
+        return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch + 4)));
+    }
+
+    /**
+     * Calculates the vertical distance between the camera and the player.
+     *
+     * @return The vertical distance.
+     */
+    private float calculateVerticalDistance() {
+        return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch + 4)));
+    }
+
+    /**
+     * Calculates the zoom level of the camera based on mouse input.
+     */
+    private void calculateZoom() {
+        float zoomLevel = Mouse.getDWheel() * 0.03f;
+
+        distanceFromPlayer -= zoomLevel;
+
+        if (distanceFromPlayer < 5) {
+            distanceFromPlayer = 5;
+        }
+    }
+
+    /**
+     * Calculates the pitch angle of the camera based on mouse input.
+     */
+    private void calculatePitch() {
+        if (Mouse.isButtonDown(1)) {
+            float pitchChange = Mouse.getDY() * 0.2f;
+
+            pitch -= pitchChange;
+
+            if (pitch < 0) {
+                pitch = 0;
+            } else if (pitch > 90) {
+                pitch = 90;
+            }
+        }
+    }
+
+    /**
+     * Calculates the angle around the player based on mouse input.
+     */
+    private void calculateAngleAroundPlayer() {
+        if (Mouse.isButtonDown(0)) {
+            float angleChange = Mouse.getDX() * 0.3f;
+
+            angleAroundPlayer -= angleChange;
+        }
+    }
 }

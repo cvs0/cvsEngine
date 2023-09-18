@@ -15,6 +15,10 @@ import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import engine.toolbox.MathUtils;
 
+/**
+ * The Terrain class represents a terrain in the game world. It includes methods for generating and rendering terrains,
+ * as well as calculating terrain heights and normals.
+ */
 public class Terrain {
 	private static final float SIZE = 800;
 	private static final float MAX_HEIGHT = 40;
@@ -29,6 +33,16 @@ public class Terrain {
 	
 	private float[][] heights;
 	
+	/**
+     * Creates a new Terrain object.
+     *
+     * @param gridX     The grid X coordinate of the terrain.
+     * @param gridZ     The grid Z coordinate of the terrain.
+     * @param loader    The loader used to load the terrain model.
+     * @param texturePack The texture pack for the terrain.
+     * @param blendMap    The blend map for terrain textures.
+     * @param heightMap   The name of the height map image file.
+     */
 	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
@@ -37,38 +51,86 @@ public class Terrain {
 		this.model = generateTerrain(loader, heightMap);
 	}
 
+	/**
+     * Gets the X coordinate of the terrain in the world.
+     *
+     * @return The X coordinate of the terrain.
+     */
 	public float getX() {
 		return x;
 	}
 
+	/**
+     * Sets the X coordinate of the terrain in the world.
+     *
+     * @param x The new X coordinate of the terrain.
+     */
 	public void setX(float x) {
 		this.x = x;
 	}
 
+	/**
+     * Gets the Z coordinate of the terrain in the world.
+     *
+     * @return The Z coordinate of the terrain.
+     */
 	public float getZ() {
 		return z;
 	}
 
+	/**
+     * Sets the Z coordinate of the terrain in the world.
+     *
+     * @param z The new Z coordinate of the terrain.
+     */
 	public void setZ(float z) {
 		this.z = z;
 	}
 
+	/**
+     * Gets the raw model representing the terrain's geometry.
+     *
+     * @return The raw model of the terrain.
+     */
 	public RawModel getModel() {
 		return model;
 	}
 
+	/**
+	 * Sets the raw model that represents the geometry of the terrain.
+	 *
+	 * @param model The raw model to set for the terrain.
+	 */
 	public void setModel(RawModel model) {
-		this.model = model;
+	    this.model = model;
 	}
 
+
+	/**
+     * Gets the texture pack used for the terrain.
+     *
+     * @return The terrain texture pack.
+     */
 	public TerrainTexturePack getTexturePack() {
 		return texturePack;
 	}
 
+	/**
+     * Gets the blend map used for blending terrain textures.
+     *
+     * @return The blend map.
+     */
 	public TerrainTexture getBlendMap() {
 		return blendMap;
 	}
 	
+	/**
+     * Calculates the height of the terrain at a given world position.
+     *
+     * @param worldX The world X coordinate.
+     * @param worldZ The world Z coordinate.
+     * @return The height of the terrain at the given position.
+     */
 	public float getHeightOfTerrain(float worldX, float worldZ) {
 		float terrainX = worldX - this.x;
 		float terrainZ = worldZ - this.z;
@@ -100,6 +162,13 @@ public class Terrain {
 		return answer;
 	}
 
+	/**
+	 * Generates the terrain's geometry and loads it into a raw model.
+	 *
+	 * @param loader    The loader used to load the model.
+	 * @param heightMap The name of the height map image file.
+	 * @return The raw model representing the terrain's geometry.
+	 */
 	private RawModel generateTerrain(Loader loader, String heightMap){
 		
 		BufferedImage image = null;
@@ -167,6 +236,14 @@ public class Terrain {
 		return loader.loadToVAO(vertices, textureCoords, normals, indices);
 	}
 	
+	/**
+	 * Calculates the normal vector at a given position on the terrain.
+	 *
+	 * @param x      The X coordinate on the terrain.
+	 * @param z      The Z coordinate on the terrain.
+	 * @param image  The height map image used for height calculations.
+	 * @return The normal vector at the specified position.
+	 */
 	private Vector3f calculateNormal(int x, int z, BufferedImage image) {
 		float heightL = getHeight(x - 1, z, image);
 		float heightR = getHeight(x + 1, z, image);
@@ -179,6 +256,14 @@ public class Terrain {
 		return normal;
 	}
 	
+	/**
+	 * Retrieves the height value at a specific position on the terrain.
+	 *
+	 * @param x      The X coordinate on the terrain.
+	 * @param z      The Z coordinate on the terrain.
+	 * @param image  The height map image used for height calculations.
+	 * @return The height value at the specified position.
+	 */
 	private float getHeight(int x, int z, BufferedImage image) {
 		if(x < 0 || x >= image.getHeight() || z < 0 || z >= image.getHeight()) {
 			return 0;

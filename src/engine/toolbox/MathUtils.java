@@ -6,8 +6,20 @@ import org.lwjgl.util.vector.Vector3f;
 
 import engine.entities.Camera;
 
+/**
+ * A utility class containing mathematical functions commonly used in game development.
+ */
 public class MathUtils {
 	
+	/**
+	 * Calculates the barrycentric interpolation of a point within a triangle.
+	 *
+	 * @param p1 The first vertex of the triangle.
+	 * @param p2 The second vertex of the triangle.
+	 * @param p3 The third vertex of the triangle.
+	 * @param pos The position within the triangle as a 2D vector.
+	 * @return The interpolated value at the given position within the triangle.
+	 */
 	public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
 	    float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
 
@@ -26,7 +38,17 @@ public class MathUtils {
 	    return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 	}
 
-	
+	/**
+	 * Creates a transformation matrix based on translation, rotation, and scale values.
+	 *
+	 * @param translation The translation vector (x, y, z).
+	 * @param rx The rotation around the x-axis (in degrees).
+	 * @param ry The rotation around the y-axis (in degrees).
+	 * @param rz The rotation around the z-axis (in degrees).
+	 * @param scale The uniform scale factor.
+	 * @return The transformation matrix.
+	 * @throws IllegalArgumentException If input values are invalid.
+	 */
 	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry,
             float rz, float scale) {
         Matrix4f matrix = new Matrix4f();
@@ -58,7 +80,14 @@ public class MathUtils {
         return matrix;
     }
 
-	
+	/**
+	 * Creates a transformation matrix based on translation and scale vectors (2D).
+	 *
+	 * @param translation The translation vector (x, y).
+	 * @param scale The scale vector (x, y).
+	 * @return The transformation matrix.
+	 * @throws IllegalArgumentException If input values are invalid.
+	 */
 	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
 	    Matrix4f matrix = new Matrix4f();
 	    matrix.setIdentity();
@@ -82,7 +111,13 @@ public class MathUtils {
 	    return matrix;
 	}
 
-	
+	/**
+	 * Creates a view matrix based on the camera's position and orientation.
+	 *
+	 * @param camera The camera for which to create the view matrix.
+	 * @return The view matrix.
+	 * @throws IllegalArgumentException If the camera is null or has invalid properties.
+	 */
 	public static Matrix4f createViewMatrix(Camera camera) {
 	    Matrix4f viewMatrix = new Matrix4f();
 	    

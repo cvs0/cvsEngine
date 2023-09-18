@@ -23,6 +23,15 @@ public class Loader {
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private List<Integer> textures = new ArrayList<Integer>();
 	
+	/**
+     * Loads vertex, texture, and normal data into a VAO and creates a RawModel.
+     *
+     * @param positions     The vertex positions.
+     * @param textureCoords The texture coordinates.
+     * @param normals       The normals.
+     * @param indices       The vertex indices.
+     * @return A RawModel representing the loaded data.
+     */
 	public RawModel loadToVAO(float[] positions,float[] textureCoords, float[] normals, int[] indices){
 		int vaoID = createVAO();
 		
@@ -37,6 +46,12 @@ public class Loader {
 		return new RawModel(vaoID,indices.length);
 	}
 	
+	/**
+     * Loads vertex positions into a VAO and creates a RawModel.
+     *
+     * @param positions The vertex positions.
+     * @return A RawModel representing the loaded data.
+     */
 	public RawModel loadToVAO(float[] positions) {
 		int vaoID = createVAO();
 		
@@ -47,6 +62,12 @@ public class Loader {
 		return new RawModel(vaoID, positions.length / 2);
 	}
 	
+	/**
+     * Loads a texture from a file and generates mipmaps with specified settings.
+     *
+     * @param fileName The name of the texture file (without extension) located in the "res" directory.
+     * @return The OpenGL texture ID.
+     */
 	public int loadTexture(String fileName) {
 		Texture texture = null;
 		
@@ -67,6 +88,9 @@ public class Loader {
 		return texture.getTextureID();
 	}
 	
+	/**
+     * Cleans up OpenGL resources, including VAOs, VBOs, and textures.
+     */
 	public void cleanUp(){
 		for(int vao:vaos){
 			GL30.glDeleteVertexArrays(vao);
@@ -96,10 +120,18 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
 	
-	private void unbindVAO(){
-		GL30.glBindVertexArray(0);
+	/**
+	 * Unbinds the currently bound VAO, setting it to zero.
+	 */
+	private void unbindVAO() {
+	    GL30.glBindVertexArray(0);
 	}
 	
+	/**
+	 * Binds the indices buffer with the provided indices data to the current VAO.
+	 *
+	 * @param indices The vertex indices to bind.
+	 */
 	private void bindIndicesBuffer(int[] indices){
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
@@ -108,6 +140,12 @@ public class Loader {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 	
+	/**
+	 * Converts an array of integers into an IntBuffer.
+	 *
+	 * @param data The array of integers to convert.
+	 * @return An IntBuffer containing the data from the array.
+	 */
 	private IntBuffer storeDataInIntBuffer(int[] data){
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
@@ -115,13 +153,16 @@ public class Loader {
 		return buffer;
 	}
 	
+	/**
+	 * Converts an array of floats into a FloatBuffer.
+	 *
+	 * @param data The array of floats to convert.
+	 * @return A FloatBuffer containing the data from the array.
+	 */
 	private FloatBuffer storeDataInFloatBuffer(float[] data){
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		return buffer;
 	}
-	
-	
-
 }

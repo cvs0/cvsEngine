@@ -4,145 +4,248 @@ import org.lwjgl.util.vector.Vector3f;
 
 import engine.models.TexturedModel;
 
+/**
+ * Represents an entity in a 3D environment.
+ */
 public class Entity {
 
-	private TexturedModel model;
-	private Vector3f position;
-	private float rotX, rotY, rotZ;
-	private float scale;
-	
-	private int textureIndex = 0;
+    private TexturedModel model;
+    private Vector3f position;
+    private float rotX, rotY, rotZ;
+    private float scale;
 
-	public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
-			float scale) {
-		this.model = model;
-		this.position = position;
-		this.rotX = rotX;
-		this.rotY = rotY;
-		this.rotZ = rotZ;
-		this.scale = scale;
-	}
-	
-	public Entity(TexturedModel model, int index, Vector3f position, float rotX, float rotY, float rotZ,
-			float scale ) {
-		this.model = model;
-		this.textureIndex = index;
-		this.position = position;
-		this.rotX = rotX;
-		this.rotY = rotY;
-		this.rotZ = rotZ;
-		this.scale = scale;
-	}
-	
-	public float getTextureXOffset() {
-	    if (model != null && model.getTexture() != null) {
-	        int numberOfRows = model.getTexture().getNumberOfRows();
-	        if (numberOfRows > 0) {
-	            int column = textureIndex % numberOfRows;
-	            return (float) column / (float) numberOfRows;
-	        } else {
-	            return 0.0f;
-	        }
-	    } else {
-	        return 0.0f;
-	    }
-	}
+    private int textureIndex = 0;
 
-	public float getTextureYOffset() {
-	    if (model != null && model.getTexture() != null) {
-	        int numberOfRows = model.getTexture().getNumberOfRows();
-	        if (numberOfRows > 0) {
-	            int row = textureIndex / numberOfRows;
-	            return (float) row / (float) numberOfRows;
-	        } else {
-	            return 0.0f;
-	        }
-	    } else {
-	        return 0.0f;
-	    }
-	}
+    /**
+     * Constructs a new Entity with the specified parameters.
+     *
+     * @param model    The textured model representing this entity.
+     * @param position The initial position of the entity.
+     * @param rotX     The initial rotation around the X-axis.
+     * @param rotY     The initial rotation around the Y-axis.
+     * @param rotZ     The initial rotation around the Z-axis.
+     * @param scale    The initial scale of the entity.
+     */
+    public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        this.model = model;
+        this.position = position;
+        this.rotX = rotX;
+        this.rotY = rotY;
+        this.rotZ = rotZ;
+        this.scale = scale;
+    }
 
+    /**
+     * Constructs a new Entity with the specified parameters, including a texture index.
+     *
+     * @param model       The textured model representing this entity.
+     * @param index       The index of the texture.
+     * @param position    The initial position of the entity.
+     * @param rotX        The initial rotation around the X-axis.
+     * @param rotY        The initial rotation around the Y-axis.
+     * @param rotZ        The initial rotation around the Z-axis.
+     * @param scale       The initial scale of the entity.
+     */
+    public Entity(TexturedModel model, int index, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        this.model = model;
+        this.textureIndex = index;
+        this.position = position;
+        this.rotX = rotX;
+        this.rotY = rotY;
+        this.rotZ = rotZ;
+        this.scale = scale;
+    }
 
-	public void increasePosition(float dx, float dy, float dz) {
-		this.position.x += dx;
-		this.position.y += dy;
-		this.position.z += dz;
-	}
+    /**
+     * Calculates the X offset for the entity's texture coordinate.
+     *
+     * @return The X offset for the entity's texture coordinate.
+     */
+    public float getTextureXOffset() {
+        if (model != null && model.getTexture() != null) {
+            int numberOfRows = model.getTexture().getNumberOfRows();
+            if (numberOfRows > 0) {
+                int column = textureIndex % numberOfRows;
+                return (float) column / (float) numberOfRows;
+            } else {
+                return 0.0f;
+            }
+        } else {
+            return 0.0f;
+        }
+    }
 
-	public void increaseRotation(float dx, float dy, float dz) {
-	    this.rotX += dx;
-	    this.rotY += dy;
-	    this.rotZ += dz;
+    /**
+     * Calculates the Y offset for the entity's texture coordinate.
+     *
+     * @return The Y offset for the entity's texture coordinate.
+     */
+    public float getTextureYOffset() {
+        if (model != null && model.getTexture() != null) {
+            int numberOfRows = model.getTexture().getNumberOfRows();
+            if (numberOfRows > 0) {
+                int row = textureIndex / numberOfRows;
+                return (float) row / (float) numberOfRows;
+            } else {
+                return 0.0f;
+            }
+        } else {
+            return 0.0f;
+        }
+    }
 
-	    while (this.rotX < -360) {
-	        this.rotX += 360;
-	    }
-	    while (this.rotX >= 360) {
-	        this.rotX -= 360;
-	    }
+    /**
+     * Increases the entity's position by the specified amounts in each dimension.
+     *
+     * @param dx The change in the X-coordinate.
+     * @param dy The change in the Y-coordinate.
+     * @param dz The change in the Z-coordinate.
+     */
+    public void increasePosition(float dx, float dy, float dz) {
+        this.position.x += dx;
+        this.position.y += dy;
+        this.position.z += dz;
+    }
 
-	    while (this.rotY < -360) {
-	        this.rotY += 360;
-	    }
-	    while (this.rotY >= 360) {
-	        this.rotY -= 360;
-	    }
+    /**
+     * Increases the entity's rotation by the specified amounts around each axis.
+     *
+     * @param dx The change in rotation around the X-axis.
+     * @param dy The change in rotation around the Y-axis.
+     * @param dz The change in rotation around the Z-axis.
+     */
+    public void increaseRotation(float dx, float dy, float dz) {
+        this.rotX += dx;
+        this.rotY += dy;
+        this.rotZ += dz;
 
-	    while (this.rotZ < -360) {
-	        this.rotZ += 360;
-	    }
-	    while (this.rotZ >= 360) {
-	        this.rotZ -= 360;
-	    }
-	}
+        while (this.rotX < -360) {
+            this.rotX += 360;
+        }
+        while (this.rotX >= 360) {
+            this.rotX -= 360;
+        }
 
+        while (this.rotY < -360) {
+            this.rotY += 360;
+        }
+        while (this.rotY >= 360) {
+            this.rotY -= 360;
+        }
 
-	public TexturedModel getModel() {
-		return model;
-	}
+        while (this.rotZ < -360) {
+            this.rotZ += 360;
+        }
+        while (this.rotZ >= 360) {
+            this.rotZ -= 360;
+        }
+    }
 
-	public void setModel(TexturedModel model) {
-		this.model = model;
-	}
+    /**
+     * Retrieves the textured model of the entity.
+     *
+     * @return The textured model representing the entity.
+     */
+    public TexturedModel getModel() {
+        return model;
+    }
 
-	public Vector3f getPosition() {
-		return position;
-	}
+    /**
+     * Sets the textured model for the entity.
+     *
+     * @param model The textured model to set.
+     */
+    public void setModel(TexturedModel model) {
+        this.model = model;
+    }
 
-	public void setPosition(Vector3f position) {
-		this.position = position;
-	}
+    /**
+     * Retrieves the current position of the entity.
+     *
+     * @return A {@link Vector3f} representing the entity's current position.
+     */
+    public Vector3f getPosition() {
+        return position;
+    }
 
-	public float getRotX() {
-		return rotX;
-	}
+    /**
+     * Sets the position of the entity to the specified coordinates.
+     *
+     * @param position A {@link Vector3f} representing the new position to set for the entity.
+     */
+    public void setPosition(Vector3f position) {
+        this.position = position;
+    }
 
-	public void setRotX(float rotX) {
-		this.rotX = rotX;
-	}
+    /**
+     * Retrieves the rotation around the X-axis of the entity.
+     *
+     * @return The current rotation around the X-axis.
+     */
+    public float getRotX() {
+        return rotX;
+    }
 
-	public float getRotY() {
-		return rotY;
-	}
+    /**
+     * Sets the rotation around the X-axis of the entity.
+     *
+     * @param rotX The new rotation around the X-axis to set.
+     */
+    public void setRotX(float rotX) {
+        this.rotX = rotX;
+    }
 
-	public void setRotY(float rotY) {
-		this.rotY = rotY;
-	}
+    /**
+     * Retrieves the rotation around the Y-axis of the entity.
+     *
+     * @return The current rotation around the Y-axis.
+     */
+    public float getRotY() {
+        return rotY;
+    }
 
-	public float getRotZ() {
-		return rotZ;
-	}
+    /**
+     * Sets the rotation around the Y-axis of the entity.
+     *
+     * @param rotY The new rotation around the Y-axis to set.
+     */
+    public void setRotY(float rotY) {
+        this.rotY = rotY;
+    }
 
-	public void setRotZ(float rotZ) {
-		this.rotZ = rotZ;
-	}
+    /**
+     * Retrieves the rotation around the Z-axis of the entity.
+     *
+     * @return The current rotation around the Z-axis.
+     */
+    public float getRotZ() {
+        return rotZ;
+    }
 
-	public float getScale() {
-		return scale;
-	}
+    /**
+     * Sets the rotation around the Z-axis of the entity.
+     *
+     * @param rotZ The new rotation around the Z-axis to set.
+     */
+    public void setRotZ(float rotZ) {
+        this.rotZ = rotZ;
+    }
 
-	public void setScale(float scale) {
-		this.scale = scale;
-	}
+    /**
+     * Retrieves the scale factor of the entity.
+     *
+     * @return The current scale factor of the entity.
+     */
+    public float getScale() {
+        return scale;
+    }
 
+    /**
+     * Sets the scale factor of the entity.
+     *
+     * @param scale The new scale factor to set for the entity.
+     */
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
 }

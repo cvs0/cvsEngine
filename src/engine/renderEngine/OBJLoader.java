@@ -13,8 +13,18 @@ import org.lwjgl.util.vector.Vector3f;
 
 import engine.models.RawModel;
 
+/**
+ * A utility class for loading 3D models in OBJ file format.
+ */
 public class OBJLoader {
 	
+	/**
+     * Loads an OBJ model from the specified file and converts it into a RawModel that can be rendered.
+     *
+     * @param fileName The name of the OBJ file to load.
+     * @param loader   The loader used to store the model data in a VAO.
+     * @return A RawModel representing the loaded OBJ model.
+     */
 	public static RawModel loadObjModel(String fileName, Loader loader) {
 		FileReader fr = null;
 		try {
@@ -112,6 +122,16 @@ public class OBJLoader {
 		return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 	}
 	
+	/**
+     * Processes a single vertex line from the OBJ file and adds it to the model's data.
+     *
+     * @param vertexData   The vertex data from a line in the OBJ file.
+     * @param indices      The list of vertex indices.
+     * @param textures     The list of texture coordinates.
+     * @param normals      The list of normal vectors.
+     * @param textureArray An array to store texture coordinates.
+     * @param normalsArray An array to store normal vectors.
+     */
 	private static void processVertex(String[] vertexData, List<Integer> indices,
 	        List<Vector2f> textures, List<Vector3f> normals, float[] textureArray,
 	        float[] normalsArray) {

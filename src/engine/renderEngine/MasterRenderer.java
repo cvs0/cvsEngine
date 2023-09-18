@@ -48,6 +48,10 @@ public class MasterRenderer {
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 	}
 	
+	/**
+	 * Enables face culling to improve rendering performance. This method should be called
+	 * before rendering objects with culling enabled.
+	 */
 	public static void enableCulling() {
 	    if (!GLContext.getCapabilities().OpenGL11) {
 	        System.err.println("OpenGL 1.1 is required for face culling, but it's not supported.");
@@ -58,6 +62,9 @@ public class MasterRenderer {
 	    GL11.glCullFace(GL11.GL_BACK);
 	}
 
+	/**
+	 * Disables face culling. Call this method when rendering objects without culling.
+	 */
 	public static void disableCulling() {
 	    if (!GLContext.getCapabilities().OpenGL11) {
 	        System.err.println("OpenGL 1.1 is required to disable face culling, but it's not supported.");
@@ -67,7 +74,12 @@ public class MasterRenderer {
 	    GL11.glDisable(GL11.GL_CULL_FACE);
 	}
 
-	
+	/**
+	 * Renders entities and terrain with the specified light source and camera view.
+	 *
+	 * @param sun    The light source in the scene.
+	 * @param camera The camera view used for rendering.
+	 */
 	public void render(Light sun, Camera camera) {
 		prepare();
 		
@@ -94,10 +106,21 @@ public class MasterRenderer {
 		entities.clear();
 	}
 	
+
+	/**
+	 * Processes a terrain for rendering. Add terrains to the list to be rendered.
+	 *
+	 * @param terrain The terrain to be processed and rendered.
+	 */
 	public void processTerrain(Terrain terrain) {
 		terrains.add(terrain);
 	}
 	
+	/**
+	 * Processes an entity for rendering. Add entities to the list to be rendered.
+	 *
+	 * @param entity The entity to be processed and rendered.
+	 */
 	public void processEntity(Entity entity) {
 	    if (entity == null) {
 	        return;
@@ -123,7 +146,9 @@ public class MasterRenderer {
 	    }
 	}
 
-	
+	/**
+	 * Cleans up resources used by the master renderer. Should be called when rendering is finished.
+	 */
 	public void cleanUp() {
 	    try {
 	        if (shader != null) {
@@ -137,7 +162,10 @@ public class MasterRenderer {
 	        e.printStackTrace();
 	    }
 	}
-
+	
+	/**
+	 * Prepares OpenGL for rendering by enabling depth testing and clearing the color and depth buffers.
+	 */
 	public void prepare() {
 	    try {
 	        GL11.glEnable(GL11.GL_DEPTH_TEST);
@@ -148,7 +176,9 @@ public class MasterRenderer {
 	    }
 	}
 
-	
+	/**
+	 * Creates the projection matrix based on the display size, field of view, and near and far planes.
+	 */
 	private void createProjectionMatrix() {
 	    if (Display.getWidth() <= 0 || Display.getHeight() <= 0 || FOV <= 0 || FAR_PLANE <= NEAR_PLANE) {
 	        throw new IllegalArgumentException("Invalid parameters for projection matrix");

@@ -8,52 +8,68 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 
+/**
+ * The DisplayManager class is responsible for creating and managing the game's display.
+ */
 public class DisplayManager {
-	
-	private static final int WIDTH = 1280;
-	private static final int HEIGHT = 720;
-	private static final int FPS_CAP = 2000;
-	
-	private static long lastFrameTime;
-	private static float delta;
-	
-	public static void createDisplay(){		
-		ContextAttribs attribs = new ContextAttribs(3,2)
-		.withForwardCompatible(true)
-		.withProfileCore(true);
-		
-		try {
-			Display.setDisplayMode(new DisplayMode(WIDTH,HEIGHT));
-			Display.create(new PixelFormat(), attribs);
-			Display.setTitle("cvsEngine Game");
-		} catch (LWJGLException e) {
-			e.printStackTrace();
-		}
-		
-		GL11.glViewport(0,0, WIDTH, HEIGHT);
-		lastFrameTime = getCurrentTime();
-	}
-	
-	public static void updateDisplay(){
-		Display.sync(FPS_CAP);
-		Display.update();
-		
-		long currentFrameTime = getCurrentTime();
-		
-		delta = (currentFrameTime - lastFrameTime) / 1000f;
-		lastFrameTime = currentFrameTime;
-	}
-	
-	public static float getFrameTimeSeconds() {
-		return delta;
-	}
-	
-	public static void closeDisplay(){
-		Display.destroy();
-	}
-	
-	private static long getCurrentTime() {
-		return Sys.getTime() * 1000 / Sys.getTimerResolution();
-	}
 
+    private static final int WIDTH = 1280;
+    private static final int HEIGHT = 720;
+    private static final int FPS_CAP = 2000;
+
+    private static long lastFrameTime;
+    private static float delta;
+
+    /**
+     * Creates the game display.
+     */
+    public static void createDisplay() {
+        ContextAttribs attribs = new ContextAttribs(3, 2)
+                .withForwardCompatible(true)
+                .withProfileCore(true);
+
+        try {
+            Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
+            Display.create(new PixelFormat(), attribs);
+            Display.setTitle("cvsEngine Game");
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+
+        GL11.glViewport(0, 0, WIDTH, HEIGHT);
+        lastFrameTime = getCurrentTime();
+    }
+
+    /**
+     * Updates the game display.
+     */
+    public static void updateDisplay() {
+        Display.sync(FPS_CAP);
+        Display.update();
+
+        long currentFrameTime = getCurrentTime();
+
+        delta = (currentFrameTime - lastFrameTime) / 1000f;
+        lastFrameTime = currentFrameTime;
+    }
+
+    /**
+     * Retrieves the time elapsed since the last frame in seconds.
+     *
+     * @return The time in seconds.
+     */
+    public static float getFrameTimeSeconds() {
+        return delta;
+    }
+
+    /**
+     * Closes the game display.
+     */
+    public static void closeDisplay() {
+        Display.destroy();
+    }
+
+    private static long getCurrentTime() {
+        return Sys.getTime() * 1000 / Sys.getTimerResolution();
+    }
 }

@@ -12,19 +12,40 @@ public class Light {
 		this.colour = colour;
 	}	
 	
+	/**
+	 * Retrieves the current position of the light source.
+	 *
+	 * @return A {@link Vector3f} representing the current position of the light source.
+	 */
 	public Vector3f getPosition() {
-		return position;
+	    return position;
 	}
 
+	/**
+	 * Sets the position of the light source to the specified coordinates.
+	 *
+	 * @param position A {@link Vector3f} representing the new position for the light source.
+	 */
 	public void setPosition(Vector3f position) {
-		this.position = position;
+	    this.position = position;
 	}
 
+	/**
+	 * Retrieves the current color of the light source.
+	 *
+	 * @return A {@link Vector3f} representing the current color (RGB values) of the light source.
+	 */
 	public Vector3f getColour() {
-		return colour;
+	    return colour;
 	}
 
+	/**
+	 * Sets the color of the light source to the specified RGB values.
+	 *
+	 * @param colour A {@link Vector3f} representing the new color (RGB values) for the light source.
+	 */
 	public void setColour(Vector3f colour) {
-		this.colour = colour;
+	    this.colour = colour;
 	}
+
 }

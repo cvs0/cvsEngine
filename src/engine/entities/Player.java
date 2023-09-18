@@ -25,6 +25,15 @@ public class Player extends Entity {
 		super(model, position, rotX, rotY, rotZ, scale);
 	}
 	
+	/**
+	 * Moves the entity based on its current speed and orientation, while considering the terrain.
+	 *
+	 * This method calculates the entity's movement based on its current speed and orientation.
+	 * It adjusts the entity's position to move along the terrain, applies gravity, and ensures
+	 * that the entity stays above the terrain surface.
+	 *
+	 * @param terrain The terrain that the entity is interacting with.
+	 */
 	public void move(Terrain terrain) {
 		checkInputs();
 		
@@ -50,34 +59,48 @@ public class Player extends Entity {
 		}
 	}
 	
+	/**
+	 * Initiates a jump if the entity is currently on the ground.
+	 * 
+	 * This method allows the entity to jump by setting its upward speed to a predefined
+	 * jump power if it is currently on the ground. The entity's state is updated to indicate
+	 * that it is in the air after jumping.
+	 */
 	private void jump() {
-		if(!isInAir) {
-			this.upwardsSpeed = JUMP_POWER;
-			
-			isInAir = true;
-		}
-		
+	    if (!isInAir) {
+	        this.upwardsSpeed = JUMP_POWER;
+	        isInAir = true;
+	    }
 	}
-	
+
+	/**
+	 * Check and process user input for entity movement.
+	 * 
+	 * This method checks for keyboard input to determine the entity's movement behavior.
+	 * It sets the current speed and turn speed based on the keys pressed, allowing the
+	 * entity to move forward, backward, or turn left and right. Additionally, it triggers
+	 * a jump if the space key is pressed.
+	 */
 	public void checkInputs() {
-		if(Keyboard.isKeyDown(Keyboard.KEY_W)) {
-			this.currentSpeed = RUN_SPEED;
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			this.currentSpeed = -RUN_SPEED;
-		} else {
-			this.currentSpeed = 0;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			this.currentTurnSpeed = -TURN_SPEED;
-		} else if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
-			this.currentTurnSpeed = TURN_SPEED;
-		} else {
-			this.currentTurnSpeed = 0;
-		}
-		
-		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-			jump();
-		}
+	    if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+	        this.currentSpeed = RUN_SPEED;
+	    } else if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+	        this.currentSpeed = -RUN_SPEED;
+	    } else {
+	        this.currentSpeed = 0;
+	    }
+	    
+	    if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+	        this.currentTurnSpeed = -TURN_SPEED;
+	    } else if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+	        this.currentTurnSpeed = TURN_SPEED;
+	    } else {
+	        this.currentTurnSpeed = 0;
+	    }
+	    
+	    if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+	        jump();
+	    }
 	}
+
 }
