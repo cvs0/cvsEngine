@@ -25,6 +25,7 @@ import engine.textures.ModelTexture;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import engine.toolbox.FPSCounter;
+import engine.toolbox.MousePicker;
 
 public class MainGameLoop {
 
@@ -113,9 +114,14 @@ public class MainGameLoop {
 		guis.add(gui);
 		//*****//
 		
+		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
+		
 		while(!Display.isCloseRequested()){
 			camera.move();
 			player.move(terrain);
+			
+			picker.update();
+			System.out.println(picker.getCurrentRay());
 			
 			renderer.processEntity(player);
 			for(Entity entity : entities) {

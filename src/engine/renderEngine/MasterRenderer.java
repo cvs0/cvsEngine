@@ -52,6 +52,10 @@ public class MasterRenderer {
 		skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 	}
 	
+	public Matrix4f getProjectionMatrix() {
+		return projectionMatrix;
+	}
+	
 	/**
 	 * Enables face culling to improve rendering performance. This method should be called
 	 * before rendering objects with culling enabled.
