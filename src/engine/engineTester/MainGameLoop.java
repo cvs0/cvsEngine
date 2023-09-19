@@ -114,7 +114,7 @@ public class MainGameLoop {
 		guis.add(gui);
 		//*****//
 		
-		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
+		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
 		
 		while(!Display.isCloseRequested()){
 			camera.move();
