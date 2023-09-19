@@ -1,5 +1,6 @@
 package engine.engineTester;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
@@ -14,6 +16,9 @@ import engine.entities.Camera;
 import engine.entities.Entity;
 import engine.entities.Light;
 import engine.entities.Player;
+import engine.fontMeshCreator.FontType;
+import engine.fontMeshCreator.GUIText;
+import engine.fontRendering.TextMaster;
 import engine.guis.GuiRenderer;
 import engine.guis.GuiTexture;
 import engine.models.RawModel;
@@ -39,6 +44,11 @@ public class MainGameLoop {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		TextMaster.init(loader);
+		
+		FontType font = new FontType(loader.loadTexture("verdana"), new File("res/verdana.fnt"));
+		GUIText text = new GUIText("CvsEngine on top", 3f, font, new Vector2f(0f, 0f), 1f, true);
+		text.setColour(1, 0, 0);
 
 		// *********TERRAIN TEXTURE STUFF**********
 		
@@ -195,12 +205,14 @@ public class MainGameLoop {
 			renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 100000));	
 			waterRenderer.render(waters, camera, sun);
 			guiRenderer.render(guiTextures);
+			TextMaster.render();
 			
 			DisplayManager.updateDisplay();
 		}
 
 		//*********Clean Up Below**************
 		
+		TextMaster.cleanUp();
 		buffers.cleanUp();
 		waterShader.cleanUp();
 		guiRenderer.cleanUp();
