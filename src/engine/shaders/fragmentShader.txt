@@ -19,6 +19,8 @@ uniform vec3 skyColour;
 uniform vec3 lightColour[4];
 uniform vec3 attenuation[4];
 
+const float levels = 3.0;
+
 void main(void){
 	vec3 unitNormal = normalize(surfaceNormal);
 	vec3 unitVectorToCamera = normalize(toCameraVector);
@@ -34,6 +36,10 @@ void main(void){
 		float nDotl = dot(unitNormal, unitLightVector);
 		float brightness = max(nDotl, 0.0);
 		
+		// cel shading
+		//float level = floor(brightness * levels);
+		//brightness = level / levels;
+		
 		vec3 lightDirection = -unitLightVector;
 		vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
 		
@@ -42,6 +48,11 @@ void main(void){
 		specularFactor = max(specularFactor, 0.0);
 		
 		float dampedFactor = pow(specularFactor, shineDamper);
+		
+		// cel shading
+		
+		//level = floor(dampedFactor * levels);
+		//dampedFactor = level / levels;
 		
 		totalDiffuse = totalDiffuse + (brightness * lightColour[i]) / attFactor;
 		totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i]) / attFactor;
