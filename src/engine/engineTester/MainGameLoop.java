@@ -46,8 +46,8 @@ public class MainGameLoop {
 		Loader loader = new Loader();
 		TextMaster.init(loader);
 		
-		FontType font = new FontType(loader.loadTexture("verdana"), new File("res/verdana.fnt"));
-		GUIText text = new GUIText("CvsEngine on top", 3f, font, new Vector2f(0f, 0f), 1f, true);
+		FontType font = new FontType(loader.loadTexture("/candara/candara"), new File("res/candara/candara.fnt"));
+		GUIText text = new GUIText("CvsEngine on top", 3f, font, new Vector2f(0f, 0f), 1f, true, 0.5f, 0.1f, 0.0f, 0.5f, new Vector2f(0.000f, 0.000f), new Vector3f(1.0f, 0.0f, 0.0f));
 		text.setColour(1, 0, 0);
 
 		// *********TERRAIN TEXTURE STUFF**********

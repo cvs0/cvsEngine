@@ -14,6 +14,12 @@ import engine.fontRendering.TextMaster;
 public class GUIText {
 
 	private String textString;
+	private float width;
+	private float edge;
+	private float borderWidth;
+	private float borderEdge;
+	private Vector2f offset;
+	private Vector3f outlineColour;
 	private float fontSize;
 
 	private int textMeshVao;
@@ -27,6 +33,62 @@ public class GUIText {
 	private FontType font;
 
 	private boolean centerText = false;
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getEdge() {
+		return edge;
+	}
+
+	public void setEdge(float edge) {
+		this.edge = edge;
+	}
+
+	public float getBorderWidth() {
+		return borderWidth;
+	}
+
+	public void setBorderWidth(float borderWidth) {
+		this.borderWidth = borderWidth;
+	}
+
+	public float getBorderEdge() {
+		return borderEdge;
+	}
+
+	public void setBorderEdge(float borderEdge) {
+		this.borderEdge = borderEdge;
+	}
+
+	public Vector2f getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Vector2f offset) {
+		this.offset = offset;
+	}
+
+	public Vector3f getOutlineColour() {
+		return outlineColour;
+	}
+
+	public void setOutlineColour(Vector3f outlineColour) {
+		this.outlineColour = outlineColour;
+	}
+
+	public boolean isCenterText() {
+		return centerText;
+	}
+
+	public void setCenterText(boolean centerText) {
+		this.centerText = centerText;
+	}
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
@@ -54,13 +116,20 @@ public class GUIText {
 	 *            - whether the text should be centered or not.
 	 */
 	public GUIText(String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
-			boolean centered) {
+			boolean centered, float width, float edge, float borderWidth, float borderEdge,
+			Vector2f offset, Vector3f outlineColour) {
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.font = font;
 		this.position = position;
 		this.lineMaxSize = maxLineLength;
 		this.centerText = centered;
+		this.width = width;
+		this.edge = edge;
+		this.borderWidth = borderWidth;
+		this.borderEdge = borderEdge;
+		this.offset = offset;
+		this.outlineColour = outlineColour;
 		TextMaster.loadText(this);
 	}
 
