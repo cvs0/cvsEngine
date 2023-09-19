@@ -188,7 +188,7 @@ public class MainGameLoop {
 			camera.move();
 			picker.update();
 			
-			system.generateParticles(player.getPosition());
+			system.generateParticles(player.getPosition()); // can use a Vector3f instead of player position. Example: system.generateParticles(new Vector3f( 500, 0, 500));
 			
 			ParticleMaster.update();
 //			
