@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 /**
  * The ShaderProgram class serves as the base class for all shader programs used in the engine.
@@ -131,6 +132,10 @@ public abstract class ShaderProgram {
      */
 	protected void loadVector(int location, Vector3f vector){
 		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
+	}
+	
+	protected void loadVector(int location, Vector4f vector){
+		GL20.glUniform4f(location,vector.x,vector.y,vector.z, vector.w);
 	}
 	
 	/**

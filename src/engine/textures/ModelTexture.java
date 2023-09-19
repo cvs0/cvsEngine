@@ -6,6 +6,7 @@ package engine.textures;
 public class ModelTexture {
     
     private int textureID;
+    private int normalMap;
     
     private float shineDamper = 1;
     
@@ -15,6 +16,10 @@ public class ModelTexture {
     private int numberOfRows = 1;
     private float reflectivity = 0;
     
+    public int getNormalMap() {
+		return normalMap;
+	}
+    
     /**
      * Get the number of rows in the texture atlas (used for animated textures).
      * @return The number of rows.
@@ -22,6 +27,10 @@ public class ModelTexture {
     public int getNumberOfRows() {
         return numberOfRows;
     }
+    
+    public void setNormalMap(int normalMap) {
+		this.normalMap = normalMap;
+	}
 
     /**
      * Set the number of rows in the texture atlas (used for animated textures).

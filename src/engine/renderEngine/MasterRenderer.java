@@ -9,11 +9,13 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector4f;
 
 import engine.entities.Camera;
 import engine.entities.Entity;
 import engine.entities.Light;
 import engine.models.TexturedModel;
+import engine.normalMappingRenderer.NormalMappingRenderer;
 import engine.shaders.StaticShader;
 import engine.shaders.TerrainShader;
 import engine.skybox.SkyboxRenderer;
@@ -25,9 +27,9 @@ public class MasterRenderer {
 	private static final float NEAR_PLANE = 0.1f;
 	private static final float FAR_PLANE = 1000;
 	
-	private static final float RED = 0.5f;
-	private static final float GREEN = 0.5f;
-	private static final float BLUE = 0.7f;
+	public static final float RED = 0.1f;
+	public static final float GREEN = 0.4f;
+	public static final float BLUE = 0.2f;
 	
 	private StaticShader shader = new StaticShader();
 	
@@ -38,7 +40,10 @@ public class MasterRenderer {
 	private TerrainRenderer terrainRenderer;
 	private TerrainShader terrainShader = new TerrainShader();
 	
+	private NormalMappingRenderer normalMapRenderer;
+	
 	private Map<TexturedModel, List<Entity>> entities = new HashMap<TexturedModel, List<Entity>>();
+	private Map<TexturedModel, List<Entity>> normalMapEntities = new HashMap<TexturedModel, List<Entity>>();
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
 	private SkyboxRenderer skyboxRenderer;
@@ -50,10 +55,28 @@ public class MasterRenderer {
 		renderer = new EntityRenderer(shader, projectionMatrix);
 		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 		skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
+		normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 	}
 	
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
+	}
+	
+	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains, List<Light> lights,
+			Camera camera, Vector4f clipPlane) {
+		for(Terrain terrain : terrains) {
+			processTerrain(terrain);
+		}
+		
+		for(Entity entity : entities) {
+			processEntity(entity);
+		}
+		
+		for(Entity entity : normalEntities) {
+			processNormalMapEntity(entity);
+		}
+		
+		render(lights, camera, clipPlane);
 	}
 	
 	/**
@@ -88,32 +111,27 @@ public class MasterRenderer {
 	 * @param sun    The light source in the scene.
 	 * @param camera The camera view used for rendering.
 	 */
-	public void render(List<Light> lights, Camera camera) {
+	public void render(List<Light> lights, Camera camera, Vector4f clipPlane) {
 		prepare();
-		
 		shader.start();
+		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(RED, GREEN, BLUE);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
-		
 		renderer.render(entities);
-		
 		shader.stop();
-		
+		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera);
 		terrainShader.start();
+		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadSkyColour(RED, GREEN, BLUE);
 		terrainShader.loadLights(lights);
 		terrainShader.loadViewMatrix(camera);
-		
 		terrainRenderer.render(terrains);
-		
 		terrainShader.stop();
-		
 		skyboxRenderer.render(camera, RED, GREEN, BLUE);
-		
 		terrains.clear();
-		
 		entities.clear();
+		normalMapEntities.clear();
 	}
 	
 
@@ -155,6 +173,31 @@ public class MasterRenderer {
 	        }
 	    }
 	}
+	
+	public void processNormalMapEntity(Entity entity) {
+	    if (entity == null) {
+	        return;
+	    }
+
+	    TexturedModel entityModel = entity.getModel();
+
+	    if (entityModel == null) {
+	        return;
+	    }
+
+	    List<Entity> batch = normalMapEntities.get(entityModel);
+
+	    if (batch != null) {
+	        batch.add(entity);
+	    } else {
+	        List<Entity> newBatch = new ArrayList<>();
+
+	        if (entityModel != null) {
+	            newBatch.add(entity);
+	            normalMapEntities.put(entityModel, newBatch);
+	        }
+	    }
+	}
 
 	/**
 	 * Cleans up resources used by the master renderer. Should be called when rendering is finished.
@@ -167,6 +210,10 @@ public class MasterRenderer {
 	        
 	        if (terrainShader != null) {
 	            terrainShader.cleanUp();
+	        }
+	        
+	        if(normalMapRenderer != null) {
+	        	normalMapRenderer.cleanUp();
 	        }
 	    } catch (Exception e) {
 	        e.printStackTrace();
