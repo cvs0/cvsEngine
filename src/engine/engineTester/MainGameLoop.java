@@ -161,7 +161,7 @@ public class MainGameLoop {
 
 		RawModel bunnyModel = OBJLoader.loadObjModel("person", loader);
 		TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTexture(
-				loader.loadTexture("playerTexture")));
+				loader.loadTexture("playerTexture1")));
 
 		Player player = new Player(stanfordBunny, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
 		entities.add(player);
@@ -188,7 +188,7 @@ public class MainGameLoop {
 			camera.move();
 			picker.update();
 			
-			system.generateParticles(player.getPosition()); // can use a Vector3f instead of player position. Example: system.generateParticles(new Vector3f( 500, 0, 500));
+//			system.generateParticles(player.getPosition()); // can use a Vector3f instead of player position. Example: system.generateParticles(new Vector3f( 500, 0, 500));
 			
 			ParticleMaster.update();
 //			

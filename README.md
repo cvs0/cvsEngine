@@ -13,6 +13,12 @@ To use CvsEngine, you'll need the following dependencies:
 * **OpenGL**: OpenGL is included in LWJGL 2 and is responsible for handling the rendering of 3D graphics within the engine.
 * **Slick-utils**: Slick-utils is a set of utility classes for the Slick2D library, which provides additional functionality for game development.
 
+# Textures
+
+Textures / resources are located in the res/ folder.
+
+![playerTextureExample](res/playerTexture1.png)
+
 ## Documentation
 
 For detailed documentation and usage instructions, please refer to the documentation provided with the engine's source code. You can find extensive code comments and explanations within the source files, ensuring that you have the necessary information to make the most of CvsEngine.
