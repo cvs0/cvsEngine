@@ -17,6 +17,8 @@ To use CvsEngine, you'll need the following dependencies:
 
 Textures / resources are located in the res/ folder.
 
+## How do I make a player texture for the `person.obj` model?
+
 ![playerTextureExample](res/playerTexture1.png)
 
 ## Documentation
