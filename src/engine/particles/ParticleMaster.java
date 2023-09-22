@@ -1,8 +1,11 @@
 package engine.particles;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -10,7 +13,7 @@ import engine.entities.Camera;
 import engine.renderEngine.Loader;
 
 public class ParticleMaster {
-	private static List<Particle> particles = new ArrayList<Particle>();
+	private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
 	private static ParticleRenderer renderer;
 	
 	public static void init(Loader loader, Matrix4f projectionMatrix) {
@@ -18,15 +21,25 @@ public class ParticleMaster {
 	}
 	
 	public static void update() {
-		Iterator<Particle> iterator = particles.iterator();
+		Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
 		
-		while(iterator.hasNext()) {
-			Particle p  = iterator.next();
+		while(mapIterator.hasNext()) {
+			List<Particle> list = mapIterator.next().getValue();
 			
-			boolean stillAlive = p.update();
+			Iterator<Particle> iterator = list.iterator();
 			
-			if(!stillAlive) {
-				iterator.remove();
+			while(iterator.hasNext()) {
+				Particle p = iterator.next();
+				
+				boolean stillAlive = p.update();
+				
+				if(!stillAlive) {
+					iterator.remove();
+					
+					if(list.isEmpty()) {
+						mapIterator.remove();
+					}
+				}
 			}
 		}
 	}
@@ -40,6 +53,13 @@ public class ParticleMaster {
 	}
 	
 	public static void addParticle(Particle particle) {
-		particles.add(particle);
+		List<Particle> list = particles.get(particle.getTexture());
+		
+		if(list == null) {
+			list = new ArrayList<Particle>();
+			particles.put(particle.getTexture(), list);
+		}
+		
+		list.add(particle);
 	}
 }

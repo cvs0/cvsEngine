@@ -26,6 +26,7 @@ import engine.models.TexturedModel;
 import engine.normalMappingObjConverter.NormalMappedObjLoader;
 import engine.particles.ParticleMaster;
 import engine.particles.ParticleSystem;
+import engine.particles.ParticleTexture;
 import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
 import engine.renderEngine.MasterRenderer;
@@ -179,7 +180,9 @@ public class MainGameLoop {
 		WaterTile water = new WaterTile(75, -75, 0);
 		waters.add(water);
 		
-		ParticleSystem system = new ParticleSystem(50f, 25f, 0.3f, 4f, 1f);
+		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleStar"), 1);
+		
+		ParticleSystem system = new ParticleSystem(particleTexture, 50f, 25f, 0.3f, 4f, 1f);
 		
 		//****************Game Loop Below*********************
 
