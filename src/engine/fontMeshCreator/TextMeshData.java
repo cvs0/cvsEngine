@@ -36,21 +36,42 @@ public class TextMeshData {
 	private float[] vertexPositions;
 	private float[] textureCoords;
 	
+	/**
+     * Constructs a new TextMeshData object with the specified vertex positions and texture coordinates.
+     *
+     * @param vertexPositions An array of vertex positions.
+     * @param textureCoords  An array of texture coordinates.
+     */
 	protected TextMeshData(float[] vertexPositions, float[] textureCoords){
 		this.vertexPositions = vertexPositions;
 		this.textureCoords = textureCoords;
 	}
 
+	/**
+     * Retrieves the vertex positions of the text mesh.
+     *
+     * @return An array of vertex positions.
+     */
 	public float[] getVertexPositions() {
 		return vertexPositions;
 	}
 
+	/**
+     * Retrieves the texture coordinates of the text mesh.
+     *
+     * @return An array of texture coordinates.
+     */
 	public float[] getTextureCoords() {
 		return textureCoords;
 	}
 
+	/**
+     * Retrieves the total number of vertices in the text mesh.
+     *
+     * @return The vertex count.
+     */
 	public int getVertexCount() {
-		return vertexPositions.length/2;
+		return vertexPositions.length / 2;
 	}
 
 }

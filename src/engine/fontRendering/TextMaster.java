@@ -36,21 +36,37 @@ import engine.fontMeshCreator.GUIText;
 import engine.fontMeshCreator.TextMeshData;
 import engine.renderEngine.Loader;
 
+/**
+ * Manages rendering and manipulation of GUI text elements.
+ */
 public class TextMaster {
 	
 	private static Loader loader;
 	private static Map<FontType, List<GUIText>> texts = new HashMap<FontType, List<GUIText>>();
 	private static FontRenderer renderer;
 	
-	public static void init(Loader theLoader){
+	/**
+     * Initializes the TextMaster with a loader.
+     *
+     * @param theLoader The loader to use for text rendering.
+     */
+    public static void init(Loader theLoader) {
 		renderer = new FontRenderer();
 		loader = theLoader;
 	}
 	
+    /**
+     * Renders all the GUI text elements.
+     */
 	public static void render(){
 		renderer.render(texts);
 	}
 	
+	/**
+     * Loads a GUI text element for rendering.
+     *
+     * @param text The GUI text element to load.
+     */
 	public static void loadText(GUIText text){
 		FontType font = text.getFont();
 		TextMeshData data = font.loadText(text);
@@ -69,6 +85,11 @@ public class TextMaster {
 		textBatch.add(text);
 	}
 	
+	/**
+     * Removes a GUI text element from rendering.
+     *
+     * @param text The GUI text element to remove.
+     */
 	public static void removeText(GUIText text){
 		List<GUIText> textBatch = texts.get(text.getFont());
 		
@@ -79,6 +100,9 @@ public class TextMaster {
 		}
 	}
 	
+	/**
+     * Cleans up resources used by the TextMaster.
+     */
 	public static void cleanUp(){
 		renderer.cleanUp();
 	}

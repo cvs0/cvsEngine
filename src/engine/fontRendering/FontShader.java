@@ -31,6 +31,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 import engine.shaders.ShaderProgram;
 
+/**
+ * Represents a shader program used for rendering text with fonts.
+ */
 public class FontShader extends ShaderProgram {
 
 	private static final String VERTEX_FILE = "src/engine/fontRendering/fontVertex.txt";
@@ -45,10 +48,16 @@ public class FontShader extends ShaderProgram {
 	private int location_offset;
 	private int location_outlineColour;
 	
+	/**
+     * Creates a new FontShader program.
+     */
 	public FontShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 
+	/**
+     * Retrieves the locations of uniform variables in the shader.
+     */
 	@Override
 	protected void getAllUniformLocations() {
 		location_colour = super.getUniformLocation("colour");
@@ -61,40 +70,83 @@ public class FontShader extends ShaderProgram {
 		location_outlineColour = super.getUniformLocation("outlineColour");
 	}
 
+	/**
+     * Binds attribute locations for the shader program.
+     */
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
 		super.bindAttribute(1, "textureCoords");
 	}
 	
+	/**
+     * Loads the outline color for rendering text.
+     *
+     * @param outlineColour The color for the text outline.
+     */
 	protected void loadOutlineColour(Vector3f outlineColour) {
 		super.loadVector(location_outlineColour, outlineColour);
 	}
 	
+	/**
+     * Loads the width for rendering text.
+     *
+     * @param width The width of the text.
+     */
 	protected void loadWidth(float width) {
 		super.loadFloat(location_width, width);
 	}
 	
+	/**
+     * Loads the edge value for rendering text.
+     *
+     * @param edge The edge value for text rendering.
+     */
 	protected void loadEdge(float edge) {
 		super.loadFloat(location_edge, edge);
 	}
 	
+	/**
+     * Loads the border width for rendering text.
+     *
+     * @param borderWidth The border width of the text.
+     */
 	protected void loadBorderWidth(float borderWidth) {
 		super.loadFloat(location_borderWidth, borderWidth);
 	}
 	
+	/**
+     * Loads the border edge for rendering text.
+     *
+     * @param borderEdge The border edge value for text rendering.
+     */
 	protected void loadBorderEdge(float borderEdge) {
 		super.loadFloat(location_borderEdge, borderEdge);
 	}
 	
+	/**
+     * Loads the offset for rendering text.
+     *
+     * @param offset The offset vector for text rendering.
+     */
 	protected void loadOffset(Vector2f offset) {
 		super.load2DVector(location_offset, offset);
 	}
 	
+	/**
+     * Loads the color for rendering text.
+     *
+     * @param colour The color of the text.
+     */
 	protected void loadColour(Vector3f colour){
 		super.loadVector(location_colour, colour);
 	}
 	
+	/**
+     * Loads the translation for rendering text.
+     *
+     * @param translation The translation vector for text rendering.
+     */
 	protected void loadTranslation(Vector2f translation){
 		super.load2DVector(location_translation, translation);
 	}

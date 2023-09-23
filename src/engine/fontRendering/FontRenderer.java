@@ -37,14 +37,25 @@ import org.lwjgl.opengl.GL30;
 import engine.fontMeshCreator.FontType;
 import engine.fontMeshCreator.GUIText;
 
+/**
+ * The FontRenderer class is responsible for rendering text using fonts onto the screen.
+ */
 public class FontRenderer {
 
 	private FontShader shader;
 
+	/**
+     * Creates a new FontRenderer instance.
+     */
 	public FontRenderer() {
 		shader = new FontShader();
 	}
 	
+	/**
+     * Renders a map of texts using their associated fonts.
+     *
+     * @param texts A map of texts grouped by their associated fonts.
+     */
 	public void render(Map<FontType, List<GUIText>> texts){
 		prepare();
 		
@@ -60,10 +71,16 @@ public class FontRenderer {
 		endRendering();
 	}
 
+	/**
+     * Cleans up resources used by the FontRenderer.
+     */
 	public void cleanUp(){
 		shader.cleanUp();
 	}
 	
+	/**
+     * Prepares the OpenGL environment for text rendering.
+     */
 	private void prepare(){
 		GL11.glEnable(GL11.GL_BLEND);
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -72,6 +89,11 @@ public class FontRenderer {
 		shader.start();
 	}
 	
+	/**
+     * Renders a specific GUIText onto the screen.
+     *
+     * @param text The GUIText to render.
+     */
 	private void renderText(GUIText text){
 		GL30.glBindVertexArray(text.getMesh());
 		GL20.glEnableVertexAttribArray(0);
@@ -92,6 +114,9 @@ public class FontRenderer {
 		GL30.glBindVertexArray(0);
 	}
 	
+	/**
+     * Ends the rendering process and restores the OpenGL environment.
+     */
 	private void endRendering(){
 		shader.stop();
 		GL11.glDisable(GL11.GL_BLEND);

@@ -37,16 +37,34 @@ public class TextMeshCreator {
 
 	private MetaFile metaData;
 
+	/**
+     * Constructs a new TextMeshCreator with the specified MetaFile containing character data.
+     *
+     * @param metaFile The MetaFile containing character data.
+     */
 	protected TextMeshCreator(File metaFile) {
 		metaData = new MetaFile(metaFile);
 	}
 
+	/**
+     * Creates the text mesh data for the specified GUIText object.
+     *
+     * @param text The GUIText object for which to create the text mesh data.
+     * @return The TextMeshData containing the vertex positions and texture coordinates.
+     */
 	protected TextMeshData createTextMesh(GUIText text) {
 		List<Line> lines = createStructure(text);
 		TextMeshData data = createQuadVertices(text, lines);
 		return data;
 	}
 
+	/**
+	 * Creates the structure of lines and words from the specified GUIText object's text content.
+	 * Each character is analyzed, and words and lines are formed accordingly.
+	 *
+	 * @param text The GUIText object containing the text content.
+	 * @return A list of Line objects representing the structured text.
+	 */
 	private List<Line> createStructure(GUIText text) {
 		char[] chars = text.getTextString().toCharArray();
 		List<Line> lines = new ArrayList<Line>();
@@ -71,6 +89,16 @@ public class TextMeshCreator {
 		return lines;
 	}
 
+
+	/**
+	 * Completes the structure of lines and words by adding the current word and line to the list.
+	 * This is used to finalize the text structure.
+	 *
+	 * @param lines       The list of Line objects.
+	 * @param currentLine The current Line being processed.
+	 * @param currentWord The current Word being processed.
+	 * @param text        The GUIText object containing the text content.
+	 */
 	private void completeStructure(List<Line> lines, Line currentLine, Word currentWord, GUIText text) {
 		boolean added = currentLine.attemptToAddWord(currentWord);
 		if (!added) {
@@ -81,6 +109,13 @@ public class TextMeshCreator {
 		lines.add(currentLine);
 	}
 
+	/**
+	 * Creates the vertex and texture coordinate data for rendering text quads.
+	 *
+	 * @param text  The GUIText object for which to create the text mesh data.
+	 * @param lines The list of Line objects representing the structured text.
+	 * @return The TextMeshData containing the vertex positions and texture coordinates.
+	 */
 	private TextMeshData createQuadVertices(GUIText text, List<Line> lines) {
 		text.setNumberOfLines(lines.size());
 		double curserX = 0f;
@@ -106,6 +141,15 @@ public class TextMeshCreator {
 		return new TextMeshData(listToArray(vertices), listToArray(textureCoords));
 	}
 
+	/**
+	 * Adds vertices for a character to the list of vertices.
+	 *
+	 * @param curserX   The current X position of the cursor.
+	 * @param curserY   The current Y position of the cursor.
+	 * @param character The Character object representing the character to add.
+	 * @param fontSize  The font size of the text.
+	 * @param vertices  The list of vertices to add to.
+	 */
 	private void addVerticesForCharacter(double curserX, double curserY, Character character, double fontSize,
 			List<Float> vertices) {
 		double x = curserX + (character.getxOffset() * fontSize);
@@ -119,6 +163,16 @@ public class TextMeshCreator {
 		addVertices(vertices, properX, properY, properMaxX, properMaxY);
 	}
 
+
+	/**
+	 * Adds vertices for a quad to the list of vertices.
+	 *
+	 * @param vertices The list of vertices to add to.
+	 * @param x        The X coordinate of the quad.
+	 * @param y        The Y coordinate of the quad.
+	 * @param maxX     The maximum X coordinate of the quad.
+	 * @param maxY     The maximum Y coordinate of the quad.
+	 */
 	private static void addVertices(List<Float> vertices, double x, double y, double maxX, double maxY) {
 		vertices.add((float) x);
 		vertices.add((float) y);
@@ -134,6 +188,15 @@ public class TextMeshCreator {
 		vertices.add((float) y);
 	}
 
+	/**
+	 * Adds texture coordinates for a quad to the list of texture coordinates.
+	 *
+	 * @param texCoords The list of texture coordinates to add to.
+	 * @param x          The X texture coordinate of the quad.
+	 * @param y          The Y texture coordinate of the quad.
+	 * @param maxX       The maximum X texture coordinate of the quad.
+	 * @param maxY       The maximum Y texture coordinate of the quad.
+	 */
 	private static void addTexCoords(List<Float> texCoords, double x, double y, double maxX, double maxY) {
 		texCoords.add((float) x);
 		texCoords.add((float) y);
@@ -149,7 +212,12 @@ public class TextMeshCreator {
 		texCoords.add((float) y);
 	}
 
-	
+	/**
+	 * Converts a List of Float objects to a float array.
+	 *
+	 * @param listOfFloats The List of Float objects to convert.
+	 * @return A float array containing the elements from the List.
+	 */
 	private static float[] listToArray(List<Float> listOfFloats) {
 		float[] array = new float[listOfFloats.size()];
 		for (int i = 0; i < array.length; i++) {
@@ -157,5 +225,4 @@ public class TextMeshCreator {
 		}
 		return array;
 	}
-
 }
