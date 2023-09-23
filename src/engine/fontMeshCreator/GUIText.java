@@ -1,3 +1,29 @@
+/**
+ * CvsEngine
+ *
+ * @author cvs0, Karl
+ * @version 1.0.0
+ *
+ * @license
+ * MIT License
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this
+ * software and associated documentation files (the "Software"), to deal in the Software
+ * without restriction, including without limitation the rights to use, copy, modify, merge,
+ * publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+ * persons to whom the Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies
+ * or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+ * DEALINGS IN THE SOFTWARE.
+ */
+
 package engine.fontMeshCreator;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -34,61 +60,122 @@ public class GUIText {
 
 	private boolean centerText = false;
 
-	public float getWidth() {
-		return width;
-	}
+	/**
+     * Get the width of the text.
+     * 
+     * @return The width of the text.
+     */
+    public float getWidth() {
+        return width;
+    }
 
-	public void setWidth(float width) {
-		this.width = width;
-	}
+    /**
+     * Set the width of the text.
+     * 
+     * @param width - The new width of the text.
+     */
+    public void setWidth(float width) {
+        this.width = width;
+    }
 
-	public float getEdge() {
-		return edge;
-	}
+    /**
+     * Get the edge factor for the text.
+     * 
+     * @return The edge factor of the text.
+     */
+    public float getEdge() {
+        return edge;
+    }
 
-	public void setEdge(float edge) {
-		this.edge = edge;
-	}
+    /**
+     * Set the edge factor for the text.
+     * 
+     * @param edge - The new edge factor of the text.
+     */
+    public void setEdge(float edge) {
+        this.edge = edge;
+    }
 
-	public float getBorderWidth() {
-		return borderWidth;
-	}
+    /**
+     * Get the border width of the text.
+     * 
+     * @return The border width of the text.
+     */
+    public float getBorderWidth() {
+        return borderWidth;
+    }
 
-	public void setBorderWidth(float borderWidth) {
-		this.borderWidth = borderWidth;
-	}
+    /**
+     * Set the border width of the text.
+     * 
+     * @param borderWidth - The new border width of the text.
+     */
+    public void setBorderWidth(float borderWidth) {
+        this.borderWidth = borderWidth;
+    }
 
-	public float getBorderEdge() {
-		return borderEdge;
-	}
+    /**
+     * Get the border edge factor of the text.
+     * 
+     * @return The border edge factor of the text.
+     */
+    public float getBorderEdge() {
+        return borderEdge;
+    }
 
-	public void setBorderEdge(float borderEdge) {
-		this.borderEdge = borderEdge;
-	}
+    /**
+     * Set the border edge factor of the text.
+     * 
+     * @param borderEdge - The new border edge factor of the text.
+     */
+    public void setBorderEdge(float borderEdge) {
+        this.borderEdge = borderEdge;
+    }
 
-	public Vector2f getOffset() {
-		return offset;
-	}
+    /**
+     * Get the offset of the text.
+     * 
+     * @return The offset of the text as a Vector2f.
+     */
+    public Vector2f getOffset() {
+        return offset;
+    }
 
-	public void setOffset(Vector2f offset) {
-		this.offset = offset;
-	}
+    /**
+     * Set the offset of the text.
+     * 
+     * @param offset - The new offset of the text as a Vector2f.
+     */
+    public void setOffset(Vector2f offset) {
+        this.offset = offset;
+    }
 
-	public Vector3f getOutlineColour() {
-		return outlineColour;
-	}
+    /**
+     * Get the outline color of the text.
+     * 
+     * @return The outline color of the text as a Vector3f.
+     */
+    public Vector3f getOutlineColour() {
+        return outlineColour;
+    }
 
-	public void setOutlineColour(Vector3f outlineColour) {
-		this.outlineColour = outlineColour;
-	}
+    /**
+     * Set the outline color of the text.
+     * 
+     * @param outlineColour - The new outline color of the text as a Vector3f.
+     */
+    public void setOutlineColour(Vector3f outlineColour) {
+        this.outlineColour = outlineColour;
+    }
 
-	public boolean isCenterText() {
-		return centerText;
-	}
-
-	public void setCenterText(boolean centerText) {
-		this.centerText = centerText;
-	}
+    /**
+     * Check if the text should be centered.
+     * 
+     * @return true if the text is centered, false otherwise.
+     */
+    public boolean isCenterText() {
+        return centerText;
+    }
 
 	/**
 	 * Creates a new text, loads the text's quads into a VAO, and adds the text
