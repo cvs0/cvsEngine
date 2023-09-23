@@ -47,14 +47,25 @@ public class ParticleSystem {
 
 	private Random random = new Random();
 
+	/**
+	 * Creates a particle system with the specified parameters.
+	 *
+	 * @param texture          The texture to be used for the particles in this system.
+	 * @param pps              The average number of particles to emit per second.
+	 * @param speed            The average speed of the particles.
+	 * @param gravityComplient The factor that determines how much the particles are affected by gravity.
+	 * @param lifeLength       The average life length of the particles in seconds.
+	 * @param scale            The average scale of the particles.
+	 */
 	public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
-		this.pps = pps;
-		this.averageSpeed = speed;
-		this.gravityComplient = gravityComplient;
-		this.averageLifeLength = lifeLength;
-		this.averageScale = scale;
-		this.texture = texture;
+	    this.pps = pps;
+	    this.averageSpeed = speed;
+	    this.gravityComplient = gravityComplient;
+	    this.averageLifeLength = lifeLength;
+	    this.averageScale = scale;
+	    this.texture = texture;
 	}
+
 
 	/**
 	 * @param direction - The average direction in which particles are emitted.
@@ -65,7 +76,10 @@ public class ParticleSystem {
 		this.directionDeviation = (float) (deviation * Math.PI);
 	}
 
-	public void randomizeRotation() {
+	/**
+     * Randomizes the rotation of emitted particles.
+     */
+    public void randomizeRotation() {
 		randomRotation = true;
 	}
 
@@ -93,7 +107,12 @@ public class ParticleSystem {
 		this.scaleError = error * averageScale;
 	}
 
-	public void generateParticles(Vector3f systemCenter) {
+	/**
+     * Generates particles within the specified time frame based on the emission rate.
+     *
+     * @param systemCenter   The center of the particle system.
+     */
+    public void generateParticles(Vector3f systemCenter) {
 		float delta = DisplayManager.getFrameTimeSeconds();
 		float particlesToCreate = pps * delta;
 		int count = (int) Math.floor(particlesToCreate);
@@ -106,7 +125,12 @@ public class ParticleSystem {
 		}
 	}
 
-	private void emitParticle(Vector3f center) {
+    /**
+     * Emits a particle from the particle system at the specified center location.
+     *
+     * @param center The center position from which the particle is emitted.
+     */
+    private void emitParticle(Vector3f center) {
 		Vector3f velocity = null;
 		if(direction!=null){
 			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
@@ -120,12 +144,24 @@ public class ParticleSystem {
 		new Particle(texture, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale);
 	}
 
-	private float generateValue(float average, float errorMargin) {
+    /**
+     * Generates a random value within an error margin around the specified average value.
+     *
+     * @param average     The average value.
+     * @param errorMargin The error margin (0 to 1).
+     * @return A random value within the specified range.
+     */
+    private float generateValue(float average, float errorMargin) {
 		float offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
 		return average + offset;
 	}
 
-	private float generateRotation() {
+    /**
+     * Generates a random rotation value in degrees if random rotation is enabled, otherwise returns 0.
+     *
+     * @return A random rotation value in degrees.
+     */
+    private float generateRotation() {
 		if (randomRotation) {
 			return random.nextFloat() * 360f;
 		} else {
@@ -133,7 +169,14 @@ public class ParticleSystem {
 		}
 	}
 
-	private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
+    /**
+     * Generates a random unit vector within a cone defined by the specified direction and angle.
+     *
+     * @param coneDirection The direction of the cone.
+     * @param angle         The angle of the cone in radians.
+     * @return A random unit vector within the specified cone.
+     */
+    private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
 		float cosAngle = (float) Math.cos(angle);
 		Random random = new Random();
 		float theta = (float) (random.nextFloat() * 2f * Math.PI);
@@ -156,7 +199,12 @@ public class ParticleSystem {
 		return new Vector3f(direction);
 	}
 	
-	private Vector3f generateRandomUnitVector() {
+    /**
+     * Generates a random unit vector.
+     *
+     * @return A random unit vector.
+     */
+    private Vector3f generateRandomUnitVector() {
 		float theta = (float) (random.nextFloat() * 2f * Math.PI);
 		float z = (random.nextFloat() * 2) - 1;
 		float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
@@ -164,5 +212,4 @@ public class ParticleSystem {
 		float y = (float) (rootOneMinusZSquared * Math.sin(theta));
 		return new Vector3f(x, y, z);
 	}
-
 }

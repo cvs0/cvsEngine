@@ -44,44 +44,80 @@ public class Particle {
 	
 	private float elapsedTime = 0;
 
-	public Particle(ParticleTexture texture, Vector3f position, Vector3f velocity, float gravityEffect, float lifeLength, float rotation,
-			float scale) {
-		this.texture = texture;
-		this.position = position;
-		this.velocity = velocity;
-		this.gravityEffect = gravityEffect;
-		this.lifeLength = lifeLength;
-		this.rotation = rotation;
-		this.scale = scale;
-		ParticleMaster.addParticle(this);
-	}
+	/**
+     * Creates a new particle with the specified properties and adds it to the particle system.
+     *
+     * @param texture       The texture of the particle.
+     * @param position      The initial position of the particle.
+     * @param velocity      The initial velocity of the particle.
+     * @param gravityEffect The effect of gravity on the particle's movement.
+     * @param lifeLength    The total life span of the particle.
+     * @param rotation      The initial rotation of the particle.
+     * @param scale         The initial scale of the particle.
+     */
+    public Particle(ParticleTexture texture, Vector3f position, Vector3f velocity, float gravityEffect, float lifeLength, float rotation,
+                    float scale) {
+        this.texture = texture;
+        this.position = position;
+        this.velocity = velocity;
+        this.gravityEffect = gravityEffect;
+        this.lifeLength = lifeLength;
+        this.rotation = rotation;
+        this.scale = scale;
+        ParticleMaster.addParticle(this);
+    }
 
-	public ParticleTexture getTexture() {
-		return texture;
-	}
+    /**
+     * Gets the texture of the particle.
+     *
+     * @return The particle's texture.
+     */
+    public ParticleTexture getTexture() {
+        return texture;
+    }
 
-	protected Vector3f getPosition() {
-		return position;
-	}
+    /**
+     * Gets the current position of the particle.
+     *
+     * @return The current position vector of the particle.
+     */
+    protected Vector3f getPosition() {
+        return position;
+    }
 
-	protected float getRotation() {
-		return rotation;
-	}
+    /**
+     * Gets the current rotation of the particle.
+     *
+     * @return The current rotation angle of the particle.
+     */
+    protected float getRotation() {
+        return rotation;
+    }
 
-	protected float getScale() {
-		return scale;
-	}
-	
-	protected boolean update() {
-		velocity.y += Player.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
-		Vector3f change = new Vector3f(velocity);
-		
-		change.scale(DisplayManager.getFrameTimeSeconds());
-		
-		Vector3f.add(change, position, position);
-		
-		elapsedTime += DisplayManager.getFrameTimeSeconds();
-		
-		return elapsedTime < lifeLength;
-	}
+    /**
+     * Gets the current scale of the particle.
+     *
+     * @return The current scale factor of the particle.
+     */
+    protected float getScale() {
+        return scale;
+    }
+
+    /**
+     * Updates the particle's position and other properties.
+     *
+     * @return True if the particle is still alive (within its life span), false otherwise.
+     */
+    protected boolean update() {
+        velocity.y += Player.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
+        Vector3f change = new Vector3f(velocity);
+
+        change.scale(DisplayManager.getFrameTimeSeconds());
+
+        Vector3f.add(change, position, position);
+
+        elapsedTime += DisplayManager.getFrameTimeSeconds();
+
+        return elapsedTime < lifeLength;
+    }
 }

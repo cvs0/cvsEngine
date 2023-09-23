@@ -26,31 +26,56 @@
 
 package engine.water;
 
+/**
+ * Represents a WaterTile object used for rendering water in a 3D scene.
+ */
 public class WaterTile {
-	
-	public static final float TILE_SIZE = 60;
-	
-	private float height;
-	private float x,z;
-	
-	public WaterTile(float centerX, float centerZ, float height){
-		this.x = centerX;
-		this.z = centerZ;
-		this.height = height;
-	}
 
-	public float getHeight() {
-		return height;
-	}
+    /**
+     * The size of the water tile in the game world.
+     */
+    public static final float TILE_SIZE = 60;
 
-	public float getX() {
-		return x;
-	}
+    private float height;
+    private float x, z;
 
-	public float getZ() {
-		return z;
-	}
+    /**
+     * Creates a WaterTile at a specific location with a given height.
+     * 
+     * @param centerX The X-coordinate of the center of the water tile.
+     * @param centerZ The Z-coordinate of the center of the water tile.
+     * @param height  The height of the water tile.
+     */
+    public WaterTile(float centerX, float centerZ, float height) {
+        this.x = centerX;
+        this.z = centerZ;
+        this.height = height;
+    }
 
+    /**
+     * Get the height of the water tile.
+     * 
+     * @return The height of the water tile.
+     */
+    public float getHeight() {
+        return height;
+    }
 
+    /**
+     * Get the X-coordinate of the center of the water tile.
+     * 
+     * @return The X-coordinate.
+     */
+    public float getX() {
+        return x;
+    }
 
+    /**
+     * Get the Z-coordinate of the center of the water tile.
+     * 
+     * @return The Z-coordinate.
+     */
+    public float getZ() {
+        return z;
+    }
 }

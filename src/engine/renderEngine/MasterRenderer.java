@@ -74,22 +74,43 @@ public class MasterRenderer {
 	
 	private SkyboxRenderer skyboxRenderer;
 	
+	/**
+	 * Constructs a MasterRenderer with the given loader. Initializes various rendering components and settings.
+	 *
+	 * @param loader The loader responsible for loading resources.
+	 */
 	public MasterRenderer(Loader loader) {
-		enableCulling();
-		
-		createProjectionMatrix();
-		renderer = new EntityRenderer(shader, projectionMatrix);
-		terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
-		skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
-		normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
+	    enableCulling();
+	    
+	    createProjectionMatrix();
+	    renderer = new EntityRenderer(shader, projectionMatrix);
+	    terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
+	    skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
+	    normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
 	}
-	
+
+	/**
+	 * Retrieves the projection matrix used for rendering scenes.
+	 *
+	 * @return The projection matrix.
+	 */
 	public Matrix4f getProjectionMatrix() {
-		return projectionMatrix;
+	    return projectionMatrix;
 	}
+
 	
-	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains, List<Light> lights,
-			Camera camera, Vector4f clipPlane) {
+	/**
+	 * Renders the entire scene, including entities, terrains, and the skybox, with the specified parameters.
+	 *
+	 * @param entities      The list of entities to render.
+	 * @param normalEntities The list of entities with normal maps to render.
+	 * @param terrains      The list of terrains to render.
+	 * @param lights        The list of light sources in the scene.
+	 * @param camera        The camera view used for rendering.
+	 * @param clipPlane     The clipping plane used for water rendering.
+	 */
+	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains,
+	        List<Light> lights, Camera camera, Vector4f clipPlane) {
 		for(Terrain terrain : terrains) {
 			processTerrain(terrain);
 		}
@@ -106,8 +127,7 @@ public class MasterRenderer {
 	}
 	
 	/**
-	 * Enables face culling to improve rendering performance. This method should be called
-	 * before rendering objects with culling enabled.
+	 * Enables face culling to improve rendering performance. Call this method before rendering objects with culling enabled.
 	 */
 	public static void enableCulling() {
 	    if (!GLContext.getCapabilities().OpenGL11) {
@@ -200,6 +220,12 @@ public class MasterRenderer {
 	    }
 	}
 	
+	/**
+	 * Processes a normal-mapped entity for rendering. This method adds the entity to the list
+	 * of entities using normal mapping for rendering.
+	 *
+	 * @param entity The normal-mapped entity to be processed and rendered.
+	 */
 	public void processNormalMapEntity(Entity entity) {
 	    if (entity == null) {
 	        return;
@@ -224,6 +250,7 @@ public class MasterRenderer {
 	        }
 	    }
 	}
+
 
 	/**
 	 * Cleans up resources used by the master renderer. Should be called when rendering is finished.

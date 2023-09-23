@@ -38,9 +38,12 @@ public class ParticleShader extends ShaderProgram {
 	private int location_modelViewMatrix;
 	private int location_projectionMatrix;
 
-	public ParticleShader() {
-		super(VERTEX_FILE, FRAGMENT_FILE);
-	}
+	/**
+     * Creates a ParticleShader by specifying the paths to the vertex and fragment shader files.
+     */
+    public ParticleShader() {
+        super(VERTEX_FILE, FRAGMENT_FILE);
+    }
 
 	@Override
 	protected void getAllUniformLocations() {
@@ -53,12 +56,21 @@ public class ParticleShader extends ShaderProgram {
 		super.bindAttribute(0, "position");
 	}
 
-	protected void loadModelViewMatrix(Matrix4f modelView) {
-		super.loadMatrix(location_modelViewMatrix, modelView);
-	}
+	/**
+    * Loads the model-view matrix into the shader.
+    *
+    * @param modelView The model-view matrix to be loaded.
+    */
+    protected void loadModelViewMatrix(Matrix4f modelView) {
+        super.loadMatrix(location_modelViewMatrix, modelView);
+    }
 
-	protected void loadProjectionMatrix(Matrix4f projectionMatrix) {
-		super.loadMatrix(location_projectionMatrix, projectionMatrix);
-	}
-
+    /**
+     * Loads the projection matrix into the shader.
+     *
+     * @param projectionMatrix The projection matrix to be loaded.
+     */
+    protected void loadProjectionMatrix(Matrix4f projectionMatrix) {
+        super.loadMatrix(location_projectionMatrix, projectionMatrix);
+    }
 }

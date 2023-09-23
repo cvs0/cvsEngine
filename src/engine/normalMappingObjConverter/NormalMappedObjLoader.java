@@ -44,6 +44,13 @@ public class NormalMappedObjLoader {
 
 	private static final String RES_LOC = "res/";
 
+	/**
+	 * Loads a Wavefront OBJ model file with normal mapping and returns a RawModel.
+	 *
+	 * @param objFileName The name of the OBJ file (without extension) located in the "res" directory.
+	 * @param loader      The Loader object used to load the model into a VAO.
+	 * @return A RawModel representing the loaded OBJ model with normal mapping.
+	 */
 	public static RawModel loadOBJ(String objFileName, Loader loader) {
 		FileReader isr = null;
 		File objFile = new File(RES_LOC + objFileName + ".obj");
@@ -111,9 +118,15 @@ public class NormalMappedObjLoader {
 		return loader.loadToVAO(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray);
 	}
 
-	//NEW 
-	private static void calculateTangents(VertexNM v0, VertexNM v1, VertexNM v2,
-			List<Vector2f> textures) {
+	/**
+	 * Calculates tangents for the provided vertices to support normal mapping.
+	 *
+	 * @param v0       The first vertex.
+	 * @param v1       The second vertex.
+	 * @param v2       The third vertex.
+	 * @param textures The list of texture coordinates.
+	 */
+	private static void calculateTangents(VertexNM v0, VertexNM v1, VertexNM v2, List<Vector2f> textures) {
 		Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
 		Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
 		Vector2f uv0 = textures.get(v0.getTextureIndex());
@@ -132,8 +145,16 @@ public class NormalMappedObjLoader {
 		v2.addTangent(tangent);
 	}
 
-	private static VertexNM processVertex(String[] vertex, List<VertexNM> vertices,
-			List<Integer> indices) {
+
+	/**
+	 * Processes a vertex line from the OBJ file and adds it to the vertices list.
+	 *
+	 * @param vertex      An array of vertex attributes (position, texture index, normal index).
+	 * @param vertices    The list of vertices.
+	 * @param indices     The list of vertex indices.
+	 * @return The processed vertex.
+	 */
+	private static VertexNM processVertex(String[] vertex, List<VertexNM> vertices, List<Integer> indices) {
 		int index = Integer.parseInt(vertex[0]) - 1;
 		VertexNM currentVertex = vertices.get(index);
 		int textureIndex = Integer.parseInt(vertex[1]) - 1;
@@ -149,6 +170,12 @@ public class NormalMappedObjLoader {
 		}
 	}
 
+	/**
+	 * Converts a list of Integer indices to an int array.
+	 *
+	 * @param indices The list of indices to be converted.
+	 * @return An int array containing the converted indices.
+	 */
 	private static int[] convertIndicesListToArray(List<Integer> indices) {
 		int[] indicesArray = new int[indices.size()];
 		for (int i = 0; i < indicesArray.length; i++) {
@@ -157,8 +184,20 @@ public class NormalMappedObjLoader {
 		return indicesArray;
 	}
 
-	private static float convertDataToArrays(List<VertexNM> vertices, List<Vector2f> textures,
-			List<Vector3f> normals, float[] verticesArray, float[] texturesArray,
+	/**
+	 * Converts data from lists to arrays for use in OpenGL VAOs.
+	 *
+	 * @param vertices        The list of vertices.
+	 * @param textures        The list of texture coordinates.
+	 * @param normals         The list of normals.
+	 * @param verticesArray   The output array for vertex positions.
+	 * @param texturesArray   The output array for texture coordinates.
+	 * @param normalsArray    The output array for normal vectors.
+	 * @param tangentsArray   The output array for tangent vectors.
+	 * @return The furthest point in the model.
+	 */
+	private static float convertDataToArrays(List<VertexNM> vertices, List<Vector2f> textures, List<Vector3f> normals,
+			float[] verticesArray, float[] texturesArray,
 			float[] normalsArray, float[] tangentsArray) {
 		float furthestPoint = 0;
 		for (int i = 0; i < vertices.size(); i++) {
@@ -186,8 +225,17 @@ public class NormalMappedObjLoader {
 		return furthestPoint;
 	}
 
-	private static VertexNM dealWithAlreadyProcessedVertex(VertexNM previousVertex, int newTextureIndex,
-			int newNormalIndex, List<Integer> indices, List<VertexNM> vertices) {
+	/**
+	 * Handles already processed vertices that share the same texture and normal indices.
+	 *
+	 * @param previousVertex The previously processed vertex.
+	 * @param newTextureIndex The index of the new texture coordinate.
+	 * @param newNormalIndex The index of the new normal vector.
+	 * @param indices The list of vertex indices.
+	 * @param vertices The list of vertices.
+	 * @return The vertex to use or create for the current face.
+	 */
+	private static VertexNM dealWithAlreadyProcessedVertex(VertexNM previousVertex, int newTextureIndex, int newNormalIndex, List<Integer> indices, List<VertexNM> vertices) {
 		if (previousVertex.hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
 			indices.add(previousVertex.getIndex());
 			return previousVertex;
@@ -208,6 +256,11 @@ public class NormalMappedObjLoader {
 		}
 	}
 
+	/**
+	 * Removes unused vertices in the vertices list.
+	 *
+	 * @param vertices The list of vertices.
+	 */
 	private static void removeUnusedVertices(List<VertexNM> vertices) {
 		for (VertexNM vertex : vertices) {
 			vertex.averageTangents();

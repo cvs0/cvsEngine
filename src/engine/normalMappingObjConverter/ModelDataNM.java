@@ -26,47 +26,88 @@
 
 package engine.normalMappingObjConverter;
 
+/**
+ * Represents model data for a model with normal mapping.
+ */
 public class ModelDataNM {
 
-	private float[] vertices;
-	private float[] textureCoords;
-	private float[] normals;
-	private float[] tangents;
-	private int[] indices;
-	private float furthestPoint;
+    private float[] vertices;
+    private float[] textureCoords;
+    private float[] normals;
+    private float[] tangents;
+    private int[] indices;
+    private float furthestPoint;
 
-	public ModelDataNM(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices,
-			float furthestPoint) {
-		this.vertices = vertices;
-		this.textureCoords = textureCoords;
-		this.normals = normals;
-		this.indices = indices;
-		this.furthestPoint = furthestPoint;
-		this.tangents = tangents;
-	}
+    /**
+     * Creates a new instance of ModelDataNM.
+     *
+     * @param vertices      The array of vertex coordinates.
+     * @param textureCoords The array of texture coordinates.
+     * @param normals       The array of normal vectors.
+     * @param tangents      The array of tangent vectors.
+     * @param indices       The array of vertex indices.
+     * @param furthestPoint The furthest point in the model.
+     */
+    public ModelDataNM(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices, float furthestPoint) {
+        this.vertices = vertices;
+        this.textureCoords = textureCoords;
+        this.normals = normals;
+        this.indices = indices;
+        this.furthestPoint = furthestPoint;
+        this.tangents = tangents;
+    }
 
-	public float[] getVertices() {
-		return vertices;
-	}
+    /**
+     * Gets the array of vertex coordinates.
+     *
+     * @return The vertex coordinates.
+     */
+    public float[] getVertices() {
+        return vertices;
+    }
 
-	public float[] getTextureCoords() {
-		return textureCoords;
-	}
-	
-	public float[] getTangents(){
-		return tangents;
-	}
+    /**
+     * Gets the array of texture coordinates.
+     *
+     * @return The texture coordinates.
+     */
+    public float[] getTextureCoords() {
+        return textureCoords;
+    }
 
-	public float[] getNormals() {
-		return normals;
-	}
+    /**
+     * Gets the array of tangent vectors.
+     *
+     * @return The tangent vectors.
+     */
+    public float[] getTangents() {
+        return tangents;
+    }
 
-	public int[] getIndices() {
-		return indices;
-	}
+    /**
+     * Gets the array of normal vectors.
+     *
+     * @return The normal vectors.
+     */
+    public float[] getNormals() {
+        return normals;
+    }
 
-	public float getFurthestPoint() {
-		return furthestPoint;
-	}
+    /**
+     * Gets the array of vertex indices.
+     *
+     * @return The vertex indices.
+     */
+    public int[] getIndices() {
+        return indices;
+    }
 
+    /**
+     * Gets the furthest point in the model.
+     *
+     * @return The furthest point.
+     */
+    public float getFurthestPoint() {
+        return furthestPoint;
+    }
 }

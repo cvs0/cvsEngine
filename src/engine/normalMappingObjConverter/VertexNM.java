@@ -31,6 +31,9 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * Represents a vertex with position, texture, and normal data for normal mapping.
+ */
 public class VertexNM {
 	
 	private static final int NO_INDEX = -1;
@@ -44,24 +47,43 @@ public class VertexNM {
 	private List<Vector3f> tangents = new ArrayList<Vector3f>();
 	private Vector3f averagedTangent = new Vector3f(0, 0, 0);
 	
-	protected VertexNM(int index, Vector3f position){
+	/**
+     * Creates a new vertex with the given index and position.
+     *
+     * @param index    The index of the vertex.
+     * @param position The position vector of the vertex.
+     */
+    protected VertexNM(int index, Vector3f position) {
 		this.index = index;
 		this.position = position;
 		this.length = position.length();
 	}
 	
-	protected void addTangent(Vector3f tangent){
+    /**
+     * Adds a tangent vector to this vertex for normal mapping.
+     *
+     * @param tangent The tangent vector to add.
+     */
+    protected void addTangent(Vector3f tangent) {
 		tangents.add(tangent);
 	}
 	
-	//NEW
-	protected VertexNM duplicate(int newIndex){
+    /**
+     * Duplicates this vertex with a new index.
+     *
+     * @param newIndex The index for the duplicated vertex.
+     * @return A new duplicated vertex.
+     */
+    protected VertexNM duplicate(int newIndex) {
 		VertexNM vertex = new VertexNM(newIndex, position);
 		vertex.tangents = this.tangents;
 		return vertex;
 	}
 	
-	protected void averageTangents(){
+    /**
+     * Averages the stored tangent vectors to compute an averaged tangent.
+     */
+    protected void averageTangents() {
 		if(tangents.isEmpty()){
 			return;
 		}
@@ -71,51 +93,113 @@ public class VertexNM {
 		averagedTangent.normalise();
 	}
 	
-	protected Vector3f getAverageTangent(){
+    /**
+     * Retrieves the averaged tangent vector for this vertex.
+     *
+     * @return The averaged tangent vector.
+     */
+    protected Vector3f getAverageTangent() {
 		return averagedTangent;
 	}
 	
-	protected int getIndex(){
+    /**
+     * Gets the index of this vertex.
+     *
+     * @return The index of this vertex.
+     */
+    protected int getIndex() {
 		return index;
 	}
 	
-	protected float getLength(){
+    /**
+     * Gets the length of the position vector of this vertex.
+     *
+     * @return The length of the position vector.
+     */
+    protected float getLength() {
 		return length;
 	}
 	
-	protected boolean isSet(){
+    /**
+     * Checks if the texture and normal indices for this vertex are set.
+     *
+     * @return True if both texture and normal indices are set, false otherwise.
+     */
+    protected boolean isSet() {
 		return textureIndex!=NO_INDEX && normalIndex!=NO_INDEX;
 	}
 	
-	protected boolean hasSameTextureAndNormal(int textureIndexOther,int normalIndexOther){
+    /**
+     * Checks if this vertex has the same texture and normal indices as another vertex.
+     *
+     * @param textureIndexOther The texture index of the other vertex.
+     * @param normalIndexOther  The normal index of the other vertex.
+     * @return True if both texture and normal indices match, false otherwise.
+     */
+    protected boolean hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther) {
 		return textureIndexOther==textureIndex && normalIndexOther==normalIndex;
 	}
 	
-	protected void setTextureIndex(int textureIndex){
+    /**
+     * Sets the texture index for this vertex.
+     *
+     * @param textureIndex The texture index to set.
+     */
+    protected void setTextureIndex(int textureIndex) {
 		this.textureIndex = textureIndex;
 	}
 	
-	protected void setNormalIndex(int normalIndex){
+    /**
+     * Sets the normal index for this vertex.
+     *
+     * @param normalIndex The normal index to set.
+     */
+    protected void setNormalIndex(int normalIndex) {
 		this.normalIndex = normalIndex;
 	}
 
-	protected Vector3f getPosition() {
+    /**
+     * Retrieves the position vector of this vertex.
+     *
+     * @return The position vector.
+     */
+    protected Vector3f getPosition() {
 		return position;
 	}
 
-	protected int getTextureIndex() {
+    /**
+     * Gets the texture index of this vertex.
+     *
+     * @return The texture index.
+     */
+    protected int getTextureIndex() {
 		return textureIndex;
 	}
 
-	protected int getNormalIndex() {
+    /**
+     * Gets the normal index of this vertex.
+     *
+     * @return The normal index.
+     */
+    protected int getNormalIndex() {
 		return normalIndex;
 	}
 
-	protected VertexNM getDuplicateVertex() {
+    /**
+     * Gets the duplicated vertex associated with this vertex.
+     *
+     * @return The duplicated vertex, or null if none exists.
+     */
+    protected VertexNM getDuplicateVertex() {
 		return duplicateVertex;
 	}
 
-	protected void setDuplicateVertex(VertexNM duplicateVertex) {
+    /**
+     * Sets the duplicated vertex associated with this vertex.
+     *
+     * @param duplicateVertex The duplicated vertex to set.
+     */
+    protected void setDuplicateVertex(VertexNM duplicateVertex) {
 		this.duplicateVertex = duplicateVertex;
 	}
 

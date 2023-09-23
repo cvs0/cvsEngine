@@ -27,20 +27,36 @@
 package engine.particles;
 
 public class ParticleTexture {
-	
-	private int textureID;
-	private int numberOfRows;
-	
-	public ParticleTexture(int textureID, int numberOfRows) {
-		this.textureID = textureID;
-		this.numberOfRows = numberOfRows;
-	}
+    
+    private int textureID;
+    private int numberOfRows;
+    
+    /**
+     * Creates a new ParticleTexture with the specified texture ID and number of rows.
+     * 
+     * @param textureID   The ID of the texture.
+     * @param numberOfRows The number of rows in the texture atlas.
+     */
+    public ParticleTexture(int textureID, int numberOfRows) {
+        this.textureID = textureID;
+        this.numberOfRows = numberOfRows;
+    }
 
-	public int getTextureID() {
-		return textureID;
-	}
+    /**
+     * Get the ID of the particle texture.
+     * 
+     * @return The texture ID.
+     */
+    public int getTextureID() {
+        return textureID;
+    }
 
-	public int getNumberOfRows() {
-		return numberOfRows;
-	}
+    /**
+     * Get the number of rows in the texture atlas.
+     * 
+     * @return The number of rows.
+     */
+    public int getNumberOfRows() {
+        return numberOfRows;
+    }
 }

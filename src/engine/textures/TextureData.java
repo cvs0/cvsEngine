@@ -28,28 +28,52 @@ package engine.textures;
 
 import java.nio.ByteBuffer;
 
+/**
+ * Represents texture data containing pixel information and dimensions.
+ */
 public class TextureData {
-	
-	private int width;
-	private int height;
-	private ByteBuffer buffer;
-	
-	public TextureData(ByteBuffer buffer, int width, int height){
-		this.buffer = buffer;
-		this.width = width;
-		this.height = height;
-	}
-	
-	public int getWidth(){
-		return width;
-	}
-	
-	public int getHeight(){
-		return height;
-	}
-	
-	public ByteBuffer getBuffer(){
-		return buffer;
-	}
 
+    private int width;          // The width of the texture data.
+    private int height;         // The height of the texture data.
+    private ByteBuffer buffer;  // The buffer containing pixel data.
+
+    /**
+     * Constructs a new TextureData instance.
+     *
+     * @param buffer The ByteBuffer containing pixel data.
+     * @param width  The width of the texture data.
+     * @param height The height of the texture data.
+     */
+    public TextureData(ByteBuffer buffer, int width, int height) {
+        this.buffer = buffer;
+        this.width = width;
+        this.height = height;
+    }
+
+    /**
+     * Gets the width of the texture data.
+     *
+     * @return The width of the texture data.
+     */
+    public int getWidth() {
+        return width;
+    }
+
+    /**
+     * Gets the height of the texture data.
+     *
+     * @return The height of the texture data.
+     */
+    public int getHeight() {
+        return height;
+    }
+
+    /**
+     * Gets the ByteBuffer containing pixel data.
+     *
+     * @return The ByteBuffer containing pixel data.
+     */
+    public ByteBuffer getBuffer() {
+        return buffer;
+    }
 }

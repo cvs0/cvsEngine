@@ -77,6 +77,13 @@ public class Loader {
 		return new RawModel(vaoID,indices.length);
 	}
 	
+	/**
+	 * Loads vertex positions and texture coordinates into a VAO and creates a RawModel.
+	 *
+	 * @param positions      The vertex positions.
+	 * @param textureCoords  The texture coordinates.
+	 * @return A RawModel representing the loaded data.
+	 */
 	public int loadToVAO(float[] positions, float[] textureCoords) {
 		int vaoID = createVAO();
 		storeDataInAttributeList(0, 2, positions);
@@ -85,8 +92,18 @@ public class Loader {
 		return vaoID;
 	}
 	
-	public RawModel loadToVAO(float[] positions,float[] textureCoords, float[] normals, float[] tangents,
-			int[] indices){
+	/**
+	 * Loads vertex positions, texture coordinates, normals, and tangents into a VAO and creates a RawModel.
+	 *
+	 * @param positions   The vertex positions.
+	 * @param textureCoords  The texture coordinates.
+	 * @param normals       The normals.
+	 * @param tangents      The tangents.
+	 * @param indices       The vertex indices.
+	 * @return A RawModel representing the loaded data.
+	 */
+	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, float[] tangents,
+			int[] indices) {
 		int vaoID = createVAO();
 		
 		bindIndicesBuffer(indices);
@@ -102,11 +119,12 @@ public class Loader {
 	}
 	
 	/**
-     * Loads vertex positions into a VAO and creates a RawModel.
-     *
-     * @param positions The vertex positions.
-     * @return A RawModel representing the loaded data.
-     */
+	 * Loads vertex positions into a VAO and creates a RawModel.
+	 *
+	 * @param positions   The vertex positions.
+	 * @param dimensions  The number of dimensions for each vertex position.
+	 * @return A RawModel representing the loaded data.
+	 */
 	public RawModel loadToVAO(float[] positions, int dimensions) {
 		int vaoID = createVAO();
 		
@@ -144,9 +162,9 @@ public class Loader {
 	}
 	
 	/**
-     * Cleans up OpenGL resources, including VAOs, VBOs, and textures.
-     */
-	public void cleanUp(){
+	 * Cleans up OpenGL resources, including VAOs, VBOs, and textures.
+	 */
+	public void cleanUp() {
 		for(int vao:vaos){
 			GL30.glDeleteVertexArrays(vao);
 		}
@@ -158,6 +176,12 @@ public class Loader {
 		}
 	}
 	
+	/**
+	 * Loads a cube map texture from an array of texture files.
+	 *
+	 * @param textureFiles An array of texture file names (without extensions) for each cube map face.
+	 * @return The OpenGL texture ID for the cube map.
+	 */
 	public int loadCubeMap(String[] textureFiles) {
 		int texID = GL11.glGenTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -177,6 +201,12 @@ public class Loader {
 		return texID;
 	}
 	
+	/**
+	 * Decodes a texture file in PNG format and retrieves its width, height, and pixel data.
+	 *
+	 * @param fileName The name of the texture file (including the path) to decode.
+	 * @return A TextureData object containing the texture's pixel data, width, and height.
+	 */
 	private TextureData decodeTextureFile(String fileName) {
 		int width = 0;
 		int height = 0;
@@ -203,20 +233,42 @@ public class Loader {
 		return new TextureData(buffer, width, height);
 	}
 	
-	private int createVAO(){
+	/**
+	 * Creates a new Vertex Array Object (VAO) and returns its OpenGL ID.
+	 * This method also adds the ID to the list of VAOs for cleanup purposes.
+	 *
+	 * @return The OpenGL ID of the newly created VAO.
+	 */
+	private int createVAO() {
 		int vaoID = GL30.glGenVertexArrays();
+		
 		vaos.add(vaoID);
+		
 		GL30.glBindVertexArray(vaoID);
+		
 		return vaoID;
 	}
 	
-	private void storeDataInAttributeList(int attributeNumber, int coordinateSize,float[] data){
+	/**
+	 * Stores vertex data in an attribute list within a Vertex Buffer Object (VBO).
+	 *
+	 * @param attributeNumber The attribute number to bind the data to.
+	 * @param coordinateSize  The size of each coordinate (e.g., 2 for 2D, 3 for 3D).
+	 * @param data            The vertex data to store.
+	 */
+	private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
 		int vboID = GL15.glGenBuffers();
+		
 		vbos.add(vboID);
+		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+		
 		FloatBuffer buffer = storeDataInFloatBuffer(data);
+		
 		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+		
 		GL20.glVertexAttribPointer(attributeNumber,coordinateSize,GL11.GL_FLOAT,false,0,0);
+		
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
 	
@@ -234,9 +286,13 @@ public class Loader {
 	 */
 	private void bindIndicesBuffer(int[] indices){
 		int vboID = GL15.glGenBuffers();
+		
 		vbos.add(vboID);
+		
 		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
+		
 		IntBuffer buffer = storeDataInIntBuffer(indices);
+		
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 	
@@ -248,8 +304,10 @@ public class Loader {
 	 */
 	private IntBuffer storeDataInIntBuffer(int[] data){
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+		
 		buffer.put(data);
 		buffer.flip();
+		
 		return buffer;
 	}
 	
@@ -261,8 +319,10 @@ public class Loader {
 	 */
 	private FloatBuffer storeDataInFloatBuffer(float[] data){
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
+		
 		buffer.put(data);
 		buffer.flip();
+		
 		return buffer;
 	}
 }

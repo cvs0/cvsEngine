@@ -42,50 +42,72 @@ public class ParticleMaster {
 	private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
 	private static ParticleRenderer renderer;
 	
-	public static void init(Loader loader, Matrix4f projectionMatrix) {
-		renderer = new ParticleRenderer(loader, projectionMatrix);
-	}
-	
-	public static void update() {
-		Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
-		
-		while(mapIterator.hasNext()) {
-			List<Particle> list = mapIterator.next().getValue();
-			
-			Iterator<Particle> iterator = list.iterator();
-			
-			while(iterator.hasNext()) {
-				Particle p = iterator.next();
-				
-				boolean stillAlive = p.update();
-				
-				if(!stillAlive) {
-					iterator.remove();
-					
-					if(list.isEmpty()) {
-						mapIterator.remove();
-					}
-				}
-			}
-		}
-	}
-	
-	public static void renderParticles(Camera camera) {
-		renderer.render(particles, camera);
-	}
-	
-	public static void cleanUp() {
-		renderer.cleanUp();
-	}
-	
-	public static void addParticle(Particle particle) {
-		List<Particle> list = particles.get(particle.getTexture());
-		
-		if(list == null) {
-			list = new ArrayList<Particle>();
-			particles.put(particle.getTexture(), list);
-		}
-		
-		list.add(particle);
-	}
+	/**
+     * Initializes the ParticleMaster with a loader and a projection matrix.
+     *
+     * @param loader           The loader for loading particle textures.
+     * @param projectionMatrix The projection matrix for rendering particles.
+     */
+    public static void init(Loader loader, Matrix4f projectionMatrix) {
+        renderer = new ParticleRenderer(loader, projectionMatrix);
+    }
+    
+    /**
+     * Updates all particles in the system.
+     */
+    public static void update() {
+        Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
+        
+        while(mapIterator.hasNext()) {
+            List<Particle> list = mapIterator.next().getValue();
+            
+            Iterator<Particle> iterator = list.iterator();
+            
+            while(iterator.hasNext()) {
+                Particle p = iterator.next();
+                
+                boolean stillAlive = p.update();
+                
+                if(!stillAlive) {
+                    iterator.remove();
+                    
+                    if(list.isEmpty()) {
+                        mapIterator.remove();
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * Renders all particles in the system using the specified camera.
+     *
+     * @param camera The camera used for rendering.
+     */
+    public static void renderParticles(Camera camera) {
+        renderer.render(particles, camera);
+    }
+    
+    /**
+     * Cleans up resources used by the ParticleMaster.
+     */
+    public static void cleanUp() {
+        renderer.cleanUp();
+    }
+    
+    /**
+     * Adds a particle to the particle system.
+     *
+     * @param particle The particle to add.
+     */
+    public static void addParticle(Particle particle) {
+        List<Particle> list = particles.get(particle.getTexture());
+        
+        if(list == null) {
+            list = new ArrayList<Particle>();
+            particles.put(particle.getTexture(), list);
+        }
+        
+        list.add(particle);
+    }
 }

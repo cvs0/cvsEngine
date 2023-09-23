@@ -37,8 +37,12 @@ import engine.models.RawModel;
 import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;
 
+/**
+ * The SkyboxRenderer class is responsible for rendering the skybox in the game world.
+ * It handles loading and rendering the skybox textures, including day and night transitions.
+ */
 public class SkyboxRenderer {
-private static final float SIZE = 500f;
+	private static final float SIZE = 500f;
 	
 	private static final float[] VERTICES = {        
 	    -SIZE,  SIZE, -SIZE,
@@ -93,7 +97,13 @@ private static final float SIZE = 500f;
 	private SkyboxShader shader;
 	private float time = 0;
 	
-	public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix) {
+	/**
+     * Constructs a SkyboxRenderer instance.
+     *
+     * @param loader          The loader used to load textures and models.
+     * @param projectionMatrix The projection matrix for rendering.
+     */
+    public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix) {
 		cube = loader.loadToVAO(VERTICES, 3);
 		texture = loader.loadCubeMap(TEXTURE_FILES);
 		nightTexture = loader.loadCubeMap(NIGHT_TEXTURE_FILES);
@@ -104,7 +114,15 @@ private static final float SIZE = 500f;
 		shader.stop();
 	}
 	
-	public void render(Camera camera, float r, float g, float b) {
+    /**
+     * Renders the skybox based on the camera's view and time of day.
+     *
+     * @param camera The camera used to render the scene.
+     * @param r      The red component of the fog color.
+     * @param g      The green component of the fog color.
+     * @param b      The blue component of the fog color.
+     */
+    public void render(Camera camera, float r, float g, float b) {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		shader.loadFogColour(r, g, b);
@@ -117,7 +135,10 @@ private static final float SIZE = 500f;
 		shader.stop();
 	}
 	
-	private void bindTextures(){
+    /**
+     * Binds the appropriate day or night textures to the skybox based on the time of day.
+     */
+    private void bindTextures() {
 		time += DisplayManager.getFrameTimeSeconds() * 1000;
 		time %= 24000;
 		int texture1;
