@@ -126,12 +126,20 @@ public class SkyboxRenderer {
 		shader.start();
 		shader.loadViewMatrix(camera);
 		shader.loadFogColour(r, g, b);
+		
 		GL30.glBindVertexArray(cube.getVaoID());
+		
 		GL20.glEnableVertexAttribArray(0);
+		
 		bindTextures();
+		
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cube.getVertexCount());
+		
 		GL20.glDisableVertexAttribArray(0);
+		
 		GL30.glBindVertexArray(0);
+		
+		
 		shader.stop();
 	}
 	
@@ -141,9 +149,12 @@ public class SkyboxRenderer {
     private void bindTextures() {
 		time += DisplayManager.getFrameTimeSeconds() * 1000;
 		time %= 24000;
+		
 		int texture1;
 		int texture2;
+		
 		float blendFactor;		
+		
 		if(time >= 0 && time < 5000){
 			texture1 = nightTexture;
 			texture2 = nightTexture;
@@ -166,6 +177,7 @@ public class SkyboxRenderer {
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture1);
 		GL13.glActiveTexture(GL13.GL_TEXTURE1);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture2);
+		
 		shader.loadBlendFactor(blendFactor);
 	}
 }

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -51,6 +52,7 @@ import engine.guis.GuiTexture;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.normalMappingObjConverter.NormalMappedObjLoader;
+import engine.particles.Particle;
 import engine.particles.ParticleMaster;
 import engine.particles.ParticleSystem;
 import engine.particles.ParticleTexture;
@@ -218,13 +220,9 @@ public class MainGameLoop {
 			camera.move();
 			picker.update();
 			
-//			system.generateParticles(player.getPosition()); // can use a Vector3f instead of player position. Example: system.generateParticles(new Vector3f( 500, 0, 500));
+			system.generateParticles(player.getPosition()); // can use a Vector3f instead of player position. Example: system.generateParticles(new Vector3f( 500, 0, 500));
 			
 			ParticleMaster.update();
-//			
-//			if(Keyboard.isKeyDown(Keyboard.KEY_Y)) {
-//				new Particle(new Vector3f(player.getPosition()), new Vector3f(0, 30, 0), 1, 4, 0, 1);
-//			}
 			
 			entity.increaseRotation(0, 0.1f, 0);
 			entity2.increaseRotation(0, 0.1f, 0);

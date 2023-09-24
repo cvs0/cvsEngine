@@ -160,6 +160,12 @@ public abstract class ShaderProgram {
 		GL20.glUniform3f(location, vector.x, vector.y, vector.z);
 	}
 	
+	/**
+     * Loads a 4D vector into a uniform variable.
+     *
+     * @param location The location of the uniform variable.
+     * @param vector   The 4D vector to load.
+     */
 	protected void loadVector(int location, Vector4f vector){
 		GL20.glUniform4f(location,vector.x,vector.y,vector.z, vector.w);
 	}
@@ -226,6 +232,7 @@ public abstract class ShaderProgram {
 			reader.close();
 		}catch(IOException e){
 			e.printStackTrace();
+			
 			System.exit(-1);
 		}
 		
@@ -237,6 +244,7 @@ public abstract class ShaderProgram {
 		if(GL20.glGetShader(shaderID, GL20.GL_COMPILE_STATUS )== GL11.GL_FALSE){
 			System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
 			System.err.println("Could not compile shader!");
+			
 			System.exit(-1);
 		}
 		
