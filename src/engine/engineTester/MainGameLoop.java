@@ -268,6 +268,4 @@ public class MainGameLoop {
 		DisplayManager.closeDisplay();
 
 	}
-
-
 }

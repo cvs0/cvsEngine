@@ -74,6 +74,11 @@ public class Particle {
         ParticleMaster.addParticle(this);
     }
     
+    /**
+     * Gets the particle's distance from the camera.
+     *
+     * @return The particle's distance from the camera.
+     */
     public float getDistance() {
 		return distance;
 	}
