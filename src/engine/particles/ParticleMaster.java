@@ -55,7 +55,7 @@ public class ParticleMaster {
     /**
      * Updates all particles in the system.
      */
-    public static void update() {
+    public static void update(Camera camera) {
         Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
         
         while(mapIterator.hasNext()) {
@@ -66,7 +66,7 @@ public class ParticleMaster {
             while(iterator.hasNext()) {
                 Particle p = iterator.next();
                 
-                boolean stillAlive = p.update();
+                boolean stillAlive = p.update(camera);
                 
                 if(!stillAlive) {
                     iterator.remove();
@@ -76,6 +76,8 @@ public class ParticleMaster {
                     }
                 }
             }
+            
+            InsertionSort.sortHighToLow(list);
         }
     }
     

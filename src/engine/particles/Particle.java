@@ -29,6 +29,7 @@ package engine.particles;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import engine.entities.Camera;
 import engine.entities.Player;
 import engine.renderEngine.DisplayManager;
 
@@ -48,6 +49,7 @@ public class Particle {
 	private float blend;
 
 	private float elapsedTime = 0;
+	private float distance;
 
 	/**
      * Creates a new particle with the specified properties and adds it to the particle system.
@@ -71,6 +73,10 @@ public class Particle {
         this.scale = scale;
         ParticleMaster.addParticle(this);
     }
+    
+    public float getDistance() {
+		return distance;
+	}
 
     /**
      * Gets the first texture offset for the particle.
@@ -140,13 +146,15 @@ public class Particle {
      *
      * @return True if the particle is still alive (within its life span), false otherwise.
      */
-    protected boolean update() {
+    protected boolean update(Camera camera) {
         velocity.y += Player.GRAVITY * gravityEffect * DisplayManager.getFrameTimeSeconds();
         Vector3f change = new Vector3f(velocity);
 
         change.scale(DisplayManager.getFrameTimeSeconds());
 
         Vector3f.add(change, position, position);
+        
+        distance = Vector3f.sub(camera.getPosition(), position, null).lengthSquared();
         
         updateTextureCoordInfo();
 
