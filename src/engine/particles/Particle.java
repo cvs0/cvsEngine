@@ -26,6 +26,7 @@
 
 package engine.particles;
 
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import engine.entities.Player;
@@ -42,6 +43,10 @@ public class Particle {
 	
 	private ParticleTexture texture;
 	
+	private Vector2f texOffset1 = new Vector2f();
+	private Vector2f texOffset2 = new Vector2f();
+	private float blend;
+
 	private float elapsedTime = 0;
 
 	/**
@@ -67,6 +72,33 @@ public class Particle {
         ParticleMaster.addParticle(this);
     }
 
+    /**
+     * Gets the first texture offset for the particle.
+     *
+     * @return The particle's first texture offset.
+     */
+    public Vector2f getTexOffset1() {
+		return texOffset1;
+	}
+
+    /**
+     * Gets the 2nd texture offset for the particle.
+     *
+     * @return The particle's 2nd texture offset.
+     */
+	public Vector2f getTexOffset2() {
+		return texOffset2;
+	}
+
+	/**
+     * Gets the blend factor for the particle texture.
+     *
+     * @return The particle's blend factor.
+     */
+	public float getBlend() {
+		return blend;
+	}
+	
     /**
      * Gets the texture of the particle.
      *
@@ -115,9 +147,40 @@ public class Particle {
         change.scale(DisplayManager.getFrameTimeSeconds());
 
         Vector3f.add(change, position, position);
+        
+        updateTextureCoordInfo();
 
         elapsedTime += DisplayManager.getFrameTimeSeconds();
 
         return elapsedTime < lifeLength;
+    }
+    
+    /**
+     * Updates the particle's texture coordinate information for the animations.
+     */
+    private void updateTextureCoordInfo() {
+    	float lifeFactor = elapsedTime / lifeLength;
+    	int stageCount = texture.getNumberOfRows() * texture.getNumberOfRows();
+    	float atlasProgression = lifeFactor * stageCount;
+    	int index1 = (int) Math.floor(atlasProgression);
+    	int index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
+    	
+    	this.blend = atlasProgression % 1;
+    	
+    	setTextureOffset(texOffset1, index1);
+    	setTextureOffset(texOffset2, index2);
+    }
+    
+    /**
+     * Sets the texture offset for the animation atlas.
+     * @param offset The vector2f offset for the texture.
+     * @param index The integer index for the columns / row calculation for the texture atlas.
+     */
+    private void setTextureOffset(Vector2f offset, int index) {
+    	int column = index % texture.getNumberOfRows();
+    	int row = index / texture.getNumberOfRows();
+    	
+    	offset.x = (float) column / texture.getNumberOfRows();
+    	offset.y = (float) row / texture.getNumberOfRows();
     }
 }
