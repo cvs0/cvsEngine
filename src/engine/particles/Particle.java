@@ -71,6 +71,7 @@ public class Particle {
         this.lifeLength = lifeLength;
         this.rotation = rotation;
         this.scale = scale;
+        
         ParticleMaster.addParticle(this);
     }
     
