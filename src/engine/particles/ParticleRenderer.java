@@ -124,6 +124,12 @@ public class ParticleRenderer {
         shader.cleanUp();
     }
     
+    /**
+     * Updates the texture coordinate info.
+     *
+     * @param particle   The particle to update / store the info of.
+     * @param data  The float array to store the texture coordinate data in.
+     */
     private void updateTexCoordInfo(Particle particle, float[] data) {
     	data[pointer++] = particle.getTexOffset1().x;
     	data[pointer++] = particle.getTexOffset1().y;
@@ -180,6 +186,12 @@ public class ParticleRenderer {
         storeMatrixData(modelViewMatrix, vboData);
     }
     
+    /**
+     * Stores data inside a Matrix4f
+     *
+     * @param matrix   The Matrix4f to store the specified data in.
+     * @param vboData  The float array for the VBO data.
+     */
     private void storeMatrixData(Matrix4f matrix, float[] vboData) {
     	  vboData[pointer++] = matrix.m00;
     	  vboData[pointer++] = matrix.m01;

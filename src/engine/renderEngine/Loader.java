@@ -119,6 +119,12 @@ public class Loader {
 		return new RawModel(vaoID,indices.length);
 	}
 	
+	/**
+	 * Creates an empty VBO with a specified amount of floats.
+	 *
+	 * @param floatCount   The amount of floats the VBO will be able to store.
+	 * @return The VBO id.
+	 */
 	public int createEmptyVbo(int floatCount) {
 		int vbo = GL15.glGenBuffers();
 		
@@ -131,6 +137,16 @@ public class Loader {
 		return vbo;
 	}
 	
+	/**
+	 * Adds an instanced attribute for instanced rendering.
+	 *
+	 * @param vao  The VAO ID.
+	 * @param vbo  The VBO ID.
+	 * @param attribute  The attribute ID.
+	 * @param dataSize  The data size in bytes.
+	 * @param instancedDataLength  The length of the instanced data.
+	 * @param offset  The data offset.
+	 */
 	public void addInstancedAttribute(int vao, int vbo, int attribute, int dataSize,
 			int instancedDataLength, int offset) {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
@@ -142,6 +158,12 @@ public class Loader {
 		GL30.glBindVertexArray(0);
 	}
 	
+	/**
+	 * Loads vertex positions into a VAO and creates a RawModel.
+	 *
+	 * @param positions   The vertex positions.
+	 * @param dimensions  The number of dimensions for each vertex position.
+	 */
 	public void updateVbo(int vbo, float[] data, FloatBuffer buffer) {
 		buffer.clear();
 		buffer.put(data);
