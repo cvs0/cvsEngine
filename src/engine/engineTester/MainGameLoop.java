@@ -211,7 +211,7 @@ public class MainGameLoop {
 		
 		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4, true);
 		
-		ParticleSystem system = new ParticleSystem(particleTexture, 50f, 25f, 0.3f, 4f, 1f);
+		ParticleSystem system = new ParticleSystem(particleTexture, 300f, 25f, 0.3f, 4f, 1f);
 		
 		//****************Game Loop Below*********************
 
