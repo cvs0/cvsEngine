@@ -36,11 +36,10 @@ public class ParticleShader extends ShaderProgram {
 	private static final String VERTEX_FILE = "src/engine/particles/particleVShader.txt";
 	private static final String FRAGMENT_FILE = "src/engine/particles/particleFShader.txt";
 
-	private int location_modelViewMatrix;
+	private int location_numberOfRows;
 	private int location_projectionMatrix;
-	private int location_texOffset1;
-	private int location_texOffset2;
-	private int location_texCoordInfo;
+	
+	
 
 	/**
      * Creates a ParticleShader by specifying the paths to the vertex and fragment shader files.
@@ -51,34 +50,27 @@ public class ParticleShader extends ShaderProgram {
 
 	@Override
 	protected void getAllUniformLocations() {
-		location_modelViewMatrix = super.getUniformLocation("modelViewMatrix");
+		location_numberOfRows = super.getUniformLocation("numberOfRows");
 		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
-		location_texOffset1 = super.getUniformLocation("texOffset1");
-		location_texOffset2 = super.getUniformLocation("texOffset2");
-		location_texCoordInfo = super.getUniformLocation("texCoordInfo");
 	}
 
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
+		super.bindAttribute(1, "modelViewMatrix");
+		super.bindAttribute(5, "texOffsets");
+		super.bindAttribute(6, "blendFactor");
 	}
 	
-	protected void loadTextureCoordInfo(Vector2f offset1, Vector2f offset2, float numRows,
-			float blend) {
-		super.load2DVector(location_texOffset1, offset1);
-		super.load2DVector(location_texOffset2, offset2);
-		super.load2DVector(location_texCoordInfo, new Vector2f(numRows, blend));
-	}
-
 	/**
-    * Loads the model-view matrix into the shader.
-    *
-    * @param modelView The model-view matrix to be loaded.
-    */
-    protected void loadModelViewMatrix(Matrix4f modelView) {
-        super.loadMatrix(location_modelViewMatrix, modelView);
-    }
-
+     * Loads the number of rows for texture atlas' into the shader.
+     *
+     * @param numberOfRows The amount of rows your texture atlas contains.
+     */
+	protected void loadNumberOfRows(float numberOfRows) {
+		super.loadFloat(location_numberOfRows, numberOfRows);
+	}
+	
     /**
      * Loads the projection matrix into the shader.
      *

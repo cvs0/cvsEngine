@@ -56,28 +56,29 @@ public class ParticleMaster {
      * Updates all particles in the system.
      */
     public static void update(Camera camera) {
-        Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet().iterator();
-        
+        Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator = particles.entrySet()
+        		.iterator();
         while(mapIterator.hasNext()) {
-            List<Particle> list = mapIterator.next().getValue();
+        	Entry<ParticleTexture, List<Particle>> entry = mapIterator.next();
+        	List<Particle> list = entry.getValue();
+        	Iterator<Particle> iterator = list.iterator();
             
-            Iterator<Particle> iterator = list.iterator();
-            
-            while(iterator.hasNext()) {
-                Particle p = iterator.next();
-                
-                boolean stillAlive = p.update(camera);
-                
-                if(!stillAlive) {
-                    iterator.remove();
-                    
-                    if(list.isEmpty()) {
-                        mapIterator.remove();
-                    }
-                }
+        	while(iterator.hasNext()) {
+        		Particle p = iterator.next();
+        		boolean stillAlive = p.update(camera);
+        		
+        		if(!stillAlive) {
+        			iterator.remove();
+        			
+        			if(list.isEmpty()) {
+        				mapIterator.remove();
+        			}
+        		}
+        	}
+        	
+            if(!entry.getKey().isAdditive()) {
+            	InsertionSort.sortHighToLow(list);
             }
-            
-            InsertionSort.sortHighToLow(list);
         }
     }
     
