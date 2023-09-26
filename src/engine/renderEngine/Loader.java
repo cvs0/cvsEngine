@@ -87,9 +87,12 @@ public class Loader {
 	 */
 	public int loadToVAO(float[] positions, float[] textureCoords) {
 		int vaoID = createVAO();
+		
 		storeDataInAttributeList(0, 2, positions);
 		storeDataInAttributeList(1, 2, textureCoords);
+		
 		unbindVAO();
+		
 		return vaoID;
 	}
 	
@@ -165,16 +168,20 @@ public class Loader {
 	 * @param dimensions  The number of dimensions for each vertex position.
 	 */
 	public void updateVbo(int vbo, float[] data, FloatBuffer buffer) {
-		buffer.clear();
-		buffer.put(data);
-		buffer.flip();
-		
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
-		GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+	    if (buffer.remaining() < data.length) {
+	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+	    }
+	    
+	    buffer.clear();
+	    buffer.put(data);
+	    buffer.flip();
+	    
+	    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+	    GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
+	    GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, buffer);
+	    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
-	
+
 	/**
 	 * Loads vertex positions into a VAO and creates a RawModel.
 	 *
@@ -314,20 +321,39 @@ public class Loader {
 	 * @param data            The vertex data to store.
 	 */
 	private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
-		int vboID = GL15.glGenBuffers();
-		
-		vbos.add(vboID);
-		
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
-		
-		FloatBuffer buffer = storeDataInFloatBuffer(data);
-		
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
-		
-		GL20.glVertexAttribPointer(attributeNumber,coordinateSize,GL11.GL_FLOAT,false,0,0);
-		
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+	    int vboID = GL15.glGenBuffers();
+
+	    if (vboID == 0) {
+	        throw new IllegalStateException("Failed to generate VBO");
+	    }
+
+	    vbos.add(vboID);
+
+	    try {
+	        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+
+	        FloatBuffer buffer = storeDataInFloatBuffer(data);
+
+	        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
+
+	        int error = GL11.glGetError();
+	        if (error != GL11.GL_NO_ERROR) {
+	            throw new IllegalStateException("OpenGL error: " + error);
+	        }
+
+	        GL20.glVertexAttribPointer(attributeNumber, coordinateSize, GL11.GL_FLOAT, false, 0, 0);
+
+	        error = GL11.glGetError();
+	        if (error != GL11.GL_NO_ERROR) {
+	            throw new IllegalStateException("OpenGL error: " + error);
+	        }
+
+	        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
+
 	
 	/**
 	 * Unbinds the currently bound VAO, setting it to zero.
@@ -360,13 +386,18 @@ public class Loader {
 	 * @return An IntBuffer containing the data from the array.
 	 */
 	private IntBuffer storeDataInIntBuffer(int[] data){
-		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
-		
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+	    IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+
+	    if (buffer.remaining() < data.length) {
+	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+	    }
+
+	    buffer.put(data);
+	    buffer.flip();
+
+	    return buffer;
 	}
+
 	
 	/**
 	 * Converts an array of floats into a FloatBuffer.
@@ -375,11 +406,16 @@ public class Loader {
 	 * @return A FloatBuffer containing the data from the array.
 	 */
 	private FloatBuffer storeDataInFloatBuffer(float[] data){
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
-		
-		buffer.put(data);
-		buffer.flip();
-		
-		return buffer;
+	    FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
+
+	    if (buffer.remaining() < data.length) {
+	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+	    }
+
+	    buffer.put(data);
+	    buffer.flip();
+
+	    return buffer;
 	}
+
 }
