@@ -33,7 +33,7 @@ import org.lwjgl.util.vector.Vector3f;
 import engine.shaders.StaticShader;
 
 /**
- * Represents a camera used for viewing a 3D scene.
+ * Represents a camera used for viewing the 3D scene.
  */
 public class Camera {
 
