@@ -197,7 +197,7 @@ public class Terrain {
 	 */
 	private RawModel generateTerrain(Loader loader, String heightMap){
 		
-		HeightsGenerator generator = new HeightsGenerator();
+		HeightsGenerator generator = new HeightsGenerator((int) x, (int) z, 128, 56375);
 		
 		BufferedImage image = null;
 		try {

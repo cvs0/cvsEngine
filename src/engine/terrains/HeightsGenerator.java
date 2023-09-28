@@ -34,15 +34,25 @@ import java.util.Random;
 public class HeightsGenerator {
 	
 	private static final float AMPLITUDE = 70f;
+	private static final int OCTAVES = 3;
+	private static final float ROUGHNESS = 0.3f;
 	
 	private Random random = new Random();
 	private int seed;
+	private int xOffset = 0;
+	private int zOffset = 0;
 	
 	/**
      * Creates the HeightsGenerator object and generates the seed.
+     * @param gridX The X coordinate of the grid.
+     * @param gridZ The Z coordinate of the grid.
+     * @param vertexCount The amount of vertices in the terrain.
+     * @param seed The seed number.
      */
-	public HeightsGenerator() {
-		this.seed = random.nextInt(1000000000);
+	public HeightsGenerator(int gridX, int gridZ, int vertexCount, int seed) {
+		this.seed = seed;
+		xOffset = gridX * (vertexCount-1);
+		zOffset = gridZ * (vertexCount-1);
 	}
 	
 	/**
@@ -53,7 +63,17 @@ public class HeightsGenerator {
      * @return the final height for the specific coordinates.
      */
 	public float generateHeight(int x, int z) {
-		return getInterpolatedNoise(x, z) * AMPLITUDE;
+		float total = 0;
+		float d = (float) Math.pow(2, OCTAVES-1);
+		
+		for(int i = 0; i < OCTAVES; i++){
+			float freq = (float) (Math.pow(2, i) / d);
+			float amp = (float) Math.pow(ROUGHNESS, i) * AMPLITUDE;
+			
+			total += getInterpolatedNoise((x + xOffset) * freq, (z + zOffset) * freq) * amp;
+		}
+		
+		return total;
 	}
 	
 	/**
