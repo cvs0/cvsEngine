@@ -49,6 +49,9 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import engine.models.RawModel;
 import engine.textures.TextureData;
 
+/**
+ * The Loader class is responsible for loading the VAOs / updating the VBOs.
+ */
 public class Loader {
 	
 	private List<Integer> vaos = new ArrayList<Integer>();

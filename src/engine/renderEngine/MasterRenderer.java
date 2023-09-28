@@ -48,7 +48,7 @@ import engine.skybox.SkyboxRenderer;
 import engine.terrains.Terrain;
 
 /**
- * The DisplayManager class is responsible for creating and managing the game's display.
+ * The MasterRenderer class is responsible for managing all the rendering efficiently.
  */
 public class MasterRenderer {
 	
