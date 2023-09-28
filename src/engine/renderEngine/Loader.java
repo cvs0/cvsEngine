@@ -168,9 +168,9 @@ public class Loader {
 	 * @param dimensions  The number of dimensions for each vertex position.
 	 */
 	public void updateVbo(int vbo, float[] data, FloatBuffer buffer) {
-	    if (buffer.remaining() < data.length) {
-	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
-	    }
+//	    if (buffer.remaining() < data.length) {
+//	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+//	    }
 	    
 	    buffer.clear();
 	    buffer.put(data);
@@ -248,11 +248,14 @@ public class Loader {
 	 */
 	public int loadCubeMap(String[] textureFiles) {
 		int texID = GL11.glGenTextures();
+		
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 		
 		for(int i = 0; i < textureFiles.length; i++) {
 			TextureData data = decodeTextureFile("res/" + textureFiles[i] + ".png");
+			
 			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA,
 					data.getWidth(), data.getHeight(), 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
 					data.getBuffer());
@@ -260,6 +263,7 @@ public class Loader {
 		
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+		
 		textures.add(texID);
 		
 		return texID;
@@ -388,9 +392,9 @@ public class Loader {
 	private IntBuffer storeDataInIntBuffer(int[] data){
 	    IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 
-	    if (buffer.remaining() < data.length) {
-	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
-	    }
+//	    if (buffer.remaining() < data.length) {
+//	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+//	    }
 
 	    buffer.put(data);
 	    buffer.flip();
@@ -408,9 +412,9 @@ public class Loader {
 	private FloatBuffer storeDataInFloatBuffer(float[] data){
 	    FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 
-	    if (buffer.remaining() < data.length) {
-	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
-	    }
+//	    if (buffer.remaining() < data.length) {
+//	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+//	    }
 
 	    buffer.put(data);
 	    buffer.flip();

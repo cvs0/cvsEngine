@@ -30,6 +30,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import engine.shaders.StaticShader;
+
 /**
  * Represents a camera used for viewing a 3D scene.
  */

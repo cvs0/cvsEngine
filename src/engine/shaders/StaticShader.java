@@ -61,6 +61,8 @@ public class StaticShader extends ShaderProgram{
 	private int location_numberOfRows;
 	private int location_offset;
 	private int location_plane;	
+	private int location_density;
+	private int location_gradient;
 
 	/**
      * Creates a new StaticShader by loading the vertex and fragment shaders from files.
@@ -88,6 +90,8 @@ public class StaticShader extends ShaderProgram{
 		location_numberOfRows = super.getUniformLocation("numberOfRows");
 		location_offset = super.getUniformLocation("offset");
 		location_plane = super.getUniformLocation("plane");
+		location_density = super.getUniformLocation("density");
+		location_gradient = super.getUniformLocation("gradient");
 		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColour = new int[MAX_LIGHTS];
@@ -101,6 +105,17 @@ public class StaticShader extends ShaderProgram{
 	}
 	
 	/**
+     * Loads the fog variables into the shader.
+     *
+     * @param density The fog density.
+     * @param gradient The fog gradient.
+     */
+	public void loadFog(float density, float gradient) {
+		super.loadFloat(location_density, density);
+		super.loadFloat(location_gradient, gradient);
+	}
+	
+	/**
      * Loads the number of texture rows for a texture atlas.
      *
      * @param numberOfRows The number of texture rows.
@@ -109,6 +124,11 @@ public class StaticShader extends ShaderProgram{
 		super.loadFloat(location_numberOfRows, numberOfRows);
 	}
 	
+	/**
+     * Loads the clip plane for the shader,
+     *
+     * @param plane The Vector4f for the clip plane.
+     */
 	public void loadClipPlane(Vector4f plane){
 		super.loadVector(location_plane, plane);
 	}
@@ -142,13 +162,13 @@ public class StaticShader extends ShaderProgram{
 	public void loadFakeLightingVariable(boolean useFake) {
 		super.loadBoolean(location_useFakeLighting, useFake);
 	}
-	
+
 	/**
-     * Loads shine variables for specular lighting.
-     *
-     * @param damper      The shine damper value.
-     * @param reflectivity The reflectivity value.
-     */
+	 * Loads shine variables for specular lighting.
+	 *
+	 * @param damper       The shine damper value.
+	 * @param reflectivity The reflectivity value.
+	 */
 	public void loadShineVariables(float damper, float reflectivity) {
 		super.loadFloat(location_shineDamper, damper);
 		super.loadFloat(location_reflectivity, reflectivity);

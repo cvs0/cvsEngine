@@ -111,6 +111,7 @@ public class ParticleRenderer {
             }
             
             loader.updateVbo(vbo, vboData, buffer);
+            
             GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount(), particleList.size());
         }
         

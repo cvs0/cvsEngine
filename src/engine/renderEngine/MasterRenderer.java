@@ -47,6 +47,9 @@ import engine.shaders.TerrainShader;
 import engine.skybox.SkyboxRenderer;
 import engine.terrains.Terrain;
 
+/**
+ * The DisplayManager class is responsible for creating and managing the game's display.
+ */
 public class MasterRenderer {
 	
 	private static final float FOV = 70;
@@ -56,6 +59,9 @@ public class MasterRenderer {
 	public static final float RED = 0.1f;
 	public static final float GREEN = 0.4f;
 	public static final float BLUE = 0.2f;
+	
+	private float fogDensity;
+	private float fogGradient;
 	
 	private StaticShader shader = new StaticShader();
 	
@@ -79,10 +85,13 @@ public class MasterRenderer {
 	 *
 	 * @param loader The loader responsible for loading resources.
 	 */
-	public MasterRenderer(Loader loader) {
+	public MasterRenderer(Loader loader, float fogDensity, float fogGradient) {
+		this.fogDensity = fogDensity;
+		this.fogGradient = fogGradient;
 	    enableCulling();
 	    
 	    createProjectionMatrix();
+	    
 	    renderer = new EntityRenderer(shader, projectionMatrix);
 	    terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 	    skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
@@ -165,6 +174,7 @@ public class MasterRenderer {
 		shader.loadSkyColour(RED, GREEN, BLUE);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
+		shader.loadFog(fogDensity, fogGradient);
 		
 		renderer.render(entities);
 		
@@ -306,6 +316,7 @@ public class MasterRenderer {
 	    }
 
 	    float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+	    
 	    if (aspectRatio == 0.0f) {
 	        throw new IllegalArgumentException("Invalid aspect ratio for projection matrix");
 	    }

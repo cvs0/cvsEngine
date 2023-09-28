@@ -98,20 +98,29 @@ public class NormalMappingRenderer {
      */
     private void prepareTexturedModel(TexturedModel model) {
         RawModel rawModel = model.getRawModel();
+        
         GL30.glBindVertexArray(rawModel.getVaoID());
+        
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
         GL20.glEnableVertexAttribArray(3);
+        
         ModelTexture texture = model.getTexture();
+        
         shader.loadNumberOfRows(texture.getNumberOfRows());
+        
         if (texture.isHasTransparency()) {
             MasterRenderer.disableCulling();
         }
+        
         shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
+        
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
+        
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getNormalMap());
     }
 
@@ -120,10 +129,12 @@ public class NormalMappingRenderer {
      */
     private void unbindTexturedModel() {
         MasterRenderer.enableCulling();
+        
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(2);
         GL20.glDisableVertexAttribArray(3);
+        
         GL30.glBindVertexArray(0);
     }
 
@@ -148,8 +159,8 @@ public class NormalMappingRenderer {
      */
     private void prepare(Vector4f clipPlane, List<Light> lights, Camera camera) {
         shader.loadClipPlane(clipPlane);
-        //need to be public variables in MasterRenderer
         shader.loadSkyColour(MasterRenderer.RED, MasterRenderer.GREEN, MasterRenderer.BLUE);
+        
         Matrix4f viewMatrix = MathUtils.createViewMatrix(camera);
 
         shader.loadLights(lights, viewMatrix);

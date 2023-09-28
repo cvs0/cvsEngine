@@ -164,16 +164,20 @@ public class OBJLoader {
 
 	    if (vertexData.length < 3) {
 	        System.err.println("Invalid vertex data provided: " + Arrays.toString(vertexData));
+	        
 	        return;
 	    }
 
 	    try {
 	        int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
+	        
 	        indices.add(currentVertexPointer);
 
 	        int texIndex = Integer.parseInt(vertexData[1]) - 1;
+	        
 	        if (texIndex >= 0 && texIndex < textures.size()) {
 	            Vector2f currentTex = textures.get(texIndex);
+	            
 	            textureArray[currentVertexPointer * 2] = currentTex.x;
 	            textureArray[currentVertexPointer * 2 + 1] = 1 - currentTex.y;
 	        } else {
@@ -181,8 +185,10 @@ public class OBJLoader {
 	        }
 
 	        int normIndex = Integer.parseInt(vertexData[2]) - 1;
+	        
 	        if (normIndex >= 0 && normIndex < normals.size()) {
 	            Vector3f currentNorm = normals.get(normIndex);
+	            
 	            normalsArray[currentVertexPointer * 3] = currentNorm.x;
 	            normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
 	            normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
@@ -191,6 +197,7 @@ public class OBJLoader {
 	        }
 	    } catch (NumberFormatException e) {
 	        System.err.println("Error parsing vertex data: " + Arrays.toString(vertexData));
+	        
 	        e.printStackTrace();
 	    }
 	}

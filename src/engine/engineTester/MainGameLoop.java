@@ -79,7 +79,7 @@ public class MainGameLoop {
 		TextMaster.init(loader);
 		
 		FontType font = new FontType(loader.loadTexture("/candara/candara"), new File("res/candara/candara.fnt"));
-		GUIText text = new GUIText("CvsEngine on top", 3f, font, new Vector2f(0f, 0f), 1f, true, 0.5f, 0.1f, 0.0f, 0.5f, new Vector2f(0.000f, 0.000f), new Vector3f(1.0f, 0.0f, 0.0f));
+		GUIText text = new GUIText("text renderer test", 3f, font, new Vector2f(0f, 0f), 1f, true, 0.5f, 0.1f, 0.0f, 0.5f, new Vector2f(0.000f, 0.000f), new Vector3f(1.0f, 0.0f, 0.0f));
 		text.setColour(1, 0, 0);
 
 		// *********TERRAIN TEXTURE STUFF**********
@@ -185,7 +185,7 @@ public class MainGameLoop {
 		Light sun = new Light(new Vector3f(10000, 10000, -10000), new Vector3f(1.3f, 1.3f, 1.3f));
 		lights.add(sun);
 
-		MasterRenderer renderer = new MasterRenderer(loader);
+		MasterRenderer renderer = new MasterRenderer(loader, 0f, 5.0f);
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
@@ -211,7 +211,7 @@ public class MainGameLoop {
 		
 		ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4, true);
 		
-		ParticleSystem system = new ParticleSystem(particleTexture, 300f, 25f, 0.3f, 4f, 1f);
+		ParticleSystem system = new ParticleSystem(particleTexture, 10f, 25f, 0.3f, 4f, 1f);
 		
 		//****************Game Loop Below*********************
 
@@ -229,7 +229,7 @@ public class MainGameLoop {
 			entity3.increaseRotation(0, 0.1f, 0);
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			
-			//render reflection teture
+			// render reflection teture
 			buffers.bindReflectionFrameBuffer();
 			float distance = 2 * (camera.getPosition().y - water.getHeight());
 			camera.getPosition().y -= distance;
@@ -238,11 +238,11 @@ public class MainGameLoop {
 			camera.getPosition().y += distance;
 			camera.invertPitch();
 			
-			//render refraction texture
+			// render refraction texture
 			buffers.bindRefractionFrameBuffer();
 			renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
 			
-			//render to screen
+			// render to screen
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 			buffers.unbindCurrentFrameBuffer();	
 			renderer.renderScene(entities, normalMapEntities, terrains, lights, camera, new Vector4f(0, -1, 0, 100000));	
