@@ -159,24 +159,35 @@ public class MasterRenderer {
 	 */
 	public void render(List<Light> lights, Camera camera, Vector4f clipPlane) {
 		prepare();
+		
 		shader.start();
 		shader.loadClipPlane(clipPlane);
 		shader.loadSkyColour(RED, GREEN, BLUE);
 		shader.loadLights(lights);
 		shader.loadViewMatrix(camera);
+		
 		renderer.render(entities);
+		
 		shader.stop();
+		
 		normalMapRenderer.render(normalMapEntities, clipPlane, lights, camera);
+		
 		terrainShader.start();
 		terrainShader.loadClipPlane(clipPlane);
 		terrainShader.loadSkyColour(RED, GREEN, BLUE);
 		terrainShader.loadLights(lights);
 		terrainShader.loadViewMatrix(camera);
+		
 		terrainRenderer.render(terrains);
+		
 		terrainShader.stop();
+		
 		skyboxRenderer.render(camera, RED, GREEN, BLUE);
+		
 		terrains.clear();
+		
 		entities.clear();
+		
 		normalMapEntities.clear();
 	}
 	
