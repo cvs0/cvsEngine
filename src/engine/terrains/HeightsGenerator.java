@@ -53,6 +53,38 @@ public class HeightsGenerator {
      * @return the final height for the specific coordinates.
      */
 	public float generateHeight(int x, int z) {
-		return 1;
+		return getSmoothNoise(x, z) * AMPLITUDE;
+	}
+	
+	/**
+     * Generates the smooth noise for the specific coordinates.
+     * 
+     * @param x The X position
+     * @param y The Y position
+     * @return The smooth noise result for the specific position.
+     */
+	private float getSmoothNoise(int x, int z) {
+		float corners = (getNoise(x - 1, z - 1) + getNoise(x + 1, z - 1) + getNoise(x - 1, z + 1)
+			+ getNoise(x + 1, z + 1)) / 16f;
+		
+		float sides = (getNoise(x - 1, z) + getNoise(x + 1, z) + getNoise(x, z - 1)
+			+ getNoise(x, z + 1)) / 8f;
+		
+		float center = getNoise(x, z) / 4f;
+		
+		return corners + sides + center;
+	}
+	
+	/**
+     * Generates the noise for the specific coordinates.
+     * 
+     * @param x The X position
+     * @param y The Y position
+     * @return The noise result for the specific position.
+     */
+	private float getNoise(int x, int z) {
+		random.setSeed(x * 49632 + z * 325176 + seed);
+		
+		return random.nextFloat() * 2f - 1f;
 	}
 }
