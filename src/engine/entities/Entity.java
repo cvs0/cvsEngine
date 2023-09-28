@@ -107,10 +107,15 @@ public class Entity {
      * @return The Y offset for the entity's texture coordinate.
      */
     public float getTextureYOffset() {
+    	
         if (model != null && model.getTexture() != null) {
+        	
             int numberOfRows = model.getTexture().getNumberOfRows();
+            
             if (numberOfRows > 0) {
+            	
                 int row = textureIndex / numberOfRows;
+                
                 return (float) row / (float) numberOfRows;
             } else {
                 return 0.0f;

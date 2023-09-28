@@ -33,7 +33,7 @@ import org.lwjgl.util.vector.Vector3f;
 import engine.entities.Camera;
 
 /**
- * A utility class containing mathematical functions commonly used in game development.
+ * A utility class for math related functions.
  */
 public class MathUtils {
 	
@@ -45,10 +45,26 @@ public class MathUtils {
 	 * @param p3 The third vertex of the triangle.
 	 * @param pos The position within the triangle as a 2D vector.
 	 * @return The interpolated value at the given position within the triangle.
+	 * @throws IllegalArgumentException If input values are invalid.
 	 */
 	public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {
 	    float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
-
+	    
+	    if (Float.isNaN(p1.x) || Float.isNaN(p1.y) || Float.isNaN(p1.z) // p1
+	    		|| Float.isInfinite(p1.x) || Float.isInfinite(p1.y) || Float.isInfinite(p1.z) // p1
+	    		
+	    		|| Float.isNaN(p2.x) || Float.isNaN(p2.y) || Float.isNaN(p2.z) // p2
+	    		|| Float.isInfinite(p2.x) || Float.isInfinite(p2.y) || Float.isInfinite(p2.z) // p2
+	    		
+	    		|| Float.isNaN(p3.x) || Float.isNaN(p3.y) || Float.isNaN(p3.z) // p3
+	    		|| Float.isInfinite(p3.x) || Float.isInfinite(p3.y) || Float.isInfinite(p3.z) // p3
+	    		
+	    		|| Float.isNaN(pos.x) || Float.isNaN(pos.y) // pos
+	    		|| Float.isInfinite(pos.x) || Float.isInfinite(pos.y) // pos
+	    		) {
+	            throw new IllegalArgumentException("Invalid input values.");
+	        }
+	    
 	    if (Math.abs(det) < 1e-6f) {
 	        return Float.NaN;
 	    }
@@ -84,13 +100,14 @@ public class MathUtils {
             Float.isNaN(rx) || Float.isNaN(ry) || Float.isNaN(rz) || Float.isNaN(scale) ||
             Float.isInfinite(translation.x) || Float.isInfinite(translation.y) || Float.isInfinite(translation.z) ||
             Float.isInfinite(rx) || Float.isInfinite(ry) || Float.isInfinite(rz) || Float.isInfinite(scale)) {
-            throw new IllegalArgumentException("Invalid input values");
+        	
+            throw new IllegalArgumentException("Invalid input values.");
         }
 
         Matrix4f.translate(translation, matrix, matrix);
 
         if (rx < -360f || rx > 360f || ry < -360f || ry > 360f || rz < -360f || rz > 360f) {
-            throw new IllegalArgumentException("Invalid rotation angles");
+            throw new IllegalArgumentException("Invalid rotation angles.");
         }
 
         Matrix4f.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0), matrix, matrix);
@@ -98,7 +115,7 @@ public class MathUtils {
         Matrix4f.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1), matrix, matrix);
 
         if (Float.isNaN(scale) || scale <= 0f) {
-            throw new IllegalArgumentException("Invalid scale value");
+            throw new IllegalArgumentException("Invalid scale value.");
         }
 
         Matrix4f.scale(new Vector3f(scale, scale, scale), matrix, matrix);
@@ -122,14 +139,14 @@ public class MathUtils {
 	        Float.isNaN(scale.x) || Float.isNaN(scale.y) ||
 	        Float.isInfinite(translation.x) || Float.isInfinite(translation.y) ||
 	        Float.isInfinite(scale.x) || Float.isInfinite(scale.y)) {
-	        throw new IllegalArgumentException("Invalid input values");
+	        throw new IllegalArgumentException("Invalid input values.");
 	    }
 
 	    Matrix4f.translate(new Vector3f(translation.x, translation.y, 0f), matrix, matrix);
 	    
 	    if (Float.isNaN(scale.x) || Float.isNaN(scale.y) ||
 	        scale.x <= 0f || scale.y <= 0f) {
-	        throw new IllegalArgumentException("Invalid scale values");
+	        throw new IllegalArgumentException("Invalid scale values.");
 	    }
 
 	    Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
@@ -148,7 +165,7 @@ public class MathUtils {
 	    Matrix4f viewMatrix = new Matrix4f();
 	    
 	    if (camera == null) {
-	        throw new IllegalArgumentException("Camera cannot be null");
+	        throw new IllegalArgumentException("Camera cannot be null.");
 	    }
 	    
 	    viewMatrix.setIdentity();
@@ -158,7 +175,7 @@ public class MathUtils {
 	    
 	    if (Float.isNaN(pitch) || Float.isNaN(yaw) ||
 	        Float.isInfinite(pitch) || Float.isInfinite(yaw)) {
-	        throw new IllegalArgumentException("Invalid camera orientation angles");
+	        throw new IllegalArgumentException("Invalid camera orientation angles.");
 	    }
 	    
 	    Matrix4f.rotate(pitch, new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
@@ -168,7 +185,7 @@ public class MathUtils {
 	    
 	    if (Float.isNaN(cameraPos.x) || Float.isNaN(cameraPos.y) || Float.isNaN(cameraPos.z) ||
 	        Float.isInfinite(cameraPos.x) || Float.isInfinite(cameraPos.y) || Float.isInfinite(cameraPos.z)) {
-	        throw new IllegalArgumentException("Invalid camera position");
+	        throw new IllegalArgumentException("Invalid camera position.");
 	    }
 	    
 	    Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);

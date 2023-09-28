@@ -92,6 +92,7 @@ public class MousePicker {
     public void update() {
 		viewMatrix = MathUtils.createViewMatrix(camera);
 		currentRay = calculateMouseRay();
+		
 		if (intersectionInRange(0, RAY_RANGE, currentRay)) {
 			currentTerrainPoint = binarySearch(0, 0, RAY_RANGE, currentRay);
 		} else {
@@ -107,10 +108,12 @@ public class MousePicker {
     private Vector3f calculateMouseRay() {
 		float mouseX = Mouse.getX();
 		float mouseY = Mouse.getY();
+		
 		Vector2f normalizedCoords = getNormalisedDeviceCoordinates(mouseX, mouseY);
 		Vector4f clipCoords = new Vector4f(normalizedCoords.x, normalizedCoords.y, -1.0f, 1.0f);
 		Vector4f eyeCoords = toEyeCoords(clipCoords);
 		Vector3f worldRay = toWorldCoords(eyeCoords);
+		
 		return worldRay;
 	}
 
@@ -201,10 +204,22 @@ public class MousePicker {
      * @param finish The end of the range.
      * @param ray    The ray to intersect with the terrain.
      * @return True if the intersection is within the range, false otherwise.
+     * @throws IllegalArgumentException if the input values are invalid.
      */
     private boolean intersectionInRange(float start, float finish, Vector3f ray) {
+    	
+    	if(Float.isNaN(start) || Float.isNaN(finish) // floats
+    		|| Float.isInfinite(start) || Float.isInfinite(finish) // floats
+    		
+    		|| Float.isNaN(ray.x) || Float.isNaN(ray.y) || Float.isNaN(ray.z) // ray
+    		|| Float.isInfinite(ray.x) || Float.isInfinite(ray.y) || Float.isInfinite(ray.z) // ray
+    			) {
+    		throw new IllegalArgumentException("Input values are invalid.");
+    	}
+    	
 		Vector3f startPoint = getPointOnRay(ray, start);
 		Vector3f endPoint = getPointOnRay(ray, finish);
+		
 		if (!isUnderGround(startPoint) && isUnderGround(endPoint)) {
 			return true;
 		} else {
@@ -217,13 +232,24 @@ public class MousePicker {
      *
      * @param testPoint The point to check.
      * @return True if the point is under the ground, false otherwise.
+     * @throws IllegalArgumentException if the input values are invalid.
      */
     private boolean isUnderGround(Vector3f testPoint) {
+    	
+    	if(Float.isNaN(testPoint.x) || Float.isNaN(testPoint.y) || Float.isNaN(testPoint.z) // testPoint
+        	|| Float.isInfinite(testPoint.x) || Float.isInfinite(testPoint.y) || Float.isInfinite(testPoint.z) // testPoint
+        			) {
+        		throw new IllegalArgumentException("Input values are invalid.");
+        	}
+    	
 		Terrain terrain = getTerrain(testPoint.getX(), testPoint.getZ());
+		
 		float height = 0;
+		
 		if (terrain != null) {
 			height = terrain.getHeightOfTerrain(testPoint.getX(), testPoint.getZ());
 		}
+		
 		if (testPoint.y < height) {
 			return true;
 		} else {
