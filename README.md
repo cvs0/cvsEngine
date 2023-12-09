@@ -11,7 +11,7 @@ To use CvsEngine, you'll need the following dependencies:
 * **Java 8**: CvsEngine is developed in Java and requires Java 8 or higher to run.
 * **LWJGL 2**: The Lightweight Java Game Library (LWJGL) provides access to OpenGL, OpenAL, and other gaming-related libraries. LWJGL 2 is utilized by CvsEngine for graphics and audio rendering.
 * **OpenGL**: OpenGL is included in LWJGL 2 and is responsible for handling the rendering of 3D graphics within the engine.
-* **Slick-utils**: Slick-utils is a set of utility classes for the Slick2D library, which provides additional functionality for game development.
+* **Slick-utils**: Slick-utils is a set of utility classes for the Slick2D library, which provides additional functionality for rendering images.
 
 # Textures
 
