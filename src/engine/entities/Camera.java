@@ -69,8 +69,7 @@ public class Camera {
 
         calculateCameraPosition(horizontalDistance, verticalDistance);
 
-        this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
-
+        yaw = 180 - (player.getRotY() + angleAroundPlayer);
         yaw %= 360;
     }
 
@@ -170,14 +169,7 @@ public class Camera {
     private void calculatePitch() {
         if (Mouse.isButtonDown(1)) {
             float pitchChange = Mouse.getDY() * 0.2f;
-
-            pitch -= pitchChange;
-
-            if (pitch < 0) {
-                pitch = 0;
-            } else if (pitch > 90) {
-                pitch = 90;
-            }
+            pitch = Math.max(0, Math.min(pitch - pitchChange, 90));
         }
     }
 
@@ -187,7 +179,6 @@ public class Camera {
     private void calculateAngleAroundPlayer() {
         if (Mouse.isButtonDown(0)) {
             float angleChange = Mouse.getDX() * 0.3f;
-
             angleAroundPlayer -= angleChange;
         }
     }

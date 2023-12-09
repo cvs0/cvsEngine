@@ -86,6 +86,10 @@ public class MasterRenderer {
 	 * @param loader The loader responsible for loading resources.
 	 */
 	public MasterRenderer(Loader loader, float fogDensity, float fogGradient) {
+		if (shader == null || terrainShader == null || normalMapRenderer == null) {
+            throw new IllegalStateException("Shader or renderer initialization failed.");
+        }
+		
 		this.fogDensity = fogDensity;
 		this.fogGradient = fogGradient;
 	    enableCulling();
@@ -277,22 +281,23 @@ public class MasterRenderer {
 	 * Cleans up resources used by the master renderer. Should be called when rendering is finished.
 	 */
 	public void cleanUp() {
-	    try {
-	        if (shader != null) {
-	            shader.cleanUp();
-	        }
-	        
-	        if (terrainShader != null) {
-	            terrainShader.cleanUp();
-	        }
-	        
-	        if(normalMapRenderer != null) {
-	        	normalMapRenderer.cleanUp();
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
+        try {
+            if (shader != null) {
+                shader.cleanUp();
+            }
+
+            if (terrainShader != null) {
+                terrainShader.cleanUp();
+            }
+
+            if (normalMapRenderer != null) {
+                normalMapRenderer.cleanUp();
+            }
+        } catch (Exception e) {
+            System.err.println("Error cleaning up resources: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 	
 	/**
 	 * Prepares OpenGL for rendering by enabling depth testing and clearing the color and depth buffers.
@@ -311,26 +316,29 @@ public class MasterRenderer {
 	 * Creates the projection matrix based on the display size, field of view, and near and far planes.
 	 */
 	private void createProjectionMatrix() {
-	    if (Display.getWidth() <= 0 || Display.getHeight() <= 0 || FOV <= 0 || FAR_PLANE <= NEAR_PLANE) {
-	        throw new IllegalArgumentException("Invalid parameters for projection matrix");
-	    }
+        if (Display.getWidth() <= 0 || Display.getHeight() <= 0 || FOV <= 0 || FAR_PLANE <= NEAR_PLANE) {
+            throw new IllegalArgumentException("Invalid parameters for projection matrix");
+        }
 
-	    float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
-	    
-	    if (aspectRatio == 0.0f) {
-	        throw new IllegalArgumentException("Invalid aspect ratio for projection matrix");
-	    }
+        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 
-	    float yScale = (float) (1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio;
-	    float xScale = yScale / aspectRatio;
-	    float frustumLength = FAR_PLANE - NEAR_PLANE;
+        if (aspectRatio <= 0.0f) {
+            throw new IllegalArgumentException("Invalid aspect ratio for projection matrix");
+        }
 
-	    projectionMatrix = new Matrix4f();
-	    projectionMatrix.m00 = xScale;
-	    projectionMatrix.m11 = yScale;
-	    projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
-	    projectionMatrix.m23 = -1;
-	    projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
-	    projectionMatrix.m33 = 0;
-	}
+        float yScale = (float) (1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio;
+        float xScale = yScale / aspectRatio;
+        float frustumLength = FAR_PLANE - NEAR_PLANE;
+
+        if (projectionMatrix == null) {
+            projectionMatrix = new Matrix4f();
+        }
+
+        projectionMatrix.m00 = xScale;
+        projectionMatrix.m11 = yScale;
+        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
+        projectionMatrix.m23 = -1;
+        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
+        projectionMatrix.m33 = 0;
+    }
 }

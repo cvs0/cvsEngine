@@ -71,20 +71,26 @@ public class EntityRenderer {
      */
     public void render(Map<TexturedModel, List<Entity>> entities) {
         for (TexturedModel model : entities.keySet()) {
-            prepareTexturedModel(model);
-
-            List<Entity> batch = entities.get(model);
-
-            for (Entity entity : batch) {
-                prepareInstance(entity);
-                GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(),
-                        GL11.GL_UNSIGNED_INT, 0);
+            if (model != null) {
+                prepareTexturedModel(model);
+    
+                List<Entity> batch = entities.get(model);
+    
+                if (batch != null) {
+                    for (Entity entity : batch) {
+                        if (entity != null) {
+                            prepareInstance(entity);
+                            GL11.glDrawElements(GL11.GL_TRIANGLES, model.getRawModel().getVertexCount(),
+                                    GL11.GL_UNSIGNED_INT, 0);
+                        }
+                    }
+                }
+    
+                unbindTexturedModel();
             }
-
-            unbindTexturedModel();
         }
     }
-
+    
     /**
      * Prepares the textured model for rendering by binding its VAO, enabling attribute arrays, and loading shader uniforms.
      *
@@ -95,38 +101,38 @@ public class EntityRenderer {
         if (model == null || model.getRawModel() == null || model.getTexture() == null) {
             throw new IllegalArgumentException("Invalid textured model provided");
         }
-
+    
         RawModel rawModel = model.getRawModel();
         if (rawModel == null) {
             throw new IllegalArgumentException("Invalid raw model in textured model");
         }
-
+    
         GL30.glBindVertexArray(rawModel.getVaoID());
-
+    
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
         GL20.glEnableVertexAttribArray(2);
-
+    
         ModelTexture texture = model.getTexture();
         if (texture == null) {
             throw new IllegalArgumentException("Invalid texture in textured model");
         }
-
+    
         shader.loadNumberOfRows(texture.getNumberOfRows());
-
+    
         if (texture.isHasTransparency()) {
             MasterRenderer.disableCulling();
         }
-
+    
         shader.loadFakeLightingVariable(texture.isUseFakeLighting());
-
         shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
-
-        if (model.getTexture() != null && model.getTexture().getID() != 0) {
+    
+        int textureID = model.getTexture().getID();
+        if (textureID != 0) {
             GL13.glActiveTexture(GL13.GL_TEXTURE0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, textureID);
         }
-    }
+    }    
 
     /**
      * Unbinds the currently prepared textured model by disabling attribute arrays and unbinding the VAO.
@@ -157,17 +163,21 @@ public class EntityRenderer {
             System.err.println("Invalid entity provided for instance preparation.");
             return;
         }
-
+    
         Matrix4f transformationMatrix = MathUtils.createTransformationMatrix(entity.getPosition(),
                 entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
-
+    
+        if (transformationMatrix == null) {
+            System.err.println("Failed to create transformation matrix for the entity.");
+            return;
+        }
+    
         shader.loadTransformationMatrix(transformationMatrix);
-
+    
         if (entity.getTextureXOffset() >= 0 && entity.getTextureYOffset() >= 0) {
             shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
         } else {
             System.err.println("Invalid texture offsets provided for instance preparation.");
         }
     }
-
 }

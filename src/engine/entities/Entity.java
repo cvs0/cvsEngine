@@ -91,14 +91,11 @@ public class Entity {
         if (model != null && model.getTexture() != null) {
             int numberOfRows = model.getTexture().getNumberOfRows();
             if (numberOfRows > 0) {
-                int column = textureIndex % numberOfRows;
+                int column = Math.floorMod(textureIndex, numberOfRows);
                 return (float) column / (float) numberOfRows;
-            } else {
-                return 0.0f;
             }
-        } else {
-            return 0.0f;
         }
+        return 0.0f;
     }
 
     /**
@@ -107,22 +104,14 @@ public class Entity {
      * @return The Y offset for the entity's texture coordinate.
      */
     public float getTextureYOffset() {
-    	
         if (model != null && model.getTexture() != null) {
-        	
             int numberOfRows = model.getTexture().getNumberOfRows();
-            
             if (numberOfRows > 0) {
-            	
-                int row = textureIndex / numberOfRows;
-                
+                int row = Math.floorDiv(textureIndex, numberOfRows);
                 return (float) row / (float) numberOfRows;
-            } else {
-                return 0.0f;
             }
-        } else {
-            return 0.0f;
         }
+        return 0.0f;
     }
 
     /**
@@ -136,7 +125,7 @@ public class Entity {
         this.position.x += dx;
         this.position.y += dy;
         this.position.z += dz;
-    }
+    }    
 
     /**
      * Increases the entity's rotation by the specified amounts around each axis.
@@ -146,30 +135,9 @@ public class Entity {
      * @param dz The change in rotation around the Z-axis.
      */
     public void increaseRotation(float dx, float dy, float dz) {
-        this.rotX += dx;
-        this.rotY += dy;
-        this.rotZ += dz;
-
-        while (this.rotX < -360) {
-            this.rotX += 360;
-        }
-        while (this.rotX >= 360) {
-            this.rotX -= 360;
-        }
-
-        while (this.rotY < -360) {
-            this.rotY += 360;
-        }
-        while (this.rotY >= 360) {
-            this.rotY -= 360;
-        }
-
-        while (this.rotZ < -360) {
-            this.rotZ += 360;
-        }
-        while (this.rotZ >= 360) {
-            this.rotZ -= 360;
-        }
+        this.rotX = (this.rotX + dx) % 360;
+        this.rotY = (this.rotY + dy) % 360;
+        this.rotZ = (this.rotZ + dz) % 360;
     }
 
     /**
