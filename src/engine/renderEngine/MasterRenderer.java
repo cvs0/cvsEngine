@@ -89,7 +89,7 @@ public class MasterRenderer {
 		if (shader == null || terrainShader == null || normalMapRenderer == null) {
             throw new IllegalStateException("Shader or renderer initialization failed.");
         }
-		
+
 		this.fogDensity = fogDensity;
 		this.fogGradient = fogGradient;
 	    enableCulling();
@@ -221,29 +221,8 @@ public class MasterRenderer {
 	 * @param entity The entity to be processed and rendered.
 	 */
 	public void processEntity(Entity entity) {
-	    if (entity == null) {
-	        return;
-	    }
-
-	    TexturedModel entityModel = entity.getModel();
-
-	    if (entityModel == null) {
-	        return;
-	    }
-
-	    List<Entity> batch = entities.get(entityModel);
-
-	    if (batch != null) {
-	        batch.add(entity);
-	    } else {
-	        List<Entity> newBatch = new ArrayList<>();
-
-	        if (entityModel != null) {
-	            newBatch.add(entity);
-	            entities.put(entityModel, newBatch);
-	        }
-	    }
-	}
+        processBatch(entities, entity);
+    }
 	
 	/**
 	 * Processes a normal-mapped entity for rendering. This method adds the entity to the list
@@ -252,29 +231,29 @@ public class MasterRenderer {
 	 * @param entity The normal-mapped entity to be processed and rendered.
 	 */
 	public void processNormalMapEntity(Entity entity) {
-	    if (entity == null) {
-	        return;
-	    }
+        processBatch(normalMapEntities, entity);
+    }
 
-	    TexturedModel entityModel = entity.getModel();
+	/**
+	 * Processes an entity and adds it to the appropriate batch in the given batch map.
+	 * Entities are grouped by their textured models.
+	 *
+	 * @param batchMap The map containing batches of entities grouped by textured models.
+	 * @param entity   The entity to be processed and added to the batch.
+	 */
+	private void processBatch(Map<TexturedModel, List<Entity>> batchMap, Entity entity) {
+        if (entity == null) {
+            return;
+        }
 
-	    if (entityModel == null) {
-	        return;
-	    }
+        TexturedModel entityModel = entity.getModel();
 
-	    List<Entity> batch = normalMapEntities.get(entityModel);
+        if (entityModel == null) {
+            return;
+        }
 
-	    if (batch != null) {
-	        batch.add(entity);
-	    } else {
-	        List<Entity> newBatch = new ArrayList<>();
-
-	        if (entityModel != null) {
-	            newBatch.add(entity);
-	            normalMapEntities.put(entityModel, newBatch);
-	        }
-	    }
-	}
+        batchMap.computeIfAbsent(entityModel, k -> new ArrayList<>()).add(entity);
+    }
 
 
 	/**
