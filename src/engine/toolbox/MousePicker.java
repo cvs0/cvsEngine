@@ -207,55 +207,50 @@ public class MousePicker {
      * @throws IllegalArgumentException if the input values are invalid.
      */
     private boolean intersectionInRange(float start, float finish, Vector3f ray) {
-    	
-    	if(Float.isNaN(start) || Float.isNaN(finish) // floats
-    		|| Float.isInfinite(start) || Float.isInfinite(finish) // floats
-    		
-    		|| Float.isNaN(ray.x) || Float.isNaN(ray.y) || Float.isNaN(ray.z) // ray
-    		|| Float.isInfinite(ray.x) || Float.isInfinite(ray.y) || Float.isInfinite(ray.z) // ray
-    			) {
-    		throw new IllegalArgumentException("Input values are invalid.");
-    	}
-    	
+		// Check if any input values are invalid
+		if (Float.isNaN(start) || Float.isNaN(finish) ||
+			Float.isInfinite(start) || Float.isInfinite(finish) ||
+			ray == null ||
+			Float.isNaN(ray.x) || Float.isNaN(ray.y) || Float.isNaN(ray.z) ||
+			Float.isInfinite(ray.x) || Float.isInfinite(ray.y) || Float.isInfinite(ray.z)) {
+			throw new IllegalArgumentException("Invalid input values.");
+		}
+	
+		// Calculate the intersection points on the ray
 		Vector3f startPoint = getPointOnRay(ray, start);
 		Vector3f endPoint = getPointOnRay(ray, finish);
-		
-		if (!isUnderGround(startPoint) && isUnderGround(endPoint)) {
-			return true;
-		} else {
-			return false;
-		}
+	
+		// Check if the start point is above ground and the end point is below ground
+		return !isUnderGround(startPoint) && isUnderGround(endPoint);
 	}
 
 	/**
-     * Checks if a point is under the ground level of the terrain.
-     *
-     * @param testPoint The point to check.
-     * @return True if the point is under the ground, false otherwise.
-     * @throws IllegalArgumentException if the input values are invalid.
-     */
-    private boolean isUnderGround(Vector3f testPoint) {
-    	
-    	if(Float.isNaN(testPoint.x) || Float.isNaN(testPoint.y) || Float.isNaN(testPoint.z) // testPoint
-        	|| Float.isInfinite(testPoint.x) || Float.isInfinite(testPoint.y) || Float.isInfinite(testPoint.z) // testPoint
-        			) {
-        		throw new IllegalArgumentException("Input values are invalid.");
-        	}
-    	
+	 * Checks if a given point is below the ground level.
+	 *
+	 * @param testPoint The point to test.
+	 * @return True if the point is below ground, false otherwise.
+	 * @throws IllegalArgumentException If the input values are invalid.
+	 */
+	private boolean isUnderGround(Vector3f testPoint) {
+		// Check if testPoint vector is null
+		if (testPoint == null) {
+			throw new IllegalArgumentException("Test point vector cannot be null.");
+		}
+
+		// Check if testPoint values are valid (not NaN or infinite)
+		if (Float.isNaN(testPoint.x) || Float.isNaN(testPoint.y) || Float.isNaN(testPoint.z) ||
+			Float.isInfinite(testPoint.x) || Float.isInfinite(testPoint.y) || Float.isInfinite(testPoint.z)) {
+			throw new IllegalArgumentException("Invalid input values.");
+		}
+
 		Terrain terrain = getTerrain(testPoint.getX(), testPoint.getZ());
-		
-		float height = 0;
-		
-		if (terrain != null) {
-			height = terrain.getHeightOfTerrain(testPoint.getX(), testPoint.getZ());
-		}
-		
-		if (testPoint.y < height) {
-			return true;
-		} else {
-			return false;
-		}
+
+		float height = (terrain != null) ? terrain.getHeightOfTerrain(testPoint.getX(), testPoint.getZ()) : 0;
+
+		// Check if testPoint is below ground level
+		return testPoint.y < height;
 	}
+
 
 	/**
      * Retrieves the terrain at a specified world coordinate.

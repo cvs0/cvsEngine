@@ -92,36 +92,44 @@ public class MathUtils {
 	 * @throws IllegalArgumentException If input values are invalid.
 	 */
 	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry,
-            float rz, float scale) {
-        Matrix4f matrix = new Matrix4f();
-        matrix.setIdentity();
-        
-        if (Float.isNaN(translation.x) || Float.isNaN(translation.y) || Float.isNaN(translation.z) ||
-            Float.isNaN(rx) || Float.isNaN(ry) || Float.isNaN(rz) || Float.isNaN(scale) ||
-            Float.isInfinite(translation.x) || Float.isInfinite(translation.y) || Float.isInfinite(translation.z) ||
-            Float.isInfinite(rx) || Float.isInfinite(ry) || Float.isInfinite(rz) || Float.isInfinite(scale)) {
-        	
-            throw new IllegalArgumentException("Invalid input values.");
-        }
+        float rz, float scale) {
+		// Check if translation vector is null
+		if (translation == null) {
+			throw new IllegalArgumentException("Translation vector cannot be null.");
+		}
 
-        Matrix4f.translate(translation, matrix, matrix);
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
 
-        if (rx < -360f || rx > 360f || ry < -360f || ry > 360f || rz < -360f || rz > 360f) {
-            throw new IllegalArgumentException("Invalid rotation angles.");
-        }
+		// Check if translation values are valid (not NaN or infinite)
+		if (Float.isNaN(translation.x) || Float.isNaN(translation.y) || Float.isNaN(translation.z) ||
+			Float.isInfinite(translation.x) || Float.isInfinite(translation.y) || Float.isInfinite(translation.z)) {
+			throw new IllegalArgumentException("Invalid translation values.");
+		}
 
-        Matrix4f.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0), matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(ry), new Vector3f(0, 1, 0), matrix, matrix);
-        Matrix4f.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1), matrix, matrix);
+		// Translate the matrix based on the translation vector
+		Matrix4f.translate(translation, matrix, matrix);
 
-        if (Float.isNaN(scale) || scale <= 0f) {
-            throw new IllegalArgumentException("Invalid scale value.");
-        }
+		// Check if rotation angles are valid (within the range -360 to 360 degrees)
+		if (rx < -360f || rx > 360f || ry < -360f || ry > 360f || rz < -360f || rz > 360f) {
+			throw new IllegalArgumentException("Invalid rotation angles.");
+		}
 
-        Matrix4f.scale(new Vector3f(scale, scale, scale), matrix, matrix);
+		// Rotate the matrix based on the rotation angles
+		Matrix4f.rotate((float) Math.toRadians(rx), new Vector3f(1, 0, 0), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(ry), new Vector3f(0, 1, 0), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(rz), new Vector3f(0, 0, 1), matrix, matrix);
 
-        return matrix;
-    }
+		// Check if scale value is valid (not NaN, infinite, or non-positive)
+		if (Float.isNaN(scale) || Float.isInfinite(scale) || scale <= 0f) {
+			throw new IllegalArgumentException("Invalid scale value.");
+		}
+
+		// Scale the matrix based on the scale value
+		Matrix4f.scale(new Vector3f(scale, scale, scale), matrix, matrix);
+
+		return matrix;
+	}
 
 	/**
 	 * Creates a transformation matrix based on translation and scale vectors (2D).
@@ -132,26 +140,34 @@ public class MathUtils {
 	 * @throws IllegalArgumentException If input values are invalid.
 	 */
 	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
-	    Matrix4f matrix = new Matrix4f();
-	    matrix.setIdentity();
-	    
-	    if (Float.isNaN(translation.x) || Float.isNaN(translation.y) ||
-	        Float.isNaN(scale.x) || Float.isNaN(scale.y) ||
-	        Float.isInfinite(translation.x) || Float.isInfinite(translation.y) ||
-	        Float.isInfinite(scale.x) || Float.isInfinite(scale.y)) {
-	        throw new IllegalArgumentException("Invalid input values.");
-	    }
-
-	    Matrix4f.translate(new Vector3f(translation.x, translation.y, 0f), matrix, matrix);
-	    
-	    if (Float.isNaN(scale.x) || Float.isNaN(scale.y) ||
-	        scale.x <= 0f || scale.y <= 0f) {
-	        throw new IllegalArgumentException("Invalid scale values.");
-	    }
-
-	    Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
-	    
-	    return matrix;
+		// Check if translation or scale vectors are null
+		if (translation == null || scale == null) {
+			throw new IllegalArgumentException("Translation and scale vectors cannot be null.");
+		}
+	
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
+	
+		// Check if translation values are valid (not NaN or infinite)
+		if (Float.isNaN(translation.x) || Float.isNaN(translation.y) ||
+			Float.isInfinite(translation.x) || Float.isInfinite(translation.y)) {
+			throw new IllegalArgumentException("Invalid translation values.");
+		}
+	
+		// Translate the matrix based on the translation vector
+		Matrix4f.translate(new Vector3f(translation.x, translation.y, 0f), matrix, matrix);
+	
+		// Check if scale values are valid (not NaN, infinite, or non-positive)
+		if (Float.isNaN(scale.x) || Float.isNaN(scale.y) ||
+			Float.isInfinite(scale.x) || Float.isInfinite(scale.y) ||
+			scale.x <= 0f || scale.y <= 0f) {
+			throw new IllegalArgumentException("Invalid scale values.");
+		}
+	
+		// Scale the matrix based on the scale vector
+		Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), matrix, matrix);
+	
+		return matrix;
 	}
 
 	/**
@@ -162,37 +178,40 @@ public class MathUtils {
 	 * @throws IllegalArgumentException If the camera is null or has invalid properties.
 	 */
 	public static Matrix4f createViewMatrix(Camera camera) {
-	    Matrix4f viewMatrix = new Matrix4f();
-	    
-	    if (camera == null) {
-	        throw new IllegalArgumentException("Camera cannot be null.");
-	    }
-	    
-	    viewMatrix.setIdentity();
-	    
-	    float pitch = (float) Math.toRadians(camera.getPitch());
-	    float yaw = (float) Math.toRadians(camera.getYaw());
-	    
-	    if (Float.isNaN(pitch) || Float.isNaN(yaw) ||
-	        Float.isInfinite(pitch) || Float.isInfinite(yaw)) {
-	        throw new IllegalArgumentException("Invalid camera orientation angles.");
-	    }
-	    
-	    Matrix4f.rotate(pitch, new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
-	    Matrix4f.rotate(yaw, new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
-	    
-	    Vector3f cameraPos = camera.getPosition();
-	    
-	    if (Float.isNaN(cameraPos.x) || Float.isNaN(cameraPos.y) || Float.isNaN(cameraPos.z) ||
-	        Float.isInfinite(cameraPos.x) || Float.isInfinite(cameraPos.y) || Float.isInfinite(cameraPos.z)) {
-	        throw new IllegalArgumentException("Invalid camera position.");
-	    }
-	    
-	    Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-	    
-	    Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
-	    
-	    return viewMatrix;
+		// Check if the camera is null
+		if (camera == null) {
+			throw new IllegalArgumentException("Camera cannot be null.");
+		}
+	
+		Matrix4f viewMatrix = new Matrix4f();
+		viewMatrix.setIdentity();
+	
+		// Convert pitch and yaw to radians
+		float pitch = (float) Math.toRadians(camera.getPitch());
+		float yaw = (float) Math.toRadians(camera.getYaw());
+	
+		// Check if pitch and yaw are valid (not NaN or infinite)
+		if (Float.isNaN(pitch) || Float.isNaN(yaw) ||
+			Float.isInfinite(pitch) || Float.isInfinite(yaw)) {
+			throw new IllegalArgumentException("Invalid camera orientation angles.");
+		}
+	
+		// Rotate the view matrix based on pitch and yaw
+		Matrix4f.rotate(pitch, new Vector3f(1, 0, 0), viewMatrix, viewMatrix);
+		Matrix4f.rotate(yaw, new Vector3f(0, 1, 0), viewMatrix, viewMatrix);
+	
+		Vector3f cameraPos = camera.getPosition();
+	
+		// Check if camera position is valid (not NaN or infinite)
+		if (Float.isNaN(cameraPos.x) || Float.isNaN(cameraPos.y) || Float.isNaN(cameraPos.z) ||
+			Float.isInfinite(cameraPos.x) || Float.isInfinite(cameraPos.y) || Float.isInfinite(cameraPos.z)) {
+			throw new IllegalArgumentException("Invalid camera position.");
+		}
+	
+		// Translate the view matrix based on the negative camera position
+		Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
+		Matrix4f.translate(negativeCameraPos, viewMatrix, viewMatrix);
+	
+		return viewMatrix;
 	}
-
 }

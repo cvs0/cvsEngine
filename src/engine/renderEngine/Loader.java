@@ -385,25 +385,31 @@ public class Loader {
 		
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
-	
+
 	/**
-	 * Converts an array of integers into an IntBuffer.
+	 * Stores integer data in a {@link IntBuffer} for OpenGL rendering.
 	 *
-	 * @param data The array of integers to convert.
-	 * @return An IntBuffer containing the data from the array.
+	 * @param data The array of integers to be stored in the buffer.
+	 * @return An {@link IntBuffer} containing the provided integer data.
+	 * @throws IllegalArgumentException If the buffer capacity is too small for the provided data.
 	 */
-	private IntBuffer storeDataInIntBuffer(int[] data){
-	    IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
+	private IntBuffer storeDataInIntBuffer(int[] data) {
+		// Create an IntBuffer with the appropriate capacity
+		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 
-//	    if (buffer.remaining() < data.length) {
-//	        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
-//	    }
+		// Check if the buffer has enough capacity for the provided data
+		// Uncomment the following lines if you want to enforce the check
+	//    if (buffer.remaining() < data.length) {
+	//        throw new IllegalArgumentException("Buffer capacity is too small for the provided data");
+	//    }
 
-	    buffer.put(data);
-	    buffer.flip();
+		// Put the data into the buffer and flip it for reading
+		buffer.put(data);
+		buffer.flip();
 
-	    return buffer;
+		return buffer;
 	}
+
 
 	
 	/**
