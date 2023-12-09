@@ -13,12 +13,14 @@ uniform float blendFactor;
 const float lowerLimit = 0.0;
 const float upperLimit = 30.0;
 
-void main(void){
-	vec4 texture1 = texture(cubeMap, textureCoords);
-	vec4 texture2 = texture(cubeMap2, textureCoords);
-	vec4 finalColour = mix(texture1, texture2, blendFactor);
-	
-	float factor = (textureCoords.y - lowerLimit) / (upperLimit - lowerLimit);
-	factor = clamp(factor, 0.0, 1.0);
+void main(void) {
+    vec4 texture1 = texture(cubeMap, textureCoords);
+    vec4 texture2 = texture(cubeMap2, textureCoords);
+    vec4 finalColour = mix(texture1, texture2, blendFactor);
+
+    // Calculate fog factor based on the vertical position
+    float factor = clamp((textureCoords.y - lowerLimit) / (upperLimit - lowerLimit), 0.0, 1.0);
+
+    // Apply fog by blending the final color with the fog color
     out_Color = mix(vec4(fogColour, 1.0), finalColour, factor);
 }

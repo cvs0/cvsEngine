@@ -100,20 +100,20 @@ public class SkyboxRenderer {
 	/**
      * Constructs a SkyboxRenderer instance.
      *
-     * @param loader          The loader used to load textures and models.
+     * @param loader           The loader used to load textures and models.
      * @param projectionMatrix The projection matrix for rendering.
      */
     public SkyboxRenderer(Loader loader, Matrix4f projectionMatrix) {
-		cube = loader.loadToVAO(VERTICES, 3);
-		texture = loader.loadCubeMap(TEXTURE_FILES);
-		nightTexture = loader.loadCubeMap(NIGHT_TEXTURE_FILES);
-		shader = new SkyboxShader();
-		shader.start();
-		shader.connectTextureUnits();
-		shader.loadProjectionMatrix(projectionMatrix);
-		shader.stop();
-	}
-	
+        cube = loader.loadToVAO(VERTICES, 3);
+        texture = loader.loadCubeMap(TEXTURE_FILES);
+        nightTexture = loader.loadCubeMap(NIGHT_TEXTURE_FILES);
+        shader = new SkyboxShader();
+        shader.start();
+        shader.connectTextureUnits();
+        shader.loadProjectionMatrix(projectionMatrix);
+        shader.stop();
+    }
+
     /**
      * Renders the skybox based on the camera's view and time of day.
      *
@@ -123,61 +123,58 @@ public class SkyboxRenderer {
      * @param b      The blue component of the fog color.
      */
     public void render(Camera camera, float r, float g, float b) {
-		shader.start();
-		shader.loadViewMatrix(camera);
-		shader.loadFogColour(r, g, b);
-		
-		GL30.glBindVertexArray(cube.getVaoID());
-		
-		GL20.glEnableVertexAttribArray(0);
-		
-		bindTextures();
-		
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cube.getVertexCount());
-		
-		GL20.glDisableVertexAttribArray(0);
-		
-		GL30.glBindVertexArray(0);
-		
-		
-		shader.stop();
-	}
-	
+        shader.start();
+        shader.loadViewMatrix(camera);
+        shader.loadFogColour(r, g, b);
+
+        GL30.glBindVertexArray(cube.getVaoID());
+        GL20.glEnableVertexAttribArray(0);
+
+        bindTextures();
+
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, cube.getVertexCount());
+
+        GL20.glDisableVertexAttribArray(0);
+        GL30.glBindVertexArray(0);
+
+        shader.stop();
+    }
+
     /**
      * Binds the appropriate day or night textures to the skybox based on the time of day.
      */
     private void bindTextures() {
-		time += DisplayManager.getFrameTimeSeconds() * 1000;
-		time %= 24000;
-		
-		int texture1;
-		int texture2;
-		
-		float blendFactor;		
-		
-		if(time >= 0 && time < 5000){
-			texture1 = nightTexture;
-			texture2 = nightTexture;
-			blendFactor = (time - 0)/(5000 - 0);
-		}else if(time >= 5000 && time < 8000){
-			texture1 = nightTexture;
-			texture2 = texture;
-			blendFactor = (time - 5000)/(8000 - 5000);
-		}else if(time >= 8000 && time < 21000){
-			texture1 = texture;
-			texture2 = texture;
-			blendFactor = (time - 8000)/(21000 - 8000);
-		}else{
-			texture1 = texture;
-			texture2 = nightTexture;
-			blendFactor = (time - 21000)/(24000 - 21000);
-		}
+        time += DisplayManager.getFrameTimeSeconds() * 1000;
+        time %= 24000;
 
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture1);
-		GL13.glActiveTexture(GL13.GL_TEXTURE1);
-		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture2);
-		
-		shader.loadBlendFactor(blendFactor);
-	}
+        int texture1;
+        int texture2;
+
+        float blendFactor;
+
+        if (time >= 0 && time < 5000) {
+            texture1 = nightTexture;
+            texture2 = nightTexture;
+            blendFactor = time / 5000f;
+        } else if (time >= 5000 && time < 8000) {
+            texture1 = nightTexture;
+            texture2 = texture;
+            blendFactor = (time - 5000) / 3000f;
+        } else if (time >= 8000 && time < 21000) {
+            texture1 = texture;
+            texture2 = texture;
+            blendFactor = (time - 8000) / 13000f;
+        } else {
+            texture1 = texture;
+            texture2 = nightTexture;
+            blendFactor = (time - 21000) / 3000f;
+        }
+
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture1);
+        GL13.glActiveTexture(GL13.GL_TEXTURE1);
+        GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture2);
+
+        shader.loadBlendFactor(Math.max(0, Math.min(blendFactor, 1))); // Ensure blendFactor is in the [0, 1] range
+    }
 }
