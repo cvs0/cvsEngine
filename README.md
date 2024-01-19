@@ -8,6 +8,16 @@ CvsEngine 2.0 releasing soon.
 
 current CvsEngine version: 1.9
 
+### 2.0 Features
+- Easier engine setup
+- LWJGL 3 integration
+- Performance fixes
+- Shadow mapping
+- Utilities overhaul
+- And much more.
+
+Feel free to suggest features.
+
 # Dependencies
 
 To use CvsEngine, you'll need the following dependencies:
