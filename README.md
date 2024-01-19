@@ -4,6 +4,10 @@
 
 CvsEngine is a lightweight 3D game engine built in Java, aimed for 2010-2014 style games.
 
+CvsEngine 2.0 releasing soon.
+
+current CvsEngine version: 1.9
+
 # Dependencies
 
 To use CvsEngine, you'll need the following dependencies:
