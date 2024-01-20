@@ -26,6 +26,8 @@
 
 package engine.skybox;
 
+import java.lang.Math;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
@@ -87,8 +89,14 @@ public class SkyboxRenderer {
 	    -SIZE, -SIZE,  SIZE,
 	     SIZE, -SIZE,  SIZE
 	};
-	
-	private static String[] TEXTURE_FILES = {"right", "left", "top", "bottom", "back", "front"};
+
+    private static final int NIGHT_START = 0;
+    private static final int DAWN_START = 5000;
+    private static final int DAY_START = 8000;
+    private static final int DUSK_START = 21000;
+    private static final int DAY_LENGTH = 24000;
+
+    private static String[] TEXTURE_FILES = {"right", "left", "top", "bottom", "back", "front"};
 	private static String[] NIGHT_TEXTURE_FILES = {"nightRight", "nightLeft", "nightTop", "nightBottom", "nightBack", "nightFront"};
 	
 	private RawModel cube;
@@ -145,29 +153,28 @@ public class SkyboxRenderer {
      */
     private void bindTextures() {
         time += DisplayManager.getFrameTimeSeconds() * 1000;
-        time %= 24000;
+        time %= DAY_LENGTH;
 
         int texture1;
         int texture2;
-
         float blendFactor;
 
-        if (time >= 0 && time < 5000) {
+        if (isNight(time)) {
             texture1 = nightTexture;
             texture2 = nightTexture;
-            blendFactor = time / 5000f;
-        } else if (time >= 5000 && time < 8000) {
+            blendFactor = calculateBlendFactor(time, NIGHT_START, DAWN_START);
+        } else if (isDawn(time)) {
             texture1 = nightTexture;
             texture2 = texture;
-            blendFactor = (time - 5000) / 3000f;
-        } else if (time >= 8000 && time < 21000) {
+            blendFactor = calculateBlendFactor(time, DAWN_START, DAY_START);
+        } else if (isDay(time)) {
             texture1 = texture;
             texture2 = texture;
-            blendFactor = (time - 8000) / 13000f;
+            blendFactor = calculateBlendFactor(time, DAY_START, DUSK_START);
         } else {
             texture1 = texture;
             texture2 = nightTexture;
-            blendFactor = (time - 21000) / 3000f;
+            blendFactor = calculateBlendFactor(time, DUSK_START, DAY_LENGTH);
         }
 
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
@@ -175,6 +182,27 @@ public class SkyboxRenderer {
         GL13.glActiveTexture(GL13.GL_TEXTURE1);
         GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texture2);
 
-        shader.loadBlendFactor(Math.max(0, Math.min(blendFactor, 1))); // Ensure blendFactor is in the [0, 1] range
+        shader.loadBlendFactor(clampBlendFactor(blendFactor));
     }
+
+    private boolean isNight(float time) {
+        return time >= NIGHT_START && time < DAWN_START;
+    }
+
+    private boolean isDawn(float time) {
+        return time >= DAWN_START && time < DAY_START;
+    }
+
+    private boolean isDay(float time) {
+        return time >= DAY_START && time < DUSK_START;
+    }
+
+    private float calculateBlendFactor(float time, int start, int end) {
+        return (time - start) / (float) (end - start);
+    }
+
+    private float clampBlendFactor(float blendFactor) {
+        return Math.max(0, Math.min(blendFactor, 1));
+    }
+
 }
