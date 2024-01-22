@@ -290,30 +290,55 @@ public class MasterRenderer {
 	/**
 	 * Creates the projection matrix based on the display size, field of view, and near and far planes.
 	 */
-	private void createProjectionMatrix() {
-        if (Display.getWidth() <= 0 || Display.getHeight() <= 0 || FOV <= 0 || FAR_PLANE <= NEAR_PLANE) {
-            throw new IllegalArgumentException("Invalid parameters for projection matrix");
-        }
+	public void createProjectionMatrix() {
+	    validateInputParameters();
 
-        float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+	    float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
+	    validateAspectRatio(aspectRatio);
 
-        if (aspectRatio <= 0.0f) {
-            throw new IllegalArgumentException("Invalid aspect ratio for projection matrix");
-        }
+	    float yScale = (float) (1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio;
+	    float xScale = yScale / aspectRatio;
+	    float frustumLength = FAR_PLANE - NEAR_PLANE;
 
-        float yScale = (float) (1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio;
-        float xScale = yScale / aspectRatio;
-        float frustumLength = FAR_PLANE - NEAR_PLANE;
+	    initializeProjectionMatrixIfNull();
 
-        if (projectionMatrix == null) {
-            projectionMatrix = new Matrix4f();
-        }
+	    projectionMatrix.m00 = xScale;
+	    projectionMatrix.m11 = yScale;
+	    projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
+	    projectionMatrix.m23 = -1;
+	    projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
+	    projectionMatrix.m33 = 0;
+	}
 
-        projectionMatrix.m00 = xScale;
-        projectionMatrix.m11 = yScale;
-        projectionMatrix.m22 = -((FAR_PLANE + NEAR_PLANE) / frustumLength);
-        projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustumLength);
-        projectionMatrix.m33 = 0;
-    }
+	/**
+	 * Validates the input parameters for creating a projection matrix.
+	 * Throws an {@link IllegalArgumentException} if any parameter is invalid.
+	 */
+	private void validateInputParameters() {
+	    if (Display.getWidth() <= 0 || Display.getHeight() <= 0 || FOV <= 0 || FAR_PLANE <= NEAR_PLANE) {
+	        throw new IllegalArgumentException("Invalid parameters for projection matrix");
+	    }
+	}
+
+	/**
+	 * Validates the aspect ratio for creating a projection matrix.
+	 * Throws an {@link IllegalArgumentException} if the aspect ratio is invalid.
+	 *
+	 * @param aspectRatio The aspect ratio to be validated.
+	 */
+	private void validateAspectRatio(float aspectRatio) {
+	    if (aspectRatio <= 0.0f) {
+	        throw new IllegalArgumentException("Invalid aspect ratio for projection matrix");
+	    }
+	}
+
+	/**
+	 * Initializes the projection matrix if it is null.
+	 * If the projection matrix is null, a new {@link Matrix4f} instance is created and assigned.
+	 */
+	private void initializeProjectionMatrixIfNull() {
+	    if (projectionMatrix == null) {
+	        projectionMatrix = new Matrix4f();
+	    }
+	}
 }
