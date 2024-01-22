@@ -44,6 +44,7 @@ import engine.models.TexturedModel;
 import engine.normalMappingRenderer.NormalMappingRenderer;
 import engine.shaders.StaticShader;
 import engine.shaders.TerrainShader;
+import engine.shadows.ShadowMapMasterRenderer;
 import engine.skybox.SkyboxRenderer;
 import engine.terrains.Terrain;
 
@@ -79,13 +80,14 @@ public class MasterRenderer {
 	private List<Terrain> terrains = new ArrayList<Terrain>();
 	
 	private SkyboxRenderer skyboxRenderer;
+	private ShadowMapMasterRenderer shadowMapRenderer;
 	
 	/**
 	 * Constructs a MasterRenderer with the given loader. Initializes various rendering components and settings.
 	 *
 	 * @param loader The loader responsible for loading resources.
 	 */
-	public MasterRenderer(Loader loader, float fogDensity, float fogGradient) {
+	public MasterRenderer(Loader loader, float fogDensity, float fogGradient, Camera camera) {
 		this.fogDensity = fogDensity;
 		this.fogGradient = fogGradient;
 	    enableCulling();
@@ -96,6 +98,7 @@ public class MasterRenderer {
 	    terrainRenderer = new TerrainRenderer(terrainShader, projectionMatrix);
 	    skyboxRenderer = new SkyboxRenderer(loader, projectionMatrix);
 	    normalMapRenderer = new NormalMappingRenderer(projectionMatrix);
+	    this.shadowMapRenderer = new ShadowMapMasterRenderer(camera);
 	}
 
 	/**
@@ -250,6 +253,19 @@ public class MasterRenderer {
 
         batchMap.computeIfAbsent(entityModel, k -> new ArrayList<>()).add(entity);
     }
+	
+	public void renderShadowMap(List<Entity> entityList, Light sun) {
+		for (Entity entity : entityList) {
+			processEntity(entity);
+		}
+		
+		shadowMapRenderer.render(entities, sun);
+		entities.clear();
+	}
+	
+	public int getShadowMapTexture() {
+		return shadowMapRenderer.getShadowMap();
+	}
 
 
 	/**
@@ -267,6 +283,10 @@ public class MasterRenderer {
 
             if (normalMapRenderer != null) {
                 normalMapRenderer.cleanUp();
+            }
+            
+            if (shadowMapRenderer != null) {
+            	shadowMapRenderer.cleanUp();
             }
         } catch (Exception e) {
             System.err.println("Error cleaning up resources: " + e.getMessage());

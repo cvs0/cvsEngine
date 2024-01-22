@@ -76,6 +76,14 @@ public class MainGameLoop {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		
+		RawModel bunnyModel = OBJLoader.loadObjModel("person", loader);
+		TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTexture(
+				loader.loadTexture("playerTexture1")));
+
+		Player player = new Player(stanfordBunny, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
+		Camera camera = new Camera(player);
+		
 		TextMaster.init(loader);
 		
 		FontType font = new FontType(loader.loadTexture("/candara/candara"), new File("res/candara/candara.fnt"));
@@ -120,6 +128,8 @@ public class MainGameLoop {
 
 		List<Entity> entities = new ArrayList<Entity>();
 		List<Entity> normalMapEntities = new ArrayList<Entity>();
+		
+		entities.add(player);
 		
 		//******************NORMAL MAP MODELS************************
 		
@@ -184,22 +194,20 @@ public class MainGameLoop {
 		List<Light> lights = new ArrayList<Light>();
 		Light sun = new Light(new Vector3f(1000000, 1500000, -1000000), new Vector3f(1.3f, 1.3f, 1.3f));
 		lights.add(sun);
-
-		MasterRenderer renderer = new MasterRenderer(loader, 0f, 5.0f);
+		
+		MasterRenderer renderer = new MasterRenderer(loader, 0f, 5.0f, camera);
 		
 		ParticleMaster.init(loader, renderer.getProjectionMatrix());
 
-		RawModel bunnyModel = OBJLoader.loadObjModel("person", loader);
-		TexturedModel stanfordBunny = new TexturedModel(bunnyModel, new ModelTexture(
-				loader.loadTexture("playerTexture1")));
-
-		Player player = new Player(stanfordBunny, new Vector3f(75, 5, -75), 0, 100, 0, 0.6f);
-		entities.add(player);
-		Camera camera = new Camera(player);
 		List<GuiTexture> guiTextures = new ArrayList<GuiTexture>();
+		GuiTexture shadowMap = new GuiTexture(renderer.getShadowMapTexture(),
+				new Vector2f(0.5f, 0.5f), new Vector2f(0.5f, 0.5f));
+		
+		guiTextures.add(shadowMap);
+		
 		GuiRenderer guiRenderer = new GuiRenderer(loader);
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
-	
+		
 		//**********Water Renderer Set-up************************
 		
 		WaterFrameBuffers buffers = new WaterFrameBuffers();
@@ -227,6 +235,9 @@ public class MainGameLoop {
 			entity.increaseRotation(0, 0.1f, 0);
 			entity2.increaseRotation(0, 0.1f, 0);
 			entity3.increaseRotation(0, 0.1f, 0);
+			
+			renderer.renderShadowMap(entities, sun);
+			
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			
 			// render reflection teture
