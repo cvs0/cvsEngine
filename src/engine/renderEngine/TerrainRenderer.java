@@ -69,7 +69,8 @@ public class TerrainRenderer {
      *
      * @param terrains The list of terrains to render.
      */
-	public void render(List<Terrain> terrains) {
+	public void render(List<Terrain> terrains, Matrix4f toShadowSpace) {
+		shader.loadToShadowSpaceMatrix(toShadowSpace);
 		for(Terrain terrain : terrains) {
 			prepareTerrain(terrain);
 			loadModelMatrix(terrain);
