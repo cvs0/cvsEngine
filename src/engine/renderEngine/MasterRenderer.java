@@ -52,9 +52,9 @@ import engine.terrains.Terrain;
  */
 public class MasterRenderer {
 	
-	private static final float FOV = 70;
-	private static final float NEAR_PLANE = 0.1f;
-	private static final float FAR_PLANE = 1000;
+	public static final float FOV = 70;
+	public static final float NEAR_PLANE = 0.1f;
+	public static final float FAR_PLANE = 1000;
 	
 	public static final float RED = 0.0f;
 	public static final float GREEN = 0.0f;
@@ -296,7 +296,7 @@ public class MasterRenderer {
 	    float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 	    validateAspectRatio(aspectRatio);
 
-	    float yScale = (float) (1f / Math.tan(Math.toRadians(FOV / 2f))) * aspectRatio;
+	    float yScale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));
 	    float xScale = yScale / aspectRatio;
 	    float frustumLength = FAR_PLANE - NEAR_PLANE;
 
