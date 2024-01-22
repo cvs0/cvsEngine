@@ -149,57 +149,162 @@ public class OBJLoader {
 	}
 	
 	/**
-     * Processes a single vertex line from the OBJ file and adds it to the model's data.
-     *
-     * @param vertexData   The vertex data from a line in the OBJ file.
-     * @param indices      The list of vertex indices.
-     * @param textures     The list of texture coordinates.
-     * @param normals      The list of normal vectors.
-     * @param textureArray An array to store texture coordinates.
-     * @param normalsArray An array to store normal vectors.
-     */
+	 * Processes a single vertex line from the OBJ file and adds it to the model's data.
+	 *
+	 * @param vertexData   The vertex data from a line in the OBJ file.
+	 * @param indices      The list of vertex indices.
+	 * @param textures     The list of texture coordinates.
+	 * @param normals      The list of normal vectors.
+	 * @param textureArray An array to store texture coordinates.
+	 * @param normalsArray An array to store normal vectors.
+	 */
 	private static void processVertex(String[] vertexData, List<Integer> indices,
 	        List<Vector2f> textures, List<Vector3f> normals, float[] textureArray,
 	        float[] normalsArray) {
-
 	    if (vertexData.length < 3) {
-	        System.err.println("Invalid vertex data provided: " + Arrays.toString(vertexData));
-	        
+	        handleInvalidVertexData(vertexData);
 	        return;
 	    }
 
 	    try {
 	        int currentVertexPointer = Integer.parseInt(vertexData[0]) - 1;
-	        
-	        indices.add(currentVertexPointer);
+	        processIndex(currentVertexPointer, indices);
 
 	        int texIndex = Integer.parseInt(vertexData[1]) - 1;
-	        
-	        if (texIndex >= 0 && texIndex < textures.size()) {
-	            Vector2f currentTex = textures.get(texIndex);
-	            
-	            textureArray[currentVertexPointer * 2] = currentTex.x;
-	            textureArray[currentVertexPointer * 2 + 1] = 1 - currentTex.y;
-	        } else {
-	            System.err.println("Invalid texture index: " + texIndex);
-	        }
+	        processTexture(texIndex, textures, textureArray, currentVertexPointer);
 
 	        int normIndex = Integer.parseInt(vertexData[2]) - 1;
-	        
-	        if (normIndex >= 0 && normIndex < normals.size()) {
-	            Vector3f currentNorm = normals.get(normIndex);
-	            
-	            normalsArray[currentVertexPointer * 3] = currentNorm.x;
-	            normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
-	            normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
-	        } else {
-	            System.err.println("Invalid normal index: " + normIndex);
-	        }
+	        processNormal(normIndex, normals, normalsArray, currentVertexPointer);
 	    } catch (NumberFormatException e) {
-	        System.err.println("Error parsing vertex data: " + Arrays.toString(vertexData));
-	        
-	        e.printStackTrace();
+	        handleNumberFormatError(vertexData, e);
 	    }
 	}
 
+	/**
+	 * Handles the case when invalid vertex data is encountered in the OBJ file.
+	 *
+	 * @param vertexData The vertex data from a line in the OBJ file.
+	 */
+	private static void handleInvalidVertexData(String[] vertexData) {
+	    /**
+	     * Prints an error message indicating that invalid vertex data is provided.
+	     *
+	     * @param vertexData The vertex data from a line in the OBJ file.
+	     */
+	    System.err.println("Invalid vertex data provided: " + Arrays.toString(vertexData));
+	}
+
+	/**
+	 * Processes the index of a vertex and adds it to the list of vertex indices.
+	 *
+	 * @param currentVertexPointer The current vertex index.
+	 * @param indices              The list of vertex indices.
+	 */
+	private static void processIndex(int currentVertexPointer, List<Integer> indices) {
+	    /**
+	     * Adds the current vertex index to the list of vertex indices.
+	     *
+	     * @param currentVertexPointer The current vertex index.
+	     * @param indices              The list of vertex indices.
+	     */
+	    indices.add(currentVertexPointer);
+	}
+
+	/**
+	 * Processes the texture index, updates the texture array, and handles invalid texture indices.
+	 *
+	 * @param texIndex             The texture index from the OBJ file.
+	 * @param textures             The list of texture coordinates.
+	 * @param textureArray         An array to store texture coordinates.
+	 * @param currentVertexPointer The current vertex index.
+	 */
+	private static void processTexture(int texIndex, List<Vector2f> textures, float[] textureArray, int currentVertexPointer) {
+	    /**
+	     * Processes the texture index, updates the texture array, and handles invalid texture indices.
+	     *
+	     * @param texIndex             The texture index from the OBJ file.
+	     * @param textures             The list of texture coordinates.
+	     * @param textureArray         An array to store texture coordinates.
+	     * @param currentVertexPointer The current vertex index.
+	     */
+	    if (texIndex >= 0 && texIndex < textures.size()) {
+	        Vector2f currentTex = textures.get(texIndex);
+	        textureArray[currentVertexPointer * 2] = currentTex.x;
+	        textureArray[currentVertexPointer * 2 + 1] = 1 - currentTex.y;
+	    } else {
+	        handleInvalidTextureIndex(texIndex);
+	    }
+	}
+
+	/**
+	 * Handles the case when an invalid texture index is encountered.
+	 *
+	 * @param texIndex The invalid texture index.
+	 */
+	private static void handleInvalidTextureIndex(int texIndex) {
+	    /**
+	     * Prints an error message indicating that the texture index is invalid.
+	     *
+	     * @param texIndex The invalid texture index.
+	     */
+	    System.err.println("Invalid texture index: " + texIndex);
+	}
+
+	/**
+	 * Processes the normal index, updates the normals array, and handles invalid normal indices.
+	 *
+	 * @param normIndex             The normal index from the OBJ file.
+	 * @param normals               The list of normal vectors.
+	 * @param normalsArray          An array to store normal vectors.
+	 * @param currentVertexPointer  The current vertex index.
+	 */
+	private static void processNormal(int normIndex, List<Vector3f> normals, float[] normalsArray, int currentVertexPointer) {
+	    /**
+	     * Processes the normal index, updates the normals array, and handles invalid normal indices.
+	     *
+	     * @param normIndex             The normal index from the OBJ file.
+	     * @param normals               The list of normal vectors.
+	     * @param normalsArray          An array to store normal vectors.
+	     * @param currentVertexPointer  The current vertex index.
+	     */
+	    if (normIndex >= 0 && normIndex < normals.size()) {
+	        Vector3f currentNorm = normals.get(normIndex);
+	        normalsArray[currentVertexPointer * 3] = currentNorm.x;
+	        normalsArray[currentVertexPointer * 3 + 1] = currentNorm.y;
+	        normalsArray[currentVertexPointer * 3 + 2] = currentNorm.z;
+	    } else {
+	        handleInvalidNormalIndex(normIndex);
+	    }
+	}
+
+	/**
+	 * Handles the case when an invalid normal index is encountered.
+	 *
+	 * @param normIndex The invalid normal index.
+	 */
+	private static void handleInvalidNormalIndex(int normIndex) {
+	    /**
+	     * Prints an error message indicating that the normal index is invalid.
+	     *
+	     * @param normIndex The invalid normal index.
+	     */
+	    System.err.println("Invalid normal index: " + normIndex);
+	}
+
+	/**
+	 * Handles the case when a NumberFormatException occurs during vertex data parsing.
+	 *
+	 * @param vertexData The vertex data from a line in the OBJ file.
+	 * @param e           The NumberFormatException.
+	 */
+	private static void handleNumberFormatError(String[] vertexData, NumberFormatException e) {
+	    /**
+	     * Prints an error message indicating that a NumberFormatException occurred during vertex data parsing.
+	     *
+	     * @param vertexData The vertex data from a line in the OBJ file.
+	     * @param e           The NumberFormatException.
+	     */
+	    System.err.println("Error parsing vertex data: " + Arrays.toString(vertexData));
+	    e.printStackTrace();
+	}
 }
