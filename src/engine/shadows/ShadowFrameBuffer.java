@@ -25,7 +25,7 @@ public class ShadowFrameBuffer {
 	private int shadowMap;
 
 	/**
-	 * Initialises the frame buffer and shadow map of a certain size.
+	 * Initializes the frame buffer and shadow map of a certain size.
 	 * 
 	 * @param width
 	 *            - the width of the shadow map in pixels.
@@ -96,7 +96,7 @@ public class ShadowFrameBuffer {
 
 	/**
 	 * Creates a frame buffer and binds it so that attachments can be added to
-	 * it. The draw buffer is set to none, indicating that there's no colour
+	 * it. The draw buffer is set to none, indicating that there's no color
 	 * buffer to be rendered to.
 	 * 
 	 * @return The newly created frame buffer's ID.
