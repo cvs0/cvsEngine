@@ -86,10 +86,6 @@ public class MasterRenderer {
 	 * @param loader The loader responsible for loading resources.
 	 */
 	public MasterRenderer(Loader loader, float fogDensity, float fogGradient) {
-		if (shader == null || terrainShader == null || normalMapRenderer == null) {
-            throw new IllegalStateException("Shader or renderer initialization failed.");
-        }
-
 		this.fogDensity = fogDensity;
 		this.fogGradient = fogGradient;
 	    enableCulling();
