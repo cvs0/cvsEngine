@@ -149,6 +149,10 @@ public class GUIText {
     public void setOffset(Vector2f offset) {
         this.offset = offset;
     }
+    
+    public void setText(String text) {
+    	this.textString = text;
+    }
 
     /**
      * Get the outline color of the text.

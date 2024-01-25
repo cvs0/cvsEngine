@@ -58,9 +58,9 @@ public class MasterRenderer {
 	public static final float NEAR_PLANE = 0.1f;
 	public static final float FAR_PLANE = 1000;
 	
-	public static final float RED = 0.0f;
-	public static final float GREEN = 0.0f;
-	public static final float BLUE = 0.2f;
+	public static final float RED = 135f;
+	public static final float GREEN = 206f;
+	public static final float BLUE = 235f;
 	
 	private float fogDensity;
 	private float fogGradient;
