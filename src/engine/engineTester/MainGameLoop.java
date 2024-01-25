@@ -13,7 +13,9 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.entities.Entity;
+import engine.entities.FreeRoamCamera;
 import engine.entities.Light;
 import engine.entities.Player;
 import engine.fontMeshCreator.FontType;
@@ -52,8 +54,7 @@ public class MainGameLoop {
         FPSCounter fpsCount = new FPSCounter();
 
         Player player = setupPlayer(loader);
-        Camera camera = new Camera(player);
-
+        Camera camera = new FreeRoamCamera(player);
         TextMaster.init(loader);
 
         FontType font = new FontType(loader.loadTexture("/candara/candara"),

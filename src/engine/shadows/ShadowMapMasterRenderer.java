@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.entities.Entity;
 import engine.entities.Light;
 import engine.models.TexturedModel;

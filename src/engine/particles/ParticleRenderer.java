@@ -40,6 +40,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.models.RawModel;
 import engine.renderEngine.Loader;
 import engine.toolbox.MathUtils;

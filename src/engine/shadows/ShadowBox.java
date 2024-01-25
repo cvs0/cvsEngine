@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.renderEngine.DisplayManager;
 import engine.renderEngine.MasterRenderer;
 

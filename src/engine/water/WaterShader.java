@@ -29,6 +29,7 @@ package engine.water;
 import org.lwjgl.util.vector.Matrix4f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.entities.Light;
 import engine.shaders.ShaderProgram;
 import engine.toolbox.MathUtils;

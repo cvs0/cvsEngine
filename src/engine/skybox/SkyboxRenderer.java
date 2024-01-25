@@ -35,6 +35,7 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.models.RawModel;
 import engine.renderEngine.DisplayManager;
 import engine.renderEngine.Loader;

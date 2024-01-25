@@ -31,6 +31,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 
 /**
  * A utility class for math related functions.

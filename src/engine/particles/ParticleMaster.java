@@ -36,6 +36,7 @@ import java.util.Map.Entry;
 import org.lwjgl.util.vector.Matrix4f;
 
 import engine.entities.Camera;
+import engine.entities.DefaultCamera;
 import engine.renderEngine.Loader;
 
 public class ParticleMaster {
