@@ -9,10 +9,14 @@ CvsEngine 2.0 releasing soon.
 current CvsEngine version: 1.9
 
 ### 2.0 Features
+- ~Anti-aliasing~
+- ~Anisotropic filtering~
+- ~Real-time shadows~
+- ~Post processing~
 - Easier engine setup
 - LWJGL 3 integration
-- Performance fixes
-- Shadow mapping
+- ~Performance fixes~
+- ~Shadow mapping~
 - Utilities overhaul
 - And much more.
 
